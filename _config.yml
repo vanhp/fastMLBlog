@@ -6,7 +6,7 @@
 # https://learn-the-web.algonquindesign.ca/topics/markdown-yaml-cheat-sheet/#yaml
 # https://learnxinyminutes.com/docs/yaml/
 
-title: fastpages
+title: Machine Learning Journey
 description: An easy to use blogging platform with support for Jupyter Notebooks.
 github_username: vanhp
 # you can comment the below line out if your repo name is not different than your baseurl
@@ -36,6 +36,14 @@ url: "https://vanhp.github.io" # the base hostname & protocol for your site, e.g
 #
 baseurl: "/fastMLBlog" # the subpath of your site, e.g. "/blog".
 
+
+twitter_username: SupraCoder
+
+
+# add author
+author: Vanh Phomsavanh
+facebook_username: vanh phom
+linkedin_username: vanh phom
 # Github and twitter are optional:
 minima:
   social_links:
@@ -78,6 +86,13 @@ default_badges:
 # Escape HTML in post descriptions
 html_escape:
   description: false
+
+
+# Ideal logo image should be 150px 
+title-logo: /images/gradientv12scale2.jpg
+
+# add copyright 
+copyright: " VSP LLC"
 
 # Everything below here should be left alone. Modifications may break fastpages
 future: true

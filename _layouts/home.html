@@ -3,6 +3,15 @@ layout: default
 ---
 
 <div class="home">
+  
+  <!-- <a class="site-title" rel="author" href="{{ "/" | relative_url }}">
+    {%- if site.title-logo -%}
+    <img src="{{ site.title-logo |relative_url }}" alt="{{ site.title | escape }}"
+    {%- else -%}
+    {{site.title | escape }}
+    {%- endif -%}
+  </a> -->
+
   {%- if page.title -%}
     <h1 class="page-heading">{{ page.title }}</h1>
   {%- endif -%}
