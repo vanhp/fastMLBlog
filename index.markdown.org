@@ -74,7 +74,7 @@ window.onload = wrap_img;
     <a class="site-title" rel="author" href="/fastMLBlog/">Machine Learning Journey</a>
     replace with custom code below
     -->
-    <a class="site-title" rel="author" href="/fastMLBlog/"><img src="/fastMLBlog/images/gradientv12scale2.jpg" alt="Machine Learning Journey"</a><nav class="site-nav">
+    <a class="site-title" rel="author" href="/fastMLBlog/"><img src="/fastMLBlog/images/gradlogo1.jpg" alt="Machine Learning Journey"</a><nav class="site-nav">
         <input type="checkbox" id="nav-trigger" class="nav-trigger" />
         <label for="nav-trigger">
           <span class="menu-icon">
@@ -91,7 +91,7 @@ window.onload = wrap_img;
       <div class="wrapper">
         <div class="home">
   
-  <!-- <a class="site-title" rel="author" href="/fastMLBlog/"><img src="/fastMLBlog/images/gradientv12scale2.jpg" alt="Machine Learning Journey"</a> --><h1 class="page-heading">Main</h1><h2 id="welcome-to-my-blog-about-technical-and-business">Welcome to my Blog about technical and business</h2>
+  <a class="site-title" rel="author" href="/fastMLBlog/"><img src="/fastMLBlog/images/ai-pic7cp.jpg" alt="Machine Learning Journey"</a><h1 class="page-heading">Main</h1><h2 id="welcome-to-my-blog-about-technical-and-business">Welcome to my Blog about technical and business</h2>
 
 
 

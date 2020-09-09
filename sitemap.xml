@@ -1,12 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <url>
-<loc>https://vanhp.github.io/fastMLBlog/markdown/2020/01/14/test-markdown-post.html</loc>
-<lastmod>2020-01-14T00:00:00-06:00</lastmod>
+<loc>https://vanhp.github.io/fastMLBlog/ml/2020/02/12/post4.html</loc>
+<lastmod>2020-02-12T00:00:00-06:00</lastmod>
 </url>
 <url>
 <loc>https://vanhp.github.io/fastMLBlog/jupyter/2020/02/20/test.html</loc>
 <lastmod>2020-02-20T00:00:00-06:00</lastmod>
+</url>
+<url>
+<loc>https://vanhp.github.io/fastMLBlog/ml/2020/03/16/post6.html</loc>
+<lastmod>2020-03-16T00:00:00-05:00</lastmod>
+</url>
+<url>
+<loc>https://vanhp.github.io/fastMLBlog/coding/2020/08/18/post6.html</loc>
+<lastmod>2020-08-18T00:00:00-05:00</lastmod>
+</url>
+<url>
+<loc>https://vanhp.github.io/fastMLBlog/coding/2020/09/02/post1.html</loc>
+<lastmod>2020-09-02T00:00:00-05:00</lastmod>
+</url>
+<url>
+<loc>https://vanhp.github.io/fastMLBlog/coding/2020/09/03/post2.html</loc>
+<lastmod>2020-09-03T00:00:00-05:00</lastmod>
 </url>
 <url>
 <loc>https://vanhp.github.io/fastMLBlog/ml-section/ml/2020/09/07/test-machineLearning.html</loc>
