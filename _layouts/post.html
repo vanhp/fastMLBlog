@@ -4,6 +4,14 @@ layout: default
 <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
+    <!-- add feature image on top of post -->
+    {%- if page.image -%}
+      <img src="{{- page.image | relative_url -}}" alt="" class="featured-image-post" />
+    {%- else -%}
+      {%- assign defaultImage = "/images/dev-tool-pic.jpg" -%}
+      <img src="{{- defaultImage | relative_url -}} alt=" class=featured-image-post" />
+    {%- endif -%}
+    
     <h1 class="post-title p-name" itemprop="name headline">{{ page.title | escape }}</h1>
     {%- if page.description -%}
       {%- if site.html_escape.description -%}
@@ -56,7 +64,9 @@ layout: default
 
   <div class="post-content e-content" itemprop="articleBody">
     {{ content | toc  }}
+   
   </div>
+ 
   {%- if page.comments -%}
     {%- include utterances.html -%}
   {%- endif -%}

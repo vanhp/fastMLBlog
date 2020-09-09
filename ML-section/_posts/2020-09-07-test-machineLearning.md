@@ -5,7 +5,10 @@ description: A post about My journey working with machine learning using fastAI 
 date: 2020-09-07 10:30
 categories: [ML]
 title: Machine Learning Posts
+image: /images/ai-pic1.jpg
 ---
+<!-- ![]({{page.image | relative_url}}) -->
+
 # Welcome to my Machine Learning Posts
 
 ## Basic setup

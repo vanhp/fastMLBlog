@@ -4,13 +4,14 @@ layout: default
 
 <div class="home">
   
-  <!-- <a class="site-title" rel="author" href="{{ "/" | relative_url }}">
+  <a class="site-title" rel="author" href="{{ "/" | relative_url }}">
     {%- if site.title-logo -%}
-    <img src="{{ site.title-logo |relative_url }}" alt="{{ site.title | escape }}"
+    {%- assign mainPage = "/images/ai-pic7cp.jpg" -%}
+    <img src="{{ mainPage |relative_url }}" alt="{{ site.title | escape }}"
     {%- else -%}
     {{site.title | escape }}
     {%- endif -%}
-  </a> -->
+  </a>
 
   {%- if page.title -%}
     <h1 class="page-heading">{{ page.title }}</h1>

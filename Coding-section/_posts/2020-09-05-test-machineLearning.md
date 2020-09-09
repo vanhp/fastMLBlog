@@ -5,7 +5,11 @@ description: A post about My programming experience
 date: 2020-09-08 01:30:26
 categories: [Coding]
 title: The Polyglot Coder Journey
+image: /images/coding-pic.jpg
 ---
+<!-- ![]({{page.image | relative_url}}) -->
+
+
 # Welcome to my Polyglot Coder view
 
 ## The rear view mirror
