@@ -4,8 +4,8 @@
 
 layout: home-coding
 title: Programming
-#image: /assets/images/lion2.jpg
+image: /assets/images/coding-pic.jpg
 category: Coding
 ---
 
-## Welcome to my Blog about Programming
+## Welcome to my Programming blog Home page

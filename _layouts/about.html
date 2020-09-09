@@ -1,0 +1,31 @@
+---
+layout: default
+---
+
+<div class="home">
+  <!-- put image at top of post -->
+  <a class="site-title" rel="author" href="{{ "/" | relative_url }}">
+    {%- if site.title-logo -%}
+    {%- assign mainPage = "/images/dev-tool-pic.jpg" -%}
+    <img src="{{ mainPage |relative_url }}" alt="{{ site.title | escape }}" class="blog-top-image"/>
+    {%- else -%}
+    {{site.title | escape }}
+    {%- endif -%}
+  </a>
+  
+  {%- if page.title -%}
+    <h1 class="page-heading">{{ page.title }}</h1>
+  {%- endif -%}
+
+  {{ content }}
+<!-- 
+  {%- if site.posts.size > 0 -%}
+    <h2 class="post-list-heading">{{ page.list_title | default: "Posts" }}</h2>
+    <ul class="post-list">
+     
+    </ul> -->
+
+    <p class="rss-subscribe">subscribe <a href="{{ "/ML-section/feed.xml" | relative_url }}">via RSS</a></p>
+  {%- endif -%}
+
+</div>

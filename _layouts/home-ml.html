@@ -3,6 +3,16 @@ layout: default
 ---
 
 <div class="home">
+  <!-- put image at top of post -->
+  <a class="site-title" rel="author" href="{{ "/" | relative_url }}">
+    {%- if site.title-logo -%}
+    {%- assign mainPage = "/ML-section/assets/images/ai-pic6.jpg" -%}
+    <img src="{{ mainPage |relative_url }}" alt="{{ site.title | escape }}" class="blog-top-image"/>
+    {%- else -%}
+    {{site.title | escape }}
+    {%- endif -%}
+  </a>
+  
   {%- if page.title -%}
     <h1 class="page-heading">{{ page.title }}</h1>
   {%- endif -%}
@@ -13,7 +23,7 @@ layout: default
     <h2 class="post-list-heading">{{ page.list_title | default: "Posts" }}</h2>
     <ul class="post-list">
       {%- for post in site.posts -%}
-        {%- if post.category == "ML" -%}
+        {%- if post.category=="ML" -%}
           <li>
             {%- assign date_format = site.minima.date_format | default: "%b %-d, %Y" -%}
             <span class="post-meta">{{ post.date | date: date_format }}</span>
@@ -25,12 +35,21 @@ layout: default
             {%- if site.show_excerpts -%}
               {{ post.excerpt }}
             {%- endif -%}
+               <!-- add blog-roll image here -->
+               {%- if post.image -%}
+               <img src="{{- post.image | relative_url -}}" alt="" class="blog-roll-image"/>
+              {%- else -%}
+                {%- assign postImage = "/images/dev-tool-pic" -%}
+                <img src="{{- postImage | relative_url -}}" alt="" class="blog-roll-image"/>
+    
+              {%- endif -%}
+            <!-- to here -->
           </li>
         {%- endif -%}
       {%- endfor -%}
     </ul>
 
-    <p class="rss-subscribe">subscribe <a href="{{ "/business-blog/feed.xml" | relative_url }}">via RSS</a></p>
+    <p class="rss-subscribe">subscribe <a href="{{ "/ML-section/feed.xml" | relative_url }}">via RSS</a></p>
   {%- endif -%}
 
 </div>

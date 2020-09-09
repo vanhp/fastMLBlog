@@ -1,15 +1,18 @@
 ---
 toc: true
 layout: post
-description: A minimal example of using markdown with fastpages.
-categories: [ML]
-title: ML post 2
-image: /images/ai-pic2.jpg
+description: A post about My programming experience
+date: 2020-09-06 01:30:26
+category: Coding
+title: The Polyglot Coder Journey 1
+image: /Coding-section/assets/images/coding-pic.jpg
 ---
 <!-- ![]({{page.image | relative_url}}) -->
-# Example Markdown Post
 
-## Basic setup
+
+# Welcome to my Polyglot Coder view
+
+## The rear view mirror
 
 Jekyll requires blog post files to be named according to the following format:
 

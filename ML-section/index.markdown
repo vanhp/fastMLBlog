@@ -4,8 +4,8 @@
 
 layout: home-ml
 title: ML
-image: /assets/images/lion2.jpg
+# image: /assets/images/lion2.jpg
 category: ML
 ---
 
-## Welcome to my Blog about Machine Learning
+## Welcome to my Machine Learning blog Home page

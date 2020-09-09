@@ -1,18 +1,16 @@
 ---
 toc: true
 layout: post
-description: A post about My programming experience
-date: 2020-09-08 01:30:26
-categories: [Coding]
-title: The Polyglot Coder Journey
-image: /images/coding-pic.jpg
+description: A minimal example of using markdown with fastpages.
+category: Coding
+title: How many languages do you need to succeed?
+image: /Coding-section/assets/images/coding-pic4.jpg
 ---
 <!-- ![]({{page.image | relative_url}}) -->
 
+# Example Markdown Post
 
-# Welcome to my Polyglot Coder view
-
-## The rear view mirror
+## Basic setup
 
 Jekyll requires blog post files to be named according to the following format:
 

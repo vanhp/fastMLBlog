@@ -1,17 +1,19 @@
 ---
 toc: true
 layout: post
-description: A post about My journey working with machine learning using fastAI library.
-date: 2020-09-07 10:30
-categories: [ML]
-title: Machine Learning Posts
-image: /images/ai-pic1.jpg
+description: A post about My programming experience
+date: 2020-09-08 01:30:26
+categories: [General]
+title: The Polyglot Coder General rant!
+image: /images/coding-pic.jpg
 ---
 <!-- ![]({{page.image | relative_url}}) -->
 
-# Welcome to my Machine Learning Posts
 
-## Basic setup
+# Welcome to my random rant! anything that don't fell into either ML or programming
+
+
+## The rear view mirror
 
 Jekyll requires blog post files to be named according to the following format:
 

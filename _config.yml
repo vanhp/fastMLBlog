@@ -6,8 +6,8 @@
 # https://learn-the-web.algonquindesign.ca/topics/markdown-yaml-cheat-sheet/#yaml
 # https://learnxinyminutes.com/docs/yaml/
 
-title: Machine Learning Journey
-description: An easy to use blogging platform with support for Jupyter Notebooks.
+title: Supra_PolyglotCoder 
+description: A blog about my journey into Machine Learning and coding experience in general
 github_username: vanhp
 # you can comment the below line out if your repo name is not different than your baseurl
 github_repo: "fastMLBlog"
@@ -36,22 +36,27 @@ url: "https://vanhp.github.io" # the base hostname & protocol for your site, e.g
 #
 baseurl: "/fastMLBlog" # the subpath of your site, e.g. "/blog".
 
-
+git_hub_username: Vanh Phom
 twitter_username: SupraCoder
-
+email: vanhphom@gmail.com
 
 # add author
 author: Vanh Phomsavanh
 facebook_username: vanh phom
-linkedin_username: vanh phom
+linkedin_username:
+youtube_username:
+# add copyright 
+copyright: " VSP LLC"
+
+
 # Github and twitter are optional:
 minima:
   social_links:
-    twitter: fastdotai
-    github: fastai
+    twitter: supracoder
+    github: vanhp
 
 # Set this to true to get LaTeX math equation support
-use_math: 
+use_math: true
 
 # Set this to true to display the summary of your blog post under your title on the Home page.
 show_description: true
@@ -91,8 +96,6 @@ html_escape:
 # Ideal logo image should be 150px 
 title-logo: /images/gradlogo1.jpg
 
-# add copyright 
-copyright: " VSP LLC"
 
 # Everything below here should be left alone. Modifications may break fastpages
 future: true
