@@ -2,16 +2,15 @@
 toc: true
 layout: post
 description: A post about My programming experience
-date: 2020-09-08 01:30:26
-categories: [General]
-title: The Polyglot Coder General rant!
-image: /images/coding-pic5.jpg
+date: 2020-09-09 04:30:26
+category: Coding
+title: The hot ML Language
+image: /Coding-section/assets/images/coding-pic.jpg
 ---
 <!-- ![]({{page.image | relative_url}}) -->
 
 
-# Welcome to my random rant! anything that don't fell into either ML or programming
-
+# Welcome to my Polyglot Coder view
 
 ## The rear view mirror
 
