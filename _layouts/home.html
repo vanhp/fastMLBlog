@@ -60,11 +60,23 @@ layout: default
       {%- assign date_format = site.minima.date_format | default: "%b %-d, %Y" -%}
       {%- for post in posts -%}
       <li>
+       
         {%- if site.show_image -%}
             {%- include post_list_image_card.html -%}
+       
         {% else %}
             {%- include post_list.html -%}
+            <!-- add blog-roll image here -->
+            {%- if post.image -%}
+             <img src="{{- post.image | relative_url -}}" alt=""class="blog-roll-image"/>
+            {%- else -%}
+              {%- assign postImage = "/images/dev-tool-pic" -%}
+              <img src="{{- postImage | relative_url -}}" alt=""class="blog-roll-image"/>
+  
+            {%- endif -%}
+          <!-- to here -->
         {%- endif -%}
+       
       </li>
       {%- endfor -%}
     </ul>
