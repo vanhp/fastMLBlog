@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="twitter:card" content="summary" /><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Activationfunctions | Supra_PolyglotCoder</title>
+<meta name="generator" content="Jekyll v4.0.0" />
+<meta property="og:title" content="Activationfunctions" />
+<meta name="author" content="Vanh Phomsavanh" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Activation functions provide non-linearity to the system and act like a switch to the system." />
+<meta property="og:description" content="Activation functions provide non-linearity to the system and act like a switch to the system." />
+<link rel="canonical" href="https://vanhp.github.io/fastMLBlog/2020/09/10/ActivationFunctions.html" />
+<meta property="og:url" content="https://vanhp.github.io/fastMLBlog/2020/09/10/ActivationFunctions.html" />
+<meta property="og:site_name" content="Supra_PolyglotCoder" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2020-09-10T00:00:00-05:00" />
+<script type="application/ld+json">
+{"author":{"@type":"Person","name":"Vanh Phomsavanh"},"description":"Activation functions provide non-linearity to the system and act like a switch to the system.","dateModified":"2020-09-10T00:00:00-05:00","datePublished":"2020-09-10T00:00:00-05:00","headline":"Activationfunctions","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://vanhp.github.io/fastMLBlog/2020/09/10/ActivationFunctions.html"},"url":"https://vanhp.github.io/fastMLBlog/2020/09/10/ActivationFunctions.html","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/fastMLBlog/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://vanhp.github.io/fastMLBlog/feed.xml" title="Supra_PolyglotCoder" /><link rel="shortcut icon" type="image/x-icon" href="/fastMLBlog/images/favicon.ico"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Activationfunctions | Supra_PolyglotCoder</title>
+<meta name="generator" content="Jekyll v4.0.0" />
+<meta property="og:title" content="Activationfunctions" />
+<meta name="author" content="Vanh Phomsavanh" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Activation functions provide non-linearity to the system and act like a switch to the system." />
+<meta property="og:description" content="Activation functions provide non-linearity to the system and act like a switch to the system." />
+<link rel="canonical" href="https://vanhp.github.io/fastMLBlog/2020/09/10/ActivationFunctions.html" />
+<meta property="og:url" content="https://vanhp.github.io/fastMLBlog/2020/09/10/ActivationFunctions.html" />
+<meta property="og:site_name" content="Supra_PolyglotCoder" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2020-09-10T00:00:00-05:00" />
+<script type="application/ld+json">
+{"author":{"@type":"Person","name":"Vanh Phomsavanh"},"description":"Activation functions provide non-linearity to the system and act like a switch to the system.","dateModified":"2020-09-10T00:00:00-05:00","datePublished":"2020-09-10T00:00:00-05:00","headline":"Activationfunctions","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://vanhp.github.io/fastMLBlog/2020/09/10/ActivationFunctions.html"},"url":"https://vanhp.github.io/fastMLBlog/2020/09/10/ActivationFunctions.html","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+<link href="https://unpkg.com/@primer/css/dist/primer.css" rel="stylesheet" />
+<link rel="stylesheet" href="//use.fontawesome.com/releases/v5.0.7/css/all.css"><link type="application/atom+xml" rel="alternate" href="https://vanhp.github.io/fastMLBlog/feed.xml" title="Supra_PolyglotCoder" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css" integrity="sha384-zB1R0rpPzHqg7Kpt0Aljp8JPLqbXI3bhnPWROx27a9N0Ll6ZP/+DiW/UqRcLbRjq" crossorigin="anonymous">
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"> </script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.js" integrity="sha384-y23I5Q6l+B6vatafAwxRu/0oK/79VlbSz7Q9aiSZUvyWYIYsd+qj+o24G5ZU2zJz" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/auto-render.min.js" integrity="sha384-kWPLUVMOks5AQFrykwIup5lo0m3iMkkHrD0uJ4H5cjeGihAutqP0yW0J6dpFiVkI" crossorigin="anonymous"></script>
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        renderMathInElement( document.body, {
+        delimiters: [
+            {left: "$$", right: "$$", display: true},
+            {left: "[%", right: "%]", display: true},
+            {left: "$", right: "$", display: false}
+        ]}
+        );
+    });
+    </script>
+
+
+<script>
+function wrap_img(fn) {
+    if (document.attachEvent ? document.readyState === "complete" : document.readyState !== "loading") {
+        var elements = document.querySelectorAll(".post img");
+        Array.prototype.forEach.call(elements, function(el, i) {
+            if (el.getAttribute("title") && (el.className != "emoji")) {
+                const caption = document.createElement('figcaption');
+                var node = document.createTextNode(el.getAttribute("title"));
+                caption.appendChild(node);
+                const wrapper = document.createElement('figure');
+                wrapper.className = 'image';
+                el.parentNode.insertBefore(wrapper, el);
+                el.parentNode.removeChild(el);
+                wrapper.appendChild(el);
+                wrapper.appendChild(caption);
+            }
+        });
+    } else { document.addEventListener('DOMContentLoaded', fn); }
+}
+window.onload = wrap_img;
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function(){
+    // add link icon to anchor tags
+    var elem = document.querySelectorAll(".anchor-link")
+    elem.forEach(e => (e.innerHTML = '<i class="fas fa-link fa-xs"></i>'));
+    });
+</script>
+</head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><!--
+      edit by vanh original code
+    <a class="site-title" rel="author" href="/fastMLBlog/">Supra_PolyglotCoder</a>
+    replace with custom code below
+    -->
+    <a class="site-title" rel="author" href="/fastMLBlog/"><img src="/fastMLBlog/images/gradlogo1.jpg" alt="Supra_PolyglotCoder"</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/fastMLBlog/about/">About Me</a><a class="page-link" href="/fastMLBlog/ML-section/">ML</a><a class="page-link" href="/fastMLBlog/Coding-section/">Programming</a><a class="page-link" href="/fastMLBlog/index.markdown.org">Main</a><a class="page-link" href="/fastMLBlog/search/">Search</a><a class="page-link" href="/fastMLBlog/categories/">Tags</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <!-- add feature image on top of post --><img src="/fastMLBlog/images/dev-tool-pic.jpgalt=" class=featured-image-post" /><h1 class="post-title p-name" itemprop="name headline">Activationfunctions</h1><p class="post-meta post-meta-title"><time class="dt-published" datetime="2020-09-10T00:00:00-05:00" itemprop="datePublished">
+        Sep 10, 2020
+      </time>
+       • <span class="read-time" title="Estimated read time">
+    
+    
+      5 min read
+    
+</span></p>
+
+    
+
+    </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <p>Activation functions provide non-linearity to the system and act like a switch to the system.</p>
+
+<p>Activation functions are classified into single kink and double kinks on their graph. The shape of the kink e.g. smooth vs hard kink is depend on scaling value equivalence hard kink does not change scaling factor, while the smooth kink will change the the output value scaling factor</p>
+
+<p>Hard kink vs Soft kink it matter of scaling equivalent</p>
+
+<p>Hard kink it provide scaling of output</p>
+
+<p>when the input multiply by a scalar value the output also have the effect with multiply by same scalar</p>
+
+<p>Soft Kink it change the behavior of output</p>
+
+<p>When the input value e.g. multiply by 100 the output look like it have hard kink</p>
+
+<p>When divide the input with the same value the output look smooth</p>
+
+<h2 id="activation-that-have-single-kink-in-the-graph">Activation that have single kink in the graph</h2>
+
+<p>which does not change signal only the scale</p>
+
+<p>Rectilinear Unit (ReLU)</p>
+
+<p>There are multiple variation of ReLU activation functions</p>
+
+<ul>
+  <li>
+    <blockquote>
+      <p>ReLU(x) = (x)<sup>+</sup> = max(0,x) has 0 at bottom and sharp kink for all positive value</p>
+    </blockquote>
+  </li>
+  <li>
+    <blockquote>
+      <p>Leaky ReLU (x) = {x if x ≥ 0, negative slope of x otherwise</p>
+    </blockquote>
+  </li>
+</ul>
+
+<blockquote>
+  <p>Allow bottom (horizontal asymptote) to have negative value so there still chance to have gradient</p>
+</blockquote>
+
+<ul>
+  <li>
+    <blockquote>
+      <p>PReLU (x) {x, if x ≥ 0 , ax otherwise a = alpha is a leakable parameter</p>
+    </blockquote>
+  </li>
+</ul>
+
+<p>The value does not change other than the scale of value a, which different input units</p>
+
+<blockquote>
+  <p>Value alpha may be fixed or learned. It can have different values or a may be shared with different units. A value may not have to be learn but preset to ensure the gradient value is non zero</p>
+</blockquote>
+
+<ul>
+  <li>
+    <blockquote>
+      <p>SoftPlus(x) = 1/beta * log(1 + exp(beta* x))</p>
+    </blockquote>
+  </li>
+</ul>
+
+<blockquote>
+  <p>A smooth approximation of ReLU can be used to constrain the output to always be positive where the beta get large it closer to ReLU</p>
+</blockquote>
+
+<ul>
+  <li>
+    <blockquote>
+      <p>RReLU(x) = {x if x≥ 0, ax otherwise randomize leaky ReLU the same as leaky ReLU</p>
+    </blockquote>
+  </li>
+  <li>
+    <blockquote>
+      <p>ELU(x) = max(0,x) + min(0,a * (exp(x) - 1) a softer version of ReLU by adding a small constant to smoothing it. And the bottom(horizontal asymptote) can be negative it allow for system to have average output value to be 0 which is useful for certain situation which have both positive and negative value which allow for faster convergent</p>
+    </blockquote>
+  </li>
+  <li>
+    <blockquote>
+      <p>CELU(x) = max(0,x) + min(0,a * (exp(x/a) - 1) have the same effect as ELU</p>
+    </blockquote>
+  </li>
+  <li>
+    <blockquote>
+      <p>GELU(x) = x * phi(x) where phi(x) is the cumulative distribution function for Gaussian Distribution</p>
+    </blockquote>
+  </li>
+  <li>
+    <blockquote>
+      <p>ReLU6(x) = min(max(0,x),6) has two kink point on the graph at 0 and at saturation point at 6</p>
+    </blockquote>
+  </li>
+</ul>
+
+<h2 id="activation-that-have-2-kink-in-the-graphs">Activation that have 2 kink in the graphs</h2>
+
+<h2 id="double-kink-has-built-in-scale-where-input-signal-is-very-different-from-output-signal">Double kink has built in scale where input signal is very different from output signal</h2>
+
+<ul>
+  <li>
+    <blockquote>
+      <p>Sigmoid(x) = sigma(x) = 1/1+exp(-x) has smooth curve for value between 0 and 1 problem with gradient go to 0 fairly quickly as it get closer to asymptote so the weight of the unit become too large which saturate the unit so the gradient drop fast the learning is not efficient. Sigmoid doesn’t work well when the value normalizes (with batch/group norm) just before it. Since normalization fix the scaling make the mean 0 and variance constance so the system doesn’t depend on the weight but the system now loss the ability to choose with kink to use in the 2 kink like sigmoid</p>
+    </blockquote>
+  </li>
+  <li>
+    <blockquote>
+      <p>tanh(x) = tanh(x) = exp(x) - exp(-x)/exp(x) + exp(-x) has graph that identical to sigmoid except it center at 0 and go from -1 to 1 has the output to be closer to 0 mean but not 0 which allow the weight value after it to see both + and - which converge faster. Unfortunately, for deep stacking layers they are not learning efficiently and must be careful in normalizing the value. Which is why the single kink function tend to do better with deep layer network</p>
+    </blockquote>
+  </li>
+  <li>
+    <blockquote>
+      <table>
+        <tbody>
+          <tr>
+            <td>Softsign(x) = x/1+</td>
+            <td>x</td>
+            <td>similar to sigmoid except it doesn’t get to the asymptote as fast and doesn’t get stuck toward asymptote as quickly as sigmoid</td>
+          </tr>
+        </tbody>
+      </table>
+    </blockquote>
+  </li>
+  <li>
+    <blockquote>
+      <p>HardTanh(x) = {1 if x ≥ 1, -1 if x ≤ -1,x otherwise the linear region range is -1,1. It has a sharp kink both at negative value at bottom and positive value at top. Work fairly well for small network where the weight is not saturate too much</p>
+    </blockquote>
+  </li>
+</ul>
+
+<h2 id="use-in-sparse-coding">Use in sparse coding</h2>
+
+<p>rarely use in neural network</p>
+
+<ul>
+  <li>
+    <blockquote>
+      <p>Threshold y = { x, if x threshold, value otherwise</p>
+    </blockquote>
+  </li>
+</ul>
+
+<blockquote>
+  <p>rarely use since gradient can not propagate through it</p>
+</blockquote>
+
+<ul>
+  <li>
+    <blockquote>
+      <p>Tanhshrink(x) = x - tanh(x) use mostly on sparse coding to shrinking the latent variable</p>
+    </blockquote>
+  </li>
+  <li>
+    <blockquote>
+      <p>softShrinkate(x) = { x - lambda, if x &gt; lambda, x+ lambda, if x &lt; -lambda, 0 otherwise it has sharp kink at both bottom and top of graph</p>
+    </blockquote>
+  </li>
+  <li>
+    <blockquote>
+      <p>HardShrink(x) = {x - lambda, if x &gt; lambda, x+ lambda, if x &lt; -lambda, 0 otherwise where value between -lambda and +lambda are set to 0</p>
+    </blockquote>
+  </li>
+  <li>
+    <blockquote>
+      <p>LogSigmoid(x) = log(1/1+exp(-x)) mostly use for loss function instead</p>
+    </blockquote>
+  </li>
+  <li>
+    <blockquote>
+      <p>softmin(xi) = exp(-xi)/sum(exp(-xj)) when apply to input Tensor it rescaling the element of vector to the range of [0,1] which the sum to 1 similar to softmax with minus sign in front xi value</p>
+    </blockquote>
+  </li>
+  <li>
+    <blockquote>
+      <p>Softmax(xi) = exp(xi)/sum(exp(xj)) same with softmin</p>
+    </blockquote>
+  </li>
+</ul>
+
+<p>Temperature is redundant with incoming weight (beta value) matter when the input size is fixed due to normalization. It uses to control how hard(the different between large and small value in the output vector) the distribution of the output value will be it the system to make hard decision even though it doesn’t learn as well as before. It used in case of mixture of expert system when multiple subnetwork output are linear combine with coefficients from the output of the softmax which may be controlled by another NN with soft mixture with low beta then gradually increase to infinity the will force NN to choose one and ignore the rest this may safe compute time (call annealing)</p>
+
+<ul>
+  <li>
+    <blockquote>
+      <p>LogSoftmax(xi) = log(exp(xi)/sum(exp(xj))) use at the output as part of the loss function</p>
+    </blockquote>
+  </li>
+</ul>
+
+   
+  </div><a class="u-url" href="/fastMLBlog/2020/09/10/ActivationFunctions.html" hidden></a>
+</article>
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/fastMLBlog/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Supra_PolyglotCoder</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Vanh Phomsavanh</li><li><a class="u-email" href="mailto:vanhphom@gmail.com">vanhphom@gmail.com</a></li>
+            <li>&copy; VSP LLC 2020 </li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://www.twitter.com/SupraCoder"><svg class="svg-icon"><use xlink:href="/fastMLBlog/assets/minima-social-icons.svg#twitter"></use></svg> <span class="username">SupraCoder</span></a></li><li><a href="https://github.com/vanhp"><svg class="svg-icon"><use xlink:href="/fastMLBlog/assets/minima-social-icons.svg#github"></use></svg> <span class="username">vanhp</span></a></li><li><a href="https://www.facebook.com/vanh+phom"><svg class="svg-icon"><use xlink:href="/fastMLBlog/assets/minima-social-icons.svg#facebook"></use></svg> <span class="username">vanh phom</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>A blog about my journey into Machine Learning and coding experience in general</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>
