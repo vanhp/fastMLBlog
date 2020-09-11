@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-    <link href="https://vanhp.com/fastMLBlog/ML-section/feed.xml" rel="self" type="application/atom+xml"/>
-    <link href="https://vanhp.com/fastMLBlog/ML-section/" rel="alternate" type="text/xml"/>
-    <updated>2020-09-11T03:51:33-05:00</updated>
-    <id>https://vanhp.com/fastMLBlog/ML-section/feed.xml </id>
+    <link href="https://vanhp.github.io/fastMLBlog/ML-section/feed.xml" rel="self" type="application/atom+xml"/>
+    <link href="https://vanhp.github.io/fastMLBlog/ML-section/" rel="alternate" type="text/xml"/>
+    <updated>2020-09-11T03:52:17-05:00</updated>
+    <id>https://vanhp.github.io/fastMLBlog/ML-section/feed.xml </id>
     <title>Supra_PolyglotCoder/Blog </title>
     <subtitle>A blog about my journey into Machine Learning and coding experience in general</subtitle>
     <author>
