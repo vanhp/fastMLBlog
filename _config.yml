@@ -49,7 +49,6 @@ youtube_username:
 # add copyright 
 copyright: " VSP LLC"
 
-
 # Github and twitter are optional:
 minima:
   social_links:
