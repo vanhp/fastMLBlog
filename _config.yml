@@ -14,8 +14,8 @@ github_repo: "fastMLBlog"
 
 # OPTIONAL: override baseurl and url if using a custom domain
 # Note: leave out the trailing / from this value. 
-# url: "https://vanhp.github.io" # the base hostname & protocol for your site, e.g. http://example.com
-url: "https://vanhp.com" # the base hostname & protocol for your site, e.g. http://example.com
+url: "https://vanhp.github.io" # the base hostname & protocol for your site, e.g. http://example.com
+#url: "https://vanhp.com" # the base hostname & protocol for your site, e.g. http://example.com
 
 ###########################################################
 #########  Special Instructions for baseurl ###############
@@ -48,7 +48,6 @@ linkedin_username:
 youtube_username:
 # add copyright 
 copyright: " VSP LLC"
-
 # Github and twitter are optional:
 minima:
   social_links:
