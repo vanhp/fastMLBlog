@@ -37,8 +37,12 @@ url: "https://vanhp.com" # the base hostname & protocol for your site, e.g. http
 #
 
 
+
 #baseurl: "/fastMLBlog" # the subpath of your site, e.g. "/blog".
 baseurl: "" # the subpath of your site, e.g. "/blog".
+
+
+
 git_hub_username: Vanh Phom
 twitter_username: SupraCoder
 email: vanhphom@gmail.com
