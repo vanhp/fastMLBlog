@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <url>
-<loc>https://vanhp.com/fastMLBlog/ml-section/ml/2020/02/12/ML-post1.html</loc>
-<lastmod>2020-02-12T00:00:00-06:00</lastmod>
-</url>
-<url>
 <loc>https://vanhp.com/fastMLBlog/jupyter/2020/02/20/test.html</loc>
 <lastmod>2020-02-20T00:00:00-06:00</lastmod>
 </url>
@@ -59,10 +55,10 @@
 <loc>https://vanhp.com/fastMLBlog/</loc>
 </url>
 <url>
-<loc>https://vanhp.com/fastMLBlog/ML-section/</loc>
+<loc>https://vanhp.com/fastMLBlog/Coding-section/</loc>
 </url>
 <url>
-<loc>https://vanhp.com/fastMLBlog/Coding-section/</loc>
+<loc>https://vanhp.com/fastMLBlog/ML-section/</loc>
 </url>
 <url>
 <loc>https://vanhp.com/fastMLBlog/search/</loc>
