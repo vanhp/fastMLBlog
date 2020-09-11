@@ -74,10 +74,10 @@ layout: default
             {%- include post_list.html -%}
             <!-- add blog-roll image here -->
             {%- if post.image -%}
-             <img src="{{- post.image | relative_url -}}" alt=""class="blog-roll-image"/>
+             <img src="{{- post.image | relative_url -}}" alt="" class="blog-roll-image"/>
             {%- else -%}
               {%- assign postImage = "/images/dev-tool-pic.jpg" -%}
-              <img src="{{- postImage | relative_url -}}" alt=""class="blog-roll-image"/>
+              <img src="{{- postImage | relative_url -}}" alt="" class="blog-roll-image"/>
   
             {%- endif -%}
           <!-- to here -->
