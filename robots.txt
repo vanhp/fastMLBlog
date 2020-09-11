@@ -1,1 +1,1 @@
-Sitemap: https://vanhp.com/sitemap.xml
+Sitemap: https://vanhp.com/fastMLBlog/sitemap.xml
