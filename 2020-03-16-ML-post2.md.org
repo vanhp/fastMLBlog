@@ -4,32 +4,34 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="twitter:card" content="summary" /><!-- Begin Jekyll SEO tag v2.6.1 -->
-<title>ML | Supra_PolyglotCoder</title>
+<title>Find out what ML is all about? | Supra_PolyglotCoder</title>
 <meta name="generator" content="Jekyll v4.0.0" />
-<meta property="og:title" content="ML" />
+<meta property="og:title" content="Find out what ML is all about?" />
 <meta name="author" content="Vanh Phomsavanh" />
 <meta property="og:locale" content="en_US" />
-<meta name="description" content="A blog about my journey into Machine Learning and coding experience in general" />
-<meta property="og:description" content="A blog about my journey into Machine Learning and coding experience in general" />
-<link rel="canonical" href="https://vanhp.com/fastMLBlog/ML-section/" />
-<meta property="og:url" content="https://vanhp.com/fastMLBlog/ML-section/" />
+<meta name="description" content="A minimal example of using markdown with fastpages." />
+<meta property="og:description" content="A minimal example of using markdown with fastpages." />
+<link rel="canonical" href="https://vanhp.com/fastMLBlog/2020-03-16-ML-post2.md.org" />
+<meta property="og:url" content="https://vanhp.com/fastMLBlog/2020-03-16-ML-post2.md.org" />
 <meta property="og:site_name" content="Supra_PolyglotCoder" />
+<meta property="og:image" content="https://vanhp.com/fastMLBlog/ML-section/assets/images/ai-pic2.jpg" />
 <script type="application/ld+json">
-{"author":{"@type":"Person","name":"Vanh Phomsavanh"},"description":"A blog about my journey into Machine Learning and coding experience in general","@type":"WebPage","url":"https://vanhp.com/fastMLBlog/ML-section/","headline":"ML","@context":"https://schema.org"}</script>
+{"author":{"@type":"Person","name":"Vanh Phomsavanh"},"description":"A minimal example of using markdown with fastpages.","@type":"WebPage","url":"https://vanhp.com/fastMLBlog/2020-03-16-ML-post2.md.org","headline":"Find out what ML is all about?","image":"https://vanhp.com/fastMLBlog/ML-section/assets/images/ai-pic2.jpg","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 <link rel="stylesheet" href="/fastMLBlog/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://vanhp.com/fastMLBlog/feed.xml" title="Supra_PolyglotCoder" /><link rel="shortcut icon" type="image/x-icon" href="/fastMLBlog/images/favicon.ico"><!-- Begin Jekyll SEO tag v2.6.1 -->
-<title>ML | Supra_PolyglotCoder</title>
+<title>Find out what ML is all about? | Supra_PolyglotCoder</title>
 <meta name="generator" content="Jekyll v4.0.0" />
-<meta property="og:title" content="ML" />
+<meta property="og:title" content="Find out what ML is all about?" />
 <meta name="author" content="Vanh Phomsavanh" />
 <meta property="og:locale" content="en_US" />
-<meta name="description" content="A blog about my journey into Machine Learning and coding experience in general" />
-<meta property="og:description" content="A blog about my journey into Machine Learning and coding experience in general" />
-<link rel="canonical" href="https://vanhp.com/fastMLBlog/ML-section/" />
-<meta property="og:url" content="https://vanhp.com/fastMLBlog/ML-section/" />
+<meta name="description" content="A minimal example of using markdown with fastpages." />
+<meta property="og:description" content="A minimal example of using markdown with fastpages." />
+<link rel="canonical" href="https://vanhp.com/fastMLBlog/2020-03-16-ML-post2.md.org" />
+<meta property="og:url" content="https://vanhp.com/fastMLBlog/2020-03-16-ML-post2.md.org" />
 <meta property="og:site_name" content="Supra_PolyglotCoder" />
+<meta property="og:image" content="https://vanhp.com/fastMLBlog/ML-section/assets/images/ai-pic2.jpg" />
 <script type="application/ld+json">
-{"author":{"@type":"Person","name":"Vanh Phomsavanh"},"description":"A blog about my journey into Machine Learning and coding experience in general","@type":"WebPage","url":"https://vanhp.com/fastMLBlog/ML-section/","headline":"ML","@context":"https://schema.org"}</script>
+{"author":{"@type":"Person","name":"Vanh Phomsavanh"},"description":"A minimal example of using markdown with fastpages.","@type":"WebPage","url":"https://vanhp.com/fastMLBlog/2020-03-16-ML-post2.md.org","headline":"Find out what ML is all about?","image":"https://vanhp.com/fastMLBlog/ML-section/assets/images/ai-pic2.jpg","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
 <link href="https://unpkg.com/@primer/css/dist/primer.css" rel="stylesheet" />
@@ -103,20 +105,139 @@ window.onload = wrap_img;
 </header>
 <main class="page-content" aria-label="Content">
       <div class="wrapper">
-        <div class="home">
-  <!-- put image at top of post -->
-  <a class="site-title" rel="author" href="/fastMLBlog/"><img src="/fastMLBlog/ML-section/assets/images/ai-pic6.jpg" alt="Supra_PolyglotCoder" class="blog-top-image"/></a><h1 class="page-heading">ML</h1><h2 id="welcome-to-my-machine-learning-blog-home-page">Welcome to my Machine Learning blog Home page</h2>
-<h2 class="post-list-heading">Posts</h2>
-    <ul class="post-list"><li><span class="post-meta">Sep 7, 2020</span>
-            <h3>
-              <a class="post-link" href="/fastMLBlog/ml-section/ml/2020/09/07/ML-post3.html">
-                The math and code don&#39;t mix?
-              </a>
-            </h3><!-- add blog-roll image here --><img src="/fastMLBlog/ML-section/assets/images/ai-pic1.jpg" alt="" class="blog-roll-image"/><!-- to here -->
-          </li></ul>
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
 
-    <p class="rss-subscribe">subscribe <a href="/fastMLBlog/ML-section/feed.xml">via RSS</a></p></div>
+  <header class="post-header">
+    <!-- add feature image on top of post --><img src="/fastMLBlog/ML-section/assets/images/ai-pic2.jpg" alt="" class="featured-image-post" /><h1 class="post-title p-name" itemprop="name headline">Find out what ML is all about?</h1><p class="page-description">A minimal example of using markdown with fastpages.</p><p class="post-meta post-meta-title"><time class="dt-published" datetime="" itemprop="datePublished">
+        
+      </time>
+       • <span class="read-time" title="Estimated read time">
+    
+    
+      1 min read
+    
+</span></p>
 
+    
+
+    </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <ul class="section-nav">
+</ul><!-- ![](/fastMLBlog/ML-section/assets/images/ai-pic2.jpg) -->
+# Example Markdown Post
+
+## Basic setup
+
+Jekyll requires blog post files to be named according to the following format:
+
+`YEAR-MONTH-DAY-filename.md`
+
+Where `YEAR` is a four-digit number, `MONTH` and `DAY` are both two-digit numbers, and `filename` is whatever file name you choose, to remind yourself what this post is about. `.md` is the file extension for markdown files.
+
+The first line of the file should start with a single hash character, then a space, then your title. This is how you create a "*level 1 heading*" in markdown. Then you can create level 2, 3, etc headings as you wish but repeating the hash character, such as you see in the line `## File names` above.
+
+## Basic formatting
+
+You can use *italics*, **bold**, `code font text`, and create [links](https://www.markdownguide.org/cheat-sheet/). Here's a footnote [^1]. Here's a horizontal rule:
+
+---
+
+## Lists
+
+Here's a list:
+
+- item 1
+- item 2
+
+And a numbered list:
+
+1. item 1
+1. item 2
+
+## Boxes and stuff
+
+&gt; This is a quotation
+
+<div class="Toast Toast--warning googoo">
+   <span class="Toast-icon"><svg class="octicon octicon-alert octicon octicon-alert octicon octicon-alert octicon octicon-alert octicon octicon-alert octicon octicon-alert octicon octicon-alert octicon octicon-alert octicon octicon-alert" viewbox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M8.893 1.5c-.183-.31-.52-.5-.887-.5s-.703.19-.886.5L.138 13.499a.98.98 0 000 1.001c.193.31.53.501.886.501h13.964c.367 0 .704-.19.877-.5a1.03 1.03 0 00.01-1.002L8.893 1.5zm.133 11.497H6.987v-2.003h2.039v2.003zm0-3.004H6.987V5.987h2.039v4.006z"></path></svg></span>
+   <span class="Toast-content">You can include alert boxes</span>
+</div>
+
+
+...and...
+
+<div class="Toast">
+   <span class="Toast-icon"><svg class="octicon octicon-info octicon octicon-info octicon octicon-info octicon octicon-info octicon octicon-info octicon octicon-info octicon octicon-info octicon octicon-info octicon octicon-info" viewbox="0 0 14 16" version="1.1" width="14" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M6.3 5.69a.942.942 0 01-.28-.7c0-.28.09-.52.28-.7.19-.18.42-.28.7-.28.28 0 .52.09.7.28.18.19.28.42.28.7 0 .28-.09.52-.28.7a1 1 0 01-.7.3c-.28 0-.52-.11-.7-.3zM8 7.99c-.02-.25-.11-.48-.31-.69-.2-.19-.42-.3-.69-.31H6c-.27.02-.48.13-.69.31-.2.2-.3.44-.31.69h1v3c.02.27.11.5.31.69.2.2.42.31.69.31h1c.27 0 .48-.11.69-.31.2-.19.3-.42.31-.69H8V7.98v.01zM7 2.3c-3.14 0-5.7 2.54-5.7 5.68 0 3.14 2.56 5.7 5.7 5.7s5.7-2.55 5.7-5.7c0-3.15-2.56-5.69-5.7-5.69v.01zM7 .98c3.86 0 7 3.14 7 7s-3.14 7-7 7-7-3.12-7-7 3.14-7 7-7z"></path></svg></span>
+   <span class="Toast-content">You can include info boxes</span>
+</div>
+
+
+## Images
+
+![](/fastMLBlog/images/logo.png "fast.ai's logo")
+
+## Code
+
+You can format text and code per usual 
+
+General preformatted text:
+
+    # Do a thing
+    do_thing()
+
+Python code and output:
+
+```python
+# Prints '2'
+print(1+1)
+```
+
+    2
+
+Formatting text as shell commands:
+
+```shell
+echo "hello world"
+./some_script.sh --option "value"
+wget https://example.com/cat_photo1.png
+```
+
+Formatting text as YAML:
+
+```yaml
+key: value
+- another_key: "another value"
+```
+
+
+## Tables
+
+| Column 1 | Column 2 |
+|-|-|
+| A thing | Another thing |
+
+
+## Tweetcards
+
+<div class="jekyll-twitter-plugin">
+<blockquote class="twitter-tweet">
+<p lang="en" dir="ltr">Altair 4.0 is released! <a href="https://t.co/PCyrIOTcvv">https://t.co/PCyrIOTcvv</a><br>Try it with:<br><br>  pip install -U altair<br><br>The full list of changes is at <a href="https://t.co/roXmzcsT58">https://t.co/roXmzcsT58</a> ...read on for some highlights. <a href="https://t.co/vWJ0ZveKbZ">pic.twitter.com/vWJ0ZveKbZ</a></p>— Jake VanderPlas (@jakevdp) <a href="https://twitter.com/jakevdp/status/1204765621767901185?ref_src=twsrc%5Etfw">December 11, 2019</a>
+</blockquote>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+</div>
+
+
+## Footnotes
+
+
+
+[^1]: This is the footnote.
+
+
+   
+  </div><a class="u-url" href="/fastMLBlog/2020-03-16-ML-post2.md.org" hidden></a>
+</article>
       </div>
     </main><footer class="site-footer h-card">
   <data class="u-url" href="/fastMLBlog/"></data>
