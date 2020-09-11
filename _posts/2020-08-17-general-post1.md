@@ -2,7 +2,7 @@
 toc: true
 layout: post
 description: A post about general environment
-date: 2020-09-08 01:30:26
+date: 2020-08-17 01:30:26
 categories: [General]
 title: The Polyglot Coder General rant!
 image: /images/coding-pic5.jpg
