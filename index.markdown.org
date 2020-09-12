@@ -86,7 +86,7 @@ window.onload = wrap_img;
 <body><header class="site-header" role="banner">
 
   <div class="wrapper"><!--
-      edit by vanh original code
+      edit by vanh original code header.html
     <a class="site-title" rel="author" href="/fastMLBlog/">Supra_PolyglotCoder</a>
     replace with custom code below
     -->
