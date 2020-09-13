@@ -3,7 +3,7 @@ toc: true
 layout: post
 description: A minimal example of using markdown with fastpages.
 category: Coding
-title: Which is my fovorite language?
+title: Which is my favorite language?
 image: /Coding-section/assets/images/coding-pic2.jpg
 ---
 <!-- ![]({{page.image | relative_url}}) -->
