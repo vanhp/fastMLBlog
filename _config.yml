@@ -15,8 +15,8 @@ github_repo: "fastMLBlog"
 
 # OPTIONAL: override baseurl and url if using a custom domain
 # Note: leave out the trailing / from this value. 
-url: "https://vanhp.github.io" # the base hostname & protocol for your site, e.g. http://example.com
-#url: "https://www.vanhp.com" # the base hostname & protocol for your site, e.g. http://example.com
+#url: "https://vanhp.github.io" # the base hostname & protocol for your site, e.g. http://example.com
+url: "https://www.vanhp.com" # the base hostname & protocol for your site, e.g. http://example.com
 
 
 ###########################################################
@@ -40,7 +40,7 @@ url: "https://vanhp.github.io" # the base hostname & protocol for your site, e.g
 
 
 
-baseurl: "/fastMLBlog" # the subpath of your site, e.g. "/blog".
+# baseurl: "/fastMLBlog" # the subpath of your site, e.g. "/blog".
 
 
 
