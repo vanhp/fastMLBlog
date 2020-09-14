@@ -1,4 +1,4 @@
 ---
 layout: post
-image: /images/activation-func2.jpg
+image: /images/loss-land1sc.jpg
 ---
