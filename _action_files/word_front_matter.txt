@@ -1,4 +1,4 @@
 ---
 layout: post
-image: /images/lion2.jpg
+image: /images/activation-func1sc.jpg
 ---
