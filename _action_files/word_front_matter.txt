@@ -1,3 +1,4 @@
 ---
 layout: post
+image: /images/lion2.jpg
 ---
