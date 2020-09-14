@@ -63,6 +63,9 @@
 <loc>https://www.vanhp.com/</loc>
 </url>
 <url>
+<loc>https://www.vanhp.com/Resource-section/</loc>
+</url>
+<url>
 <loc>https://www.vanhp.com/ML-section/</loc>
 </url>
 <url>
@@ -73,9 +76,5 @@
 </url>
 <url>
 <loc>https://www.vanhp.com/categories/</loc>
-</url>
-<url>
-<loc>https://www.vanhp.com/test.html</loc>
-<lastmod>2020-09-14T01:19:26-05:00</lastmod>
 </url>
 </urlset>
