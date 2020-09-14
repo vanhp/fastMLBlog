@@ -1,4 +1,4 @@
 ---
 layout: post
-image: /images/activation-func1sc.jpg
+image: /images/activation-func1sc.png
 ---
