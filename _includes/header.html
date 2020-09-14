@@ -12,9 +12,14 @@
       {%- if site.title-logo -%}
       <img src="{{ site.title-logo | relative_url }}" alt="{{ site.title | escape }}"></img> 
       {%- else -%}
-      {{site.title | escape }}
+      <!-- {{site.title | escape }}
+      {%- else -%} -->
+      {%- assign defaultImage = "/images/dev-tool-pic.jpg" -%}
+      <img src="{{- defaultImage | relative_url -}} alt=" class=featured-image-post" />
       {%- endif -%}
     </a>
+   
+
 
     {%- if page_paths -%}
       <nav class="site-nav">
