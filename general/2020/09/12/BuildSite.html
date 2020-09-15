@@ -118,7 +118,7 @@ window.onload = wrap_img;
        • <span class="read-time" title="Estimated read time">
     
     
-      5 min read
+      4 min read
     
 </span></p>
 
@@ -135,17 +135,25 @@ window.onload = wrap_img;
 
   <div class="post-content e-content" itemprop="articleBody">
     <ul class="section-nav">
-<li class="toc-entry toc-h1"><a href="#creating-web-site-using-fastpages-and-jekyll">Creating Web site using fastpages and Jekyll</a>
+<li class="toc-entry toc-h2"><a href="#-creating-web-site-using-fastpages-and-jekyll"> Creating Web site using fastpages and Jekyll</a>
 <ul>
-<li class="toc-entry toc-h2"><a href="#set-up-custom-domain">Set up custom domain</a></li>
-<li class="toc-entry toc-h2"><a href="#the-hiccup">The Hiccup</a></li>
-<li class="toc-entry toc-h2"><a href="#the-technical-behind-the-site">The technical behind the site</a></li>
+<li class="toc-entry toc-h3"><a href="#set-up-custom-domain">Set up custom domain</a>
+<ul>
+<li class="toc-entry toc-h5"><a href="#here-some-tips-">here some tips: </a></li>
+<li class="toc-entry toc-h5"><a href="#note">note:</a></li>
+<li class="toc-entry toc-h4"><a href="#-the-hiccup"> The Hiccup</a></li>
+</ul>
+</li>
+<li class="toc-entry toc-h3"><a href="#the-technical-behind-the-site">The technical behind the site</a></li>
 </ul>
 </li>
 </ul><!-- ![](/images/beach1.jpg) -->
 
-<h1 id="creating-web-site-using-fastpages-and-jekyll">
-<a class="anchor" href="#creating-web-site-using-fastpages-and-jekyll" aria-hidden="true"><span class="octicon octicon-link"></span></a>Creating Web site using fastpages and Jekyll</h1>
+<hr>
+
+<h2 id="-creating-web-site-using-fastpages-and-jekyll">
+<a class="anchor" href="#-creating-web-site-using-fastpages-and-jekyll" aria-hidden="true"><span class="octicon octicon-link"></span></a><span style="color:green"> Creating Web site using fastpages and Jekyll</span>
+</h2>
 
 <p>As first I thought this going to take alot of work building a web site on your own. Why not pay someone to build one for you I thought.
 Being a hand-on kind of person I decide to take the plung building my own site using fastpages and Jekyll software to build the blog and hosted it on github site which provide for free hosting.</p>
@@ -154,8 +162,9 @@ Being a hand-on kind of person I decide to take the plung building my own site u
 I’ve also hooked up most of social media links. And you can be sure I’ll have more modification as I dig deep inside its gut.
 I am also planning to improve the site gradually as circumstance permit.</p>
 
-<h2 id="set-up-custom-domain">
-<a class="anchor" href="#set-up-custom-domain" aria-hidden="true"><span class="octicon octicon-link"></span></a>Set up custom domain</h2>
+<h3 id="set-up-custom-domain">
+<a class="anchor" href="#set-up-custom-domain" aria-hidden="true"><span class="octicon octicon-link"></span></a><span style="color:coral">Set up custom domain</span>
+</h3>
 <p>I’ve also decided to set up my own domain by purchasing domain name from google. Then set it to point to my github page.
 To have your very own domain you first have to come up with the domain name you like to use.
 Then to purchase a domain name googling for google’s Domains site where you can buy and register the domain. Once you purchase the name just fill in the form on the site to register your domain. To use your newly purchase domain instead of github.io domain for your github page you can set it up. This is a two step processes:</p>
@@ -167,7 +176,9 @@ Then to purchase a domain name googling for google’s Domains site where you ca
 
 <p>To do step 1 you can following this <a href="https://dev.to/trentyang/how-to-setup-google-domain-for-github-pages-1p58">article</a></p>
 
-<p><em>here some tips:</em></p>
+<h5 id="here-some-tips-">
+<a class="anchor" href="#here-some-tips-" aria-hidden="true"><span class="octicon octicon-link"></span></a><span style="color:skyblue"><em>here some tips:</em> </span>
+</h5>
 <ul>
   <li>The ip address shown there are the ip address of the server at github.io page you have to type them in.</li>
   <li>The dig command must be run in the terminal console on your machine this is used to check if your setting at google domain DNS server is correct.</li>
@@ -190,12 +201,15 @@ Goto your repo settings tab at the bottom of the page where the GitHub Pages is 
   </li>
 </ol>
 
-<p><em>note:</em>
-if it won’t let you click on enforce HTTPS you might have to remove your domain then save the empty box then try again
+<h5 id="note">
+<a class="anchor" href="#note" aria-hidden="true"><span class="octicon octicon-link"></span></a><span style="color:skyblue"><em>note:</em></span>
+</h5>
+<p>if it won’t let you click on enforce HTTPS you might have to remove your domain then save the empty box then try again
 until it works</p>
 
-<h2 id="the-hiccup">
-<a class="anchor" href="#the-hiccup" aria-hidden="true"><span class="octicon octicon-link"></span></a>The Hiccup</h2>
+<h4 id="-the-hiccup">
+<a class="anchor" href="#-the-hiccup" aria-hidden="true"><span class="octicon octicon-link"></span></a><span style="color:orange"> The Hiccup</span>
+</h4>
 <p>I thought switching to use my own domain instead of github provide domain should be easy, well until it’s not.
 First whenever I made changed to the code I’d like see what happen to it so I always open the actions tab on my repos to see the CI in action, well, it throw up a build error when I remove the baseurl, dig into it there is an assert line that check if the baseurl in the config file is the same as in some default settings that cause the error</p>
 
@@ -204,131 +218,17 @@ First whenever I made changed to the code I’d like see what happen to it so I 
 
 <p>which led me to believe that comment out the <code class="highlighter-rouge">baseurl</code> is a bad idea, well I later findout it’s the opposite. It must be comment out inorder to get my site working. This’s delayed my progess afew days. as I posted <a href="https://forums.fast.ai/t/fastpages-resources-of-the-page-wont-load-when-use-custom-domain/78790">here</a></p>
 
-<h2 id="the-technical-behind-the-site">
-<a class="anchor" href="#the-technical-behind-the-site" aria-hidden="true"><span class="octicon octicon-link"></span></a>The technical behind the site</h2>
+<h3 id="the-technical-behind-the-site">
+<a class="anchor" href="#the-technical-behind-the-site" aria-hidden="true"><span class="octicon octicon-link"></span></a><span style="color:coral">The technical behind the site</span>
+</h3>
 
 <p>Under the hood fastpages use Jekyll as the engine to drive it. Jekyll is a static website and blogs post generator.
 It handle HTML, CSS, markdown Liquid and more to finally generate my blog. What’s more, I only have to learn Liquid yet another language to my annoyance as if the world needs another language to make it works. And ofcourse, Jekeyll come with its own set of rule here are some of them:</p>
 
-<p>Jekyll requires blog post files to be named according to the following format:</p>
-
-<p><code class="highlighter-rouge">YEAR-MONTH-DAY-filename.md</code></p>
-
-<p>Where <code class="highlighter-rouge">YEAR</code> is a four-digit number, <code class="highlighter-rouge">MONTH</code> and <code class="highlighter-rouge">DAY</code> are both two-digit numbers, and <code class="highlighter-rouge">filename</code> is whatever file name you choose, to remind yourself what this post is about. <code class="highlighter-rouge">.md</code> is the file extension for markdown files.</p>
-
-<p>The first line of the file should start with a single hash character, then a space, then your title. This is how you create a “<em>level 1 heading</em>” in markdown. Then you can create level 2, 3, etc headings as you wish but repeating the hash character, such as you see in the line <code class="highlighter-rouge">## File names</code> above.</p>
-
-<p>Basic formatting</p>
-
-<p>You can use <em>italics</em>, <strong>bold</strong>, <code class="highlighter-rouge">code font text</code>, and create <a href="https://www.markdownguide.org/cheat-sheet/">links</a>. Here’s a footnote <sup id="fnref:1" role="doc-noteref"><a href="#fn:1" class="footnote">1</a></sup>. Here’s a horizontal rule:</p>
+<p><strong>———————————————————————————</strong></p>
 
 <hr>
 
-<p>Lists</p>
-
-<p>Here’s a list:</p>
-
-<ul>
-  <li>item 1</li>
-  <li>item 2</li>
-</ul>
-
-<p>And a numbered list:</p>
-
-<ol>
-  <li>item 1</li>
-  <li>item 2</li>
-</ol>
-
-<p>Boxes and stuff</p>
-
-<blockquote>
-  <p>This is a quotation</p>
-</blockquote>
-
-<div class="Toast Toast--warning googoo">
-   <span class="Toast-icon"><svg class="octicon octicon-alert octicon octicon-alert octicon octicon-alert octicon octicon-alert octicon octicon-alert octicon octicon-alert octicon octicon-alert octicon octicon-alert octicon octicon-alert octicon octicon-alert" viewbox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M8.893 1.5c-.183-.31-.52-.5-.887-.5s-.703.19-.886.5L.138 13.499a.98.98 0 000 1.001c.193.31.53.501.886.501h13.964c.367 0 .704-.19.877-.5a1.03 1.03 0 00.01-1.002L8.893 1.5zm.133 11.497H6.987v-2.003h2.039v2.003zm0-3.004H6.987V5.987h2.039v4.006z"></path></svg></span>
-   <span class="Toast-content">You can include alert boxes</span>
-</div>
-
-<p>…and…</p>
-
-<div class="Toast">
-   <span class="Toast-icon"><svg class="octicon octicon-info octicon octicon-info octicon octicon-info octicon octicon-info octicon octicon-info octicon octicon-info octicon octicon-info octicon octicon-info octicon octicon-info octicon octicon-info" viewbox="0 0 14 16" version="1.1" width="14" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M6.3 5.69a.942.942 0 01-.28-.7c0-.28.09-.52.28-.7.19-.18.42-.28.7-.28.28 0 .52.09.7.28.18.19.28.42.28.7 0 .28-.09.52-.28.7a1 1 0 01-.7.3c-.28 0-.52-.11-.7-.3zM8 7.99c-.02-.25-.11-.48-.31-.69-.2-.19-.42-.3-.69-.31H6c-.27.02-.48.13-.69.31-.2.2-.3.44-.31.69h1v3c.02.27.11.5.31.69.2.2.42.31.69.31h1c.27 0 .48-.11.69-.31.2-.19.3-.42.31-.69H8V7.98v.01zM7 2.3c-3.14 0-5.7 2.54-5.7 5.68 0 3.14 2.56 5.7 5.7 5.7s5.7-2.55 5.7-5.7c0-3.15-2.56-5.69-5.7-5.69v.01zM7 .98c3.86 0 7 3.14 7 7s-3.14 7-7 7-7-3.12-7-7 3.14-7 7-7z"></path></svg></span>
-   <span class="Toast-content">You can include info boxes</span>
-</div>
-
-<p>Images</p>
-
-<p><img src="/images/logo.png" alt="" title="fast.ai's logo"></p>
-
-<p>Code</p>
-
-<p>You can format text and code per usual</p>
-
-<p>General preformatted text:</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code># Do a thing
-do_thing()
-</code></pre></div></div>
-
-<p>Python code and output:</p>
-
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Prints '2'
-</span><span class="k">print</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
-</code></pre></div></div>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>2
-</code></pre></div></div>
-
-<p>Formatting text as shell commands:</p>
-
-<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">echo</span> <span class="s2">"hello world"</span>
-./some_script.sh <span class="nt">--option</span> <span class="s2">"value"</span>
-wget https://example.com/cat_photo1.png
-</code></pre></div></div>
-
-<p>Formatting text as YAML:</p>
-
-<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">key</span><span class="pi">:</span> <span class="s">value</span>
-<span class="pi">-</span> <span class="na">another_key</span><span class="pi">:</span> <span class="s2">"</span><span class="s">another</span><span class="nv"> </span><span class="s">value"</span>
-</code></pre></div></div>
-
-<p>Tables</p>
-
-<table>
-  <thead>
-    <tr>
-      <th>Column 1</th>
-      <th>Column 2</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>A thing</td>
-      <td>Another thing</td>
-    </tr>
-  </tbody>
-</table>
-
-<p>Tweetcards</p>
-
-<div class="jekyll-twitter-plugin">
-<blockquote class="twitter-tweet">
-<p lang="en" dir="ltr">Altair 4.0 is released! <a href="https://t.co/PCyrIOTcvv">https://t.co/PCyrIOTcvv</a><br>Try it with:<br><br>  pip install -U altair<br><br>The full list of changes is at <a href="https://t.co/roXmzcsT58">https://t.co/roXmzcsT58</a> ...read on for some highlights. <a href="https://t.co/vWJ0ZveKbZ">pic.twitter.com/vWJ0ZveKbZ</a></p>— Jake VanderPlas (@jakevdp) <a href="https://twitter.com/jakevdp/status/1204765621767901185?ref_src=twsrc%5Etfw">December 11, 2019</a>
-</blockquote>
-<script async="" src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-</div>
-
-<p>Footnotes</p>
-
-<div class="footnotes" role="doc-endnotes">
-  <ol>
-    <li id="fn:1" role="doc-endnote">
-      <p>This is the footnote. <a href="#fnref:1" class="reversefootnote" role="doc-backlink">↩</a></p>
-    </li>
-  </ol>
-</div>
 
    
   </div><a class="u-url" href="/general/2020/09/12/BuildSite.html" hidden></a>
