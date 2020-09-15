@@ -1,18 +1,31 @@
 ---
-toc: true
+toc: false
 layout: post
-description: A post about My programming experience
-date: 2020-09-09 04:30:26
-category: Coding
-title: The hot ML Language
-image: /Coding-section/assets/images/coding-pic.jpg
+description: Equation,formula,code and ...x?*!
+date: 2020-09-07 10:30
+category: ML
+title: The math and code don't mix?
+image: /ML-section/assets/images/ai-pic1.jpg
 ---
 <!-- ![]({{page.image | relative_url}}) -->
+---
 
 
-# Welcome to my Polyglot Coder view
+## <span style="color:red"> Take the red pill!</span>
 
-## The rear view mirror
+Anyone who take the red pill and jump into ML pool will soon swim amoung the stream of equations, formula. there no avoiding it. Since you're already take the pill you might as well get use to it. If your day of school are long behind you. The best advice is go to [Khan academy](https://www.khanacademy.org/) site to refresh your memory on them.
+Two of the main math subjects you need to have firm grasp of are Linear algebra, and differentiation.
+
+### <span style="color:coral">Linear algebra </span>
+
+Matrix operations are essential. Matrix play a major roll in Neural network operation give you some insight into how neural network works. And allow you to manupulate them to work for you.
+
+### <span style="color:coral">Differention</span>
+
+Do you still remember the chain-rule? If this didn't ring a bell, it's time to bush-up on it. It's at the heart of how the Neural network learn in the process call SGD and it is the logo of this site, take a little peek at the top of the page. The great news is that you don't have to do the math calculation yourself the Framework whichever one you choose will do this for you, your job is to understand them inorder to take full advantage of the tool you use.
+
+---
+**----------------------------------------------------------------------------------**
 
 Jekyll requires blog post files to be named according to the following format:
 

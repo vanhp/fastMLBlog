@@ -1,5 +1,5 @@
 ---
-toc: true
+toc: false
 layout: post
 description: A minimal example of using markdown with fastpages.
 category: Coding
@@ -8,9 +8,16 @@ image: /Coding-section/assets/images/coding-pic3.jpg
 ---
 <!-- ![]({{page.image | relative_url}}) -->
 
+
+---
+
 # Example Markdown Post
 
 ## Basic setup
+
+
+
+---
 
 Jekyll requires blog post files to be named according to the following format:
 

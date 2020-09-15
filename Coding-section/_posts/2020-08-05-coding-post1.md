@@ -1,5 +1,5 @@
 ---
-toc: true
+toc: false
 layout: post
 description: A post about My programming experience
 date: 2020-09-06 01:30:26
@@ -9,10 +9,15 @@ image: /Coding-section/assets/images/coding-pic.jpg
 ---
 <!-- ![]({{page.image | relative_url}}) -->
 
+---
 
 # Welcome to my Polyglot Coder view
 
 ## The rear view mirror
+
+
+
+---
 
 Jekyll requires blog post files to be named according to the following format:
 
