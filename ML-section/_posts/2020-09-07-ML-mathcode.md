@@ -18,11 +18,45 @@ Two of the main math subjects you need to have firm grasp of are Linear algebra,
 
 ### <span style="color:coral">Linear algebra </span>
 
+Matrix and Tensor
 Matrix operations are essential. Matrix play a major roll in Neural network operation give you some insight into how neural network works. And allow you to manupulate them to work for you.
 
-### <span style="color:coral">Differention</span>
+linear function L = mx + b
+
+```def linear = weight@input + bias```
+
+gradient 
+
+```def grad(xb,yb,model):
+    pred = model(xb)
+    loss = mnist_loss(pred,yb)
+    loss.backward() ```
+
+
+
+### <span style="color:coral">Calculus</span>
 
 Do you still remember the chain-rule? If this didn't ring a bell, it's time to bush-up on it. It's at the heart of how the Neural network learn in the process call SGD and it is the logo of this site, take a little peek at the top of the page. The great news is that you don't have to do the math calculation yourself the Framework whichever one you choose will do this for you, your job is to understand them inorder to take full advantage of the tool you use.
+
+- logarithm 
+log(a*b) = log(a)+log(b)
+
+### <span style="color:coral">Statistic</span>
+
+Probability, Median, average/mean, variance, standard deviation ... use for analysis of data and the result.
+
+Sigmoid equation in math:
+
+$ sigmoid(x) = \frac{1}{1 + ln^{-x}}$
+
+Sigmoid function definition 
+
+in Python
+
+``` def sigmoid(x):
+    return 1/(1 + torch.exp(x)) ```
+
+
 
 ---
 **----------------------------------------------------------------------------------**

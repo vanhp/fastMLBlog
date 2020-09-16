@@ -1,7 +1,7 @@
 ---
 toc: true
 layout: post
-description: A minimal example of using markdown with fastpages.
+description: A first step experience into ML realm
 category: ML
 title: The first step in long journey with ML
 image: /ML-section/assets/images/neuralNet1.jpg
