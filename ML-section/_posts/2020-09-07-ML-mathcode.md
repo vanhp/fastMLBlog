@@ -56,6 +56,28 @@ in Python
 ``` def sigmoid(x):
     return 1/(1 + torch.exp(x)) ```
 
+### Jagons:
+
+Python
+broadcasting
+vectorization
+elementwise operation
+einsum
+*kwarg
+*arg
+decorator
+partial (partial application)
+
+    ```
+    def say_hello(name, say_what="Hello"): return f"{say_what} {name}."
+    say_hello('Jeremy'),say_hello('Jeremy', 'Ahoy!')
+    f = partial(say_hello, say_what="Bonjour")
+    f("Jeremy"),f("Sylvain")
+
+    ('Bonjour Jeremy.', 'Bonjour Sylvain.')
+    ```
+
+lambda 
 
 
 ---

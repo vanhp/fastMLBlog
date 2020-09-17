@@ -22,6 +22,16 @@ image: /images/lion2.jpg
 [Douglas Schmidt](http://www.dre.vanderbilt.edu/~schmidt/) is one of prolific professor of computer science. He has ton of contents about sofware and especially in C++ and Java, Android. This is where I come when I feel a little rusty on C++ and Java. His material are up up to date and top-notch.
 
 ---
+Books
+
+Panda
+https://www.oreilly.com/library/view/python-for-data/9781449323592/
+
+
+
+
+
+---
 
 ### <span style="color:green"> Music </span>
 
