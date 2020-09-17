@@ -4,9 +4,9 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="twitter:card" content="summary" /><!-- Begin Jekyll SEO tag v2.6.1 -->
-<title>Find out what ML is all about? | Supra_PolyglotCoder</title>
+<title>Multi-label Classification | Supra_PolyglotCoder</title>
 <meta name="generator" content="Jekyll v4.0.0" />
-<meta property="og:title" content="Find out what ML is all about?" />
+<meta property="og:title" content="Multi-label Classification" />
 <meta name="author" content="Vanh Phomsavanh" />
 <meta property="og:locale" content="en_US" />
 <meta name="description" content="Info about ML-deep learning" />
@@ -18,12 +18,12 @@
 <meta property="og:type" content="article" />
 <meta property="article:published_time" content="2020-03-16T00:00:00-05:00" />
 <script type="application/ld+json">
-{"author":{"@type":"Person","name":"Vanh Phomsavanh"},"description":"Info about ML-deep learning","dateModified":"2020-03-16T00:00:00-05:00","datePublished":"2020-03-16T00:00:00-05:00","headline":"Find out what ML is all about?","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://www.vanhp.com/ml-section/ml/2020/03/16/ML-info.html"},"image":"https://www.vanhp.com/ML-section/assets/images/ai-pic2.jpg","url":"https://www.vanhp.com/ml-section/ml/2020/03/16/ML-info.html","@context":"https://schema.org"}</script>
+{"author":{"@type":"Person","name":"Vanh Phomsavanh"},"description":"Info about ML-deep learning","dateModified":"2020-03-16T00:00:00-05:00","datePublished":"2020-03-16T00:00:00-05:00","headline":"Multi-label Classification","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://www.vanhp.com/ml-section/ml/2020/03/16/ML-info.html"},"image":"https://www.vanhp.com/ML-section/assets/images/ai-pic2.jpg","url":"https://www.vanhp.com/ml-section/ml/2020/03/16/ML-info.html","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 <link rel="stylesheet" href="/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://www.vanhp.com/feed.xml" title="Supra_PolyglotCoder" /><link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico"><!-- Begin Jekyll SEO tag v2.6.1 -->
-<title>Find out what ML is all about? | Supra_PolyglotCoder</title>
+<title>Multi-label Classification | Supra_PolyglotCoder</title>
 <meta name="generator" content="Jekyll v4.0.0" />
-<meta property="og:title" content="Find out what ML is all about?" />
+<meta property="og:title" content="Multi-label Classification" />
 <meta name="author" content="Vanh Phomsavanh" />
 <meta property="og:locale" content="en_US" />
 <meta name="description" content="Info about ML-deep learning" />
@@ -35,7 +35,7 @@
 <meta property="og:type" content="article" />
 <meta property="article:published_time" content="2020-03-16T00:00:00-05:00" />
 <script type="application/ld+json">
-{"author":{"@type":"Person","name":"Vanh Phomsavanh"},"description":"Info about ML-deep learning","dateModified":"2020-03-16T00:00:00-05:00","datePublished":"2020-03-16T00:00:00-05:00","headline":"Find out what ML is all about?","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://www.vanhp.com/ml-section/ml/2020/03/16/ML-info.html"},"image":"https://www.vanhp.com/ML-section/assets/images/ai-pic2.jpg","url":"https://www.vanhp.com/ml-section/ml/2020/03/16/ML-info.html","@context":"https://schema.org"}</script>
+{"author":{"@type":"Person","name":"Vanh Phomsavanh"},"description":"Info about ML-deep learning","dateModified":"2020-03-16T00:00:00-05:00","datePublished":"2020-03-16T00:00:00-05:00","headline":"Multi-label Classification","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://www.vanhp.com/ml-section/ml/2020/03/16/ML-info.html"},"image":"https://www.vanhp.com/ML-section/assets/images/ai-pic2.jpg","url":"https://www.vanhp.com/ml-section/ml/2020/03/16/ML-info.html","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
 <link href="https://unpkg.com/@primer/css/dist/primer.css" rel="stylesheet" />
@@ -112,13 +112,13 @@ window.onload = wrap_img;
         <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
-    <!-- add feature image on top of post --><img src="/ML-section/assets/images/ai-pic2.jpg" alt="" class="featured-image-post" /><h1 class="post-title p-name" itemprop="name headline">Find out what ML is all about?</h1><p class="page-description">Info about ML-deep learning</p><p class="post-meta post-meta-title"><time class="dt-published" datetime="2020-03-16T00:00:00-05:00" itemprop="datePublished">
+    <!-- add feature image on top of post --><img src="/ML-section/assets/images/ai-pic2.jpg" alt="" class="featured-image-post" /><h1 class="post-title p-name" itemprop="name headline">Multi-label Classification</h1><p class="page-description">Info about ML-deep learning</p><p class="post-meta post-meta-title"><time class="dt-published" datetime="2020-03-16T00:00:00-05:00" itemprop="datePublished">
         Mar 16, 2020
       </time>
        • <span class="read-time" title="Estimated read time">
     
     
-      1 min read
+      5 min read
     
 </span></p>
 
@@ -137,28 +137,150 @@ window.onload = wrap_img;
     </header>
 
   <div class="post-content e-content" itemprop="articleBody">
-    <ul class="section-nav">
-<li class="toc-entry toc-h1"><a href="#example-markdown-post">Example Markdown Post</a>
+    <!-- ![](/ML-section/assets/images/ai-pic2.jpg) -->
+
+<hr />
+
+<p>Refers to the problem of identifying the categories of objects in images that may not contain exactly one type of object or more or no object present. This simple solution is not at all widely understood or appreciated!</p>
+
+<h2 id="pandas-and-dataframes">Pandas and DataFrames</h2>
+
+<p>Pandas a Python library for database, it’s fast and flexible library but has non-intuative interface. It’s used to stored manage analize structure data type. It’s also useful in ML to handle tabular and timeseries data type.</p>
+
+<p>Dataframe is the main class that represent data in table of row and columns. It can import data from CSV file, from directories, and many others sources. And Jupyter is happily work with it.</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>import Pandas as pd
+df = pd.read_csv(path/'train.csv')
+df.head()
+tmp_df = pd.DataFrame({'a':[1,2], 'b':[3,4]})
+</code></pre></div></div>
+
+<h3 id="datablock">DataBlock</h3>
+<p>A fastai versatile,flexible object that manage data.
+it has facility to handle Datasets
+which auto split data into train 80% validate 20%</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code># empty datablock
+dblock = DataBlock()
+dsets = dblock.datasets(df)
+len(dsets.train),len(dsets.valid)
+x,y = dsets.train[0]
+#take lambda/ or function as argument to retrieve filename and label
+dblock2 = DataBlock(get_x = lambda r: r['fname'], get_y = lambda r: r['labels'])
+dsets2 = dblock.datasets(df)
+dsets2.train[0]
+# take default name
+dblock = DataBlock(blocks=(ImageBlock, MultiCategoryBlock),
+                   get_x = get_x, get_y = get_y)
+dsets = dblock.datasets(df)
+dsets.train[0]
+</code></pre></div></div>
+
+<h3 id="binary-cross-entropy-loss">Binary cross entropy Loss</h3>
+<p>The loss function that suitable for case where there more than one label or no label present</p>
+
+<h3 id="learner-object">Learner object</h3>
+
+<p>The Learner object inherit from nn.Module comprise with:</p>
+<ol>
+  <li>The model</li>
+  <li>DataLoaders object</li>
+  <li>Optimizer</li>
+  <li>Loss function</li>
+</ol>
+
+<p>It can receive x as a mini-batch and return activation value</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>learn = cnn_learner(dls, resnet18)
+activ = learn.model(x)
+activ.shape
+
+def binary_cross_entropy(inputs, targets):
+    inputs = inputs.sigmoid()
+    return -torch.where(targets==1, inputs, 1-inputs).log().mean()
+# using PyTorch version
+# by default fastai will use this version
+loss_func = nn.BCEWithLogitsLoss()
+loss = loss_func(activs, y)
+loss
+</code></pre></div></div>
+
+<p>due to one-hot-encoded dependent variable because there may be more than object the cross_entropy is not appropriate
+In the case where more than one object is possible, or no object present may want the sum to be &lt; 1
+this excluse softmax and nll_loss</p>
+
+<p>softmax: limitation:</p>
 <ul>
-<li class="toc-entry toc-h2"><a href="#basic-setup">Basic setup</a></li>
-<li class="toc-entry toc-h2"><a href="#basic-formatting">Basic formatting</a></li>
-<li class="toc-entry toc-h2"><a href="#lists">Lists</a></li>
-<li class="toc-entry toc-h2"><a href="#boxes-and-stuff">Boxes and stuff</a></li>
-<li class="toc-entry toc-h2"><a href="#images">Images</a></li>
-<li class="toc-entry toc-h2"><a href="#code">Code</a></li>
-<li class="toc-entry toc-h2"><a href="#tables">Tables</a></li>
-<li class="toc-entry toc-h2"><a href="#tweetcards">Tweetcards</a></li>
-<li class="toc-entry toc-h2"><a href="#footnotes">Footnotes</a></li>
+  <li>all value must sum to 1</li>
+  <li>the largest value get exagerate
+nll_loss limitation:</li>
+  <li>it return only one value correspond to the single label
+we need to return more than 1 label</li>
 </ul>
-</li>
-</ul><!-- ![](/ML-section/assets/images/ai-pic2.jpg) -->
-<h1 id="example-markdown-post">
-<a class="anchor" href="#example-markdown-post" aria-hidden="true"><span class="octicon octicon-link"></span></a>Example Markdown Post</h1>
 
-<h2 id="basic-setup">
-<a class="anchor" href="#basic-setup" aria-hidden="true"><span class="octicon octicon-link"></span></a>Basic setup</h2>
+<p>comparable PyTorch versions that work with one-hot encoding:</p>
+<ul>
+  <li>F.binary_cross_entropy (no sigmoid)</li>
+  <li>nn.BCELoss  (nosigmoid)</li>
+  <li>F.binary_cross_entropy_with_logits</li>
+  <li>nn.BCEWithLogitsLoss
+Single label version:
+F.nll_loss
+nn.NLLLoss (no softmax)
+F.cross_entropy
+nn.CrossEntropyLoss</li>
+</ul>
 
-<p>Jekyll requires blog post files to be named according to the following format:</p>
+<h3 id="measurement-metric">Measurement metric</h3>
+<p>Since there maybe more than one or object present need a new metric for accuracy</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code># value &gt; thresh is consider 1, else consider 0, default threshold = 0.5
+def accuracy_multi(inp, targ, thresh=0.5, sigmoid=True):
+    "Compute accuracy when `inp` and `targ` are the same size."
+    if sigmoid: inp = inp.sigmoid()
+    return ((inp&gt;thresh)==targ.bool()).float().mean()
+
+# train the model
+learn = cnn_learner(dls, resnet50, metrics=partial(accuracy_multi, thresh=0.2))
+learn.fine_tune(3, base_lr=3e-3, freeze_epochs=4)
+
+</code></pre></div></div>
+<p>High threshold select the high confident of model
+Low threshold select low confident of model</p>
+
+<p>find the best threshold by trying a few levels and seeing what works best</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code># this apply sigmoid by default
+preds,targs = learn.get_preds()
+# no sigmoid
+accuracy_multi(preds, targs, thresh=0.9, sigmoid=False)
+# plot it
+xs = torch.linspace(0.05,0.95,29)
+accs = [accuracy_multi(preds, targs, thresh=i, sigmoid=False) for i in xs]
+plt.plot(xs,accs)
+</code></pre></div></div>
+
+<p><em>Note</em>
+zip(b[0],b[1]) has short cut of zip(*b)
+python can’t save (serialization lambda) lambda use function instead
+it’s OK to use validation set to pick threshold it should not overfit</p>
+
+<h3 id="jagons">Jagons</h3>
+<p>x: is independent variable
+y: is dependent variable</p>
+<ul>
+  <li>Dataset: A collection that can be index into it and returns a tuple of your independent and dependent variable for a single item</li>
+  <li>DataLoader: An iterator that provides a stream of mini-batches, where each mini-batch is a tuple of a batch of independent variables and a batch of dependent variables</li>
+  <li>one-hot-encoder: a vector that has all 0 but one 1 to represent the interested item to pick-out from other item</li>
+</ul>
+
+<p>Fastai library</p>
+<ul>
+  <li>Datasets: An object that contains a training Dataset and a validation Dataset part of fastai library</li>
+  <li>DataLoaders: An object that contains a training DataLoader and a validation DataLoader part of fastai library</li>
+</ul>
+
+<hr />
+<p><em>——————————————————————————————————</em>
+Jekyll requires blog post files to be named according to the following format:</p>
 
 <p><code class="highlighter-rouge">YEAR-MONTH-DAY-filename.md</code></p>
 
@@ -166,15 +288,13 @@ window.onload = wrap_img;
 
 <p>The first line of the file should start with a single hash character, then a space, then your title. This is how you create a “<em>level 1 heading</em>” in markdown. Then you can create level 2, 3, etc headings as you wish but repeating the hash character, such as you see in the line <code class="highlighter-rouge">## File names</code> above.</p>
 
-<h2 id="basic-formatting">
-<a class="anchor" href="#basic-formatting" aria-hidden="true"><span class="octicon octicon-link"></span></a>Basic formatting</h2>
+<h2 id="basic-formatting">Basic formatting</h2>
 
 <p>You can use <em>italics</em>, <strong>bold</strong>, <code class="highlighter-rouge">code font text</code>, and create <a href="https://www.markdownguide.org/cheat-sheet/">links</a>. Here’s a footnote <sup id="fnref:1" role="doc-noteref"><a href="#fn:1" class="footnote">1</a></sup>. Here’s a horizontal rule:</p>
 
-<hr>
+<hr />
 
-<h2 id="lists">
-<a class="anchor" href="#lists" aria-hidden="true"><span class="octicon octicon-link"></span></a>Lists</h2>
+<h2 id="lists">Lists</h2>
 
 <p>Here’s a list:</p>
 
@@ -190,32 +310,29 @@ window.onload = wrap_img;
   <li>item 2</li>
 </ol>
 
-<h2 id="boxes-and-stuff">
-<a class="anchor" href="#boxes-and-stuff" aria-hidden="true"><span class="octicon octicon-link"></span></a>Boxes and stuff</h2>
+<h2 id="boxes-and-stuff">Boxes and stuff</h2>
 
 <blockquote>
   <p>This is a quotation</p>
 </blockquote>
 
 <div class="Toast Toast--warning googoo">
-   <span class="Toast-icon"><svg class="octicon octicon-alert octicon octicon-alert" viewbox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M8.893 1.5c-.183-.31-.52-.5-.887-.5s-.703.19-.886.5L.138 13.499a.98.98 0 000 1.001c.193.31.53.501.886.501h13.964c.367 0 .704-.19.877-.5a1.03 1.03 0 00.01-1.002L8.893 1.5zm.133 11.497H6.987v-2.003h2.039v2.003zm0-3.004H6.987V5.987h2.039v4.006z"></path></svg></span>
+   <span class="Toast-icon"><svg class="octicon octicon-alert octicon octicon-alert" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M8.893 1.5c-.183-.31-.52-.5-.887-.5s-.703.19-.886.5L.138 13.499a.98.98 0 000 1.001c.193.31.53.501.886.501h13.964c.367 0 .704-.19.877-.5a1.03 1.03 0 00.01-1.002L8.893 1.5zm.133 11.497H6.987v-2.003h2.039v2.003zm0-3.004H6.987V5.987h2.039v4.006z"></path></svg></span>
    <span class="Toast-content">You can include alert boxes</span>
 </div>
 
 <p>…and…</p>
 
 <div class="Toast">
-   <span class="Toast-icon"><svg class="octicon octicon-info octicon octicon-info" viewbox="0 0 14 16" version="1.1" width="14" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M6.3 5.69a.942.942 0 01-.28-.7c0-.28.09-.52.28-.7.19-.18.42-.28.7-.28.28 0 .52.09.7.28.18.19.28.42.28.7 0 .28-.09.52-.28.7a1 1 0 01-.7.3c-.28 0-.52-.11-.7-.3zM8 7.99c-.02-.25-.11-.48-.31-.69-.2-.19-.42-.3-.69-.31H6c-.27.02-.48.13-.69.31-.2.2-.3.44-.31.69h1v3c.02.27.11.5.31.69.2.2.42.31.69.31h1c.27 0 .48-.11.69-.31.2-.19.3-.42.31-.69H8V7.98v.01zM7 2.3c-3.14 0-5.7 2.54-5.7 5.68 0 3.14 2.56 5.7 5.7 5.7s5.7-2.55 5.7-5.7c0-3.15-2.56-5.69-5.7-5.69v.01zM7 .98c3.86 0 7 3.14 7 7s-3.14 7-7 7-7-3.12-7-7 3.14-7 7-7z"></path></svg></span>
+   <span class="Toast-icon"><svg class="octicon octicon-info octicon octicon-info" viewBox="0 0 14 16" version="1.1" width="14" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M6.3 5.69a.942.942 0 01-.28-.7c0-.28.09-.52.28-.7.19-.18.42-.28.7-.28.28 0 .52.09.7.28.18.19.28.42.28.7 0 .28-.09.52-.28.7a1 1 0 01-.7.3c-.28 0-.52-.11-.7-.3zM8 7.99c-.02-.25-.11-.48-.31-.69-.2-.19-.42-.3-.69-.31H6c-.27.02-.48.13-.69.31-.2.2-.3.44-.31.69h1v3c.02.27.11.5.31.69.2.2.42.31.69.31h1c.27 0 .48-.11.69-.31.2-.19.3-.42.31-.69H8V7.98v.01zM7 2.3c-3.14 0-5.7 2.54-5.7 5.68 0 3.14 2.56 5.7 5.7 5.7s5.7-2.55 5.7-5.7c0-3.15-2.56-5.69-5.7-5.69v.01zM7 .98c3.86 0 7 3.14 7 7s-3.14 7-7 7-7-3.12-7-7 3.14-7 7-7z"></path></svg></span>
    <span class="Toast-content">You can include info boxes</span>
 </div>
 
-<h2 id="images">
-<a class="anchor" href="#images" aria-hidden="true"><span class="octicon octicon-link"></span></a>Images</h2>
+<h2 id="images">Images</h2>
 
-<p><img src="/images/logo.png" alt="" title="fast.ai's logo"></p>
+<p><img src="/images/logo.png" alt="" title="fast.ai's logo" /></p>
 
-<h2 id="code">
-<a class="anchor" href="#code" aria-hidden="true"><span class="octicon octicon-link"></span></a>Code</h2>
+<h2 id="code">Code</h2>
 
 <p>You can format text and code per usual</p>
 
@@ -247,8 +364,7 @@ wget https://example.com/cat_photo1.png
 <span class="pi">-</span> <span class="na">another_key</span><span class="pi">:</span> <span class="s2">"</span><span class="s">another</span><span class="nv"> </span><span class="s">value"</span>
 </code></pre></div></div>
 
-<h2 id="tables">
-<a class="anchor" href="#tables" aria-hidden="true"><span class="octicon octicon-link"></span></a>Tables</h2>
+<h2 id="tables">Tables</h2>
 
 <table>
   <thead>
@@ -265,23 +381,18 @@ wget https://example.com/cat_photo1.png
   </tbody>
 </table>
 
-<h2 id="tweetcards">
-<a class="anchor" href="#tweetcards" aria-hidden="true"><span class="octicon octicon-link"></span></a>Tweetcards</h2>
+<h2 id="tweetcards">Tweetcards</h2>
 
-<div class="jekyll-twitter-plugin">
-<blockquote class="twitter-tweet">
-<p lang="en" dir="ltr">Altair 4.0 is released! <a href="https://t.co/PCyrIOTcvv">https://t.co/PCyrIOTcvv</a><br>Try it with:<br><br>  pip install -U altair<br><br>The full list of changes is at <a href="https://t.co/roXmzcsT58">https://t.co/roXmzcsT58</a> ...read on for some highlights. <a href="https://t.co/vWJ0ZveKbZ">pic.twitter.com/vWJ0ZveKbZ</a></p>— Jake VanderPlas (@jakevdp) <a href="https://twitter.com/jakevdp/status/1204765621767901185?ref_src=twsrc%5Etfw">December 11, 2019</a>
-</blockquote>
+<div class="jekyll-twitter-plugin"><blockquote class="twitter-tweet"><p lang="en" dir="ltr">Altair 4.0 is released! <a href="https://t.co/PCyrIOTcvv">https://t.co/PCyrIOTcvv</a><br />Try it with:<br /><br />  pip install -U altair<br /><br />The full list of changes is at <a href="https://t.co/roXmzcsT58">https://t.co/roXmzcsT58</a> ...read on for some highlights. <a href="https://t.co/vWJ0ZveKbZ">pic.twitter.com/vWJ0ZveKbZ</a></p>&mdash; Jake VanderPlas (@jakevdp) <a href="https://twitter.com/jakevdp/status/1204765621767901185?ref_src=twsrc%5Etfw">December 11, 2019</a></blockquote>
 <script async="" src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 </div>
 
-<h2 id="footnotes">
-<a class="anchor" href="#footnotes" aria-hidden="true"><span class="octicon octicon-link"></span></a>Footnotes</h2>
+<h2 id="footnotes">Footnotes</h2>
 
 <div class="footnotes" role="doc-endnotes">
   <ol>
     <li id="fn:1" role="doc-endnote">
-      <p>This is the footnote. <a href="#fnref:1" class="reversefootnote" role="doc-backlink">↩</a></p>
+      <p>This is the footnote. <a href="#fnref:1" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
     </li>
   </ol>
 </div>

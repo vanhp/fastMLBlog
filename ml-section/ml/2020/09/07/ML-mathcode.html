@@ -118,7 +118,7 @@ window.onload = wrap_img;
        • <span class="read-time" title="Estimated read time">
     
     
-      2 min read
+      3 min read
     
 </span></p>
 
@@ -184,6 +184,30 @@ log(a*b) = log(a)+log(b)</li>
 
 <p><code class="highlighter-rouge">def sigmoid(x):
     return 1/(1 + torch.exp(x))</code></p>
+
+<h3 id="jagons">Jagons:</h3>
+
+<p>Python
+broadcasting
+vectorization
+elementwise operation
+einsum
+*kwarg
+*arg
+decorator
+partial (partial application)</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>```
+def say_hello(name, say_what="Hello"): return f"{say_what} {name}."
+say_hello('Jeremy'),say_hello('Jeremy', 'Ahoy!')
+f = partial(say_hello, say_what="Bonjour")
+f("Jeremy"),f("Sylvain")
+
+('Bonjour Jeremy.', 'Bonjour Sylvain.')
+```
+</code></pre></div></div>
+
+<p>lambda</p>
 
 <hr />
 <p><strong>———————————————————————————-</strong></p>

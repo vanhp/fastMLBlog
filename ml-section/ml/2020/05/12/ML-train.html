@@ -386,6 +386,12 @@ learn.fit_one_cycle(12, lr_max=slice(1e-6,1e-4))
 <p>Many achitect comes with various level of layers e.g. ResNet 18,34,50,101 pretrained on ImageNet
 Pick the right one is a trial-error process</p>
 
+<h3 id="pandas-and-dataframes">Pandas and DataFrames</h3>
+
+<p><em>Note</em> 
+in Numpy,Panda,PyTorch (trailing : is optional)
+ e.g. df.iloc[0,:] -&gt; df.iloc[0]</p>
+
 <h3 id="jargons-"><span style="color:blue">Jargons: </span></h3>
 
 <ul>
@@ -413,7 +419,9 @@ Pick the right one is a trial-error process</p>
   </li>
   <li>Neural network: comprise with layers</li>
   <li>layer: groups of neural (node) arrange as linear and non-linear output of a layer is pass-on to the layer next to it</li>
-  <li>fit is same training</li>
+  <li>fit: is same training</li>
+  <li>Dataset: a colllection of data that returns a tuple of x,y variable of a single item in the collection</li>
+  <li>DataLoader: an iterator that return stream of mini-batch. Where each minibatch is comprise with batch of x,y variables</li>
 </ul>
 
 <p><strong>—————————————————————————————————</strong></p>
