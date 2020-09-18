@@ -118,7 +118,7 @@ window.onload = wrap_img;
        • <span class="read-time" title="Estimated read time">
     
     
-      4 min read
+      14 min read
     
 </span></p>
 
@@ -177,96 +177,360 @@ There are other technique in ML field such as random forest that also provide go
 <h3 id="ensemble-decision-trees">Ensemble Decision Trees</h3>
 <p>Decision tree don’t require matrix multiplication or derivative. So PyTorch is of no help. Scikit-learn is better suit for this task.</p>
 
+<p>Data to use for Decision tree
+<a href="https://www.kaggle.com/c/bluebook-for-bulldozers/data">bluebookforbulldozers</a></p>
+
 <p>Handling Different data types from tables
 Dataset:
 the Blue Book for Bulldozers Kaggle competition</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>df = pd.read_csv(path/'TrainAndValid.csv', low_memory=False)
+df.columns
+# inspect data
+df['ProductSize'].unique()
+sizes = 'Large','Large / Medium','Medium','Small','Mini','Compact'
+df['ProductSize'] = df['ProductSize'].astype('category')
+df['ProductSize'].cat.set_categories(sizes, ordered=True, inplace=True)
+dep_var = 'SalePrice
+df[dep_var] = np.log(df[dep_var])
 
-<p><em>Note</em></p>
-
-<ul>
-  <li>Entity embedding not only reduces memory usage and speeds up neural networks compared with one-hot encoding, but more importantly by mapping similar values close to each other in the embedding space it reveals the intrinsic properties of the categorical variables… [It] is especially useful for datasets with lots of high cardinality features, where other methods tend to overfit… As entity embedding defines a distance measure for categorical variables it can be used for visualizing categorical data and for data clustering.</li>
-  <li>In practice try both methods to see which one better suite for the task</li>
-  <li>Deep learning generally work well with highly complex data type</li>
-</ul>
-
-<p>key insign:</p>
-<ol>
-  <li>an embedding layer is exactly equivalent to placing an ordinary linear layer after every one-hot-encoded input layer</li>
-  <li>the embedding transforms the categorical variables into inputs that are both continuous and meaningful.</li>
-</ol>
-
-<h3 id="jagons">Jagons:</h3>
-<ul>
-  <li>Continuous variables are numerical data, such as “age,” that can be directly fed to the model,</li>
-  <li>Categorical variables contain a number of discrete levels, such as “movie ID,” for which addition and multiplication don’t have meaning</li>
-</ul>
-
-<p>Jekyll requires blog post files to be named according to the following format:</p>
-
-<p><code class="highlighter-rouge">YEAR-MONTH-DAY-filename.md</code></p>
-
-<p>Where <code class="highlighter-rouge">YEAR</code> is a four-digit number, <code class="highlighter-rouge">MONTH</code> and <code class="highlighter-rouge">DAY</code> are both two-digit numbers, and <code class="highlighter-rouge">filename</code> is whatever file name you choose, to remind yourself what this post is about. <code class="highlighter-rouge">.md</code> is the file extension for markdown files.</p>
-
-<p>The first line of the file should start with a single hash character, then a space, then your title. This is how you create a “<em>level 1 heading</em>” in markdown. Then you can create level 2, 3, etc headings as you wish but repeating the hash character, such as you see in the line <code class="highlighter-rouge">## File names</code> above.</p>
-
-<h2 id="basic-formatting">Basic formatting</h2>
-
-<p>You can use <em>italics</em>, <strong>bold</strong>, <code class="highlighter-rouge">code font text</code>, and create <a href="https://www.markdownguide.org/cheat-sheet/">links</a>. Here’s a footnote <sup id="fnref:1" role="doc-noteref"><a href="#fn:1" class="footnote">1</a></sup>. Here’s a horizontal rule:</p>
-
-<hr />
-
-<h2 id="lists">Lists</h2>
-
-<p>Here’s a list:</p>
-
-<ul>
-  <li>item 1</li>
-  <li>item 2</li>
-</ul>
-
-<p>And a numbered list:</p>
-
-<ol>
-  <li>item 1</li>
-  <li>item 2</li>
-</ol>
-
-<h2 id="boxes-and-stuff">Boxes and stuff</h2>
-
-<blockquote>
-  <p>This is a quotation</p>
-</blockquote>
-
-<div class="Toast Toast--warning googoo">
-   <span class="Toast-icon"><svg class="octicon octicon-alert octicon octicon-alert octicon octicon-alert octicon octicon-alert octicon octicon-alert octicon octicon-alert octicon octicon-alert octicon octicon-alert octicon octicon-alert octicon octicon-alert" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M8.893 1.5c-.183-.31-.52-.5-.887-.5s-.703.19-.886.5L.138 13.499a.98.98 0 000 1.001c.193.31.53.501.886.501h13.964c.367 0 .704-.19.877-.5a1.03 1.03 0 00.01-1.002L8.893 1.5zm.133 11.497H6.987v-2.003h2.039v2.003zm0-3.004H6.987V5.987h2.039v4.006z"></path></svg></span>
-   <span class="Toast-content">You can include alert boxes</span>
-</div>
-
-<p>…and…</p>
-
-<div class="Toast">
-   <span class="Toast-icon"><svg class="octicon octicon-info octicon octicon-info octicon octicon-info octicon octicon-info octicon octicon-info octicon octicon-info octicon octicon-info octicon octicon-info octicon octicon-info octicon octicon-info" viewBox="0 0 14 16" version="1.1" width="14" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M6.3 5.69a.942.942 0 01-.28-.7c0-.28.09-.52.28-.7.19-.18.42-.28.7-.28.28 0 .52.09.7.28.18.19.28.42.28.7 0 .28-.09.52-.28.7a1 1 0 01-.7.3c-.28 0-.52-.11-.7-.3zM8 7.99c-.02-.25-.11-.48-.31-.69-.2-.19-.42-.3-.69-.31H6c-.27.02-.48.13-.69.31-.2.2-.3.44-.31.69h1v3c.02.27.11.5.31.69.2.2.42.31.69.31h1c.27 0 .48-.11.69-.31.2-.19.3-.42.31-.69H8V7.98v.01zM7 2.3c-3.14 0-5.7 2.54-5.7 5.68 0 3.14 2.56 5.7 5.7 5.7s5.7-2.55 5.7-5.7c0-3.15-2.56-5.69-5.7-5.69v.01zM7 .98c3.86 0 7 3.14 7 7s-3.14 7-7 7-7-3.12-7-7 3.14-7 7-7z"></path></svg></span>
-   <span class="Toast-content">You can include info boxes</span>
-</div>
-
-<h2 id="images">Images</h2>
-
-<p><img src="/images/logo.png" alt="" title="fast.ai's logo" /></p>
-
-<h2 id="code">Code</h2>
-
-<p>You can format text and code per usual</p>
-
-<p>General preformatted text:</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code># Do a thing
-do_thing()
 </code></pre></div></div>
 
-<p>Python code and output:</p>
+<p>The most important data column is the dependent variable</p>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Prints '2'
-</span><span class="k">print</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+<p>selecting the metric is an important part of the project setup that use to gauge the performance of the model
+unless it’s already specify. this is set for root mean square error (RMSLE) between actual and predict value.</p>
+
+<h3 id="decision-trees">Decision Trees</h3>
+<p>This work like  binary tree where parent node is the middle whith the left is &lt;= parent and right child node larger. Where the leaf node is the prediction</p>
+
+<p>The basic steps to train a decision tree can be written down very easily:</p>
+
+<ol>
+  <li>Loop through each column of the dataset in turn.</li>
+  <li>For each column, loop through each possible level of that column in turn.</li>
+  <li>Try splitting the data into two groups, based on whether they are greater than or less than that value (or if it is a categorical variable, based on whether they are equal to or not equal to that level of that categorical variable).</li>
+  <li>Find the average sale price for each of those two groups, and see how close that is to the actual sale price of each of the items of equipment in that group. That is, treat this as a very simple “model” where our predictions are simply the average sale price of the item’s group.</li>
+  <li>After looping through all of the columns and all the possible levels for each, pick the split point that gave the best predictions using that simple model.</li>
+  <li>We now have two different groups for our data, based on this selected split. Treat each of these as separate datasets, and find the best split for each by going back to step 1 for each group.</li>
+  <li>Continue this process recursively, until you have reached some stopping criterion for each group—for instance, stop splitting a group further when it has only 20 items in it.</li>
+</ol>
+
+<p>Handling Dates
+Since have some important in some context but may less important in different context, e.g. yesterday, tomorrow,lastweek, holiday, day of week, day of month
+fastai provide function add_datepart to do this task</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>df_test = pd.read_csv(path/'Test.csv', low_memory=False)
+df_test = add_datepart(df_test, 'saledate')
+' '.join(o for o in df.columns if o.startswith('sale'))
+
+</code></pre></div></div>
+<h4 id="handling-missing-data-and-string">Handling missing data and string</h4>
+
+<p>fastai provide TabularPandas, and TabularProc which has Categorify,and FillMissing functions.
+TabularProc:</p>
+
+<ul>
+  <li>It returns the exact same object that’s passed to it, after modifying the object in place.</li>
+  <li>It runs the transform once, when data is first passed in, rather than lazily as the data is accessed.</li>
+  <li>Categorify  replaces a column with a numeric categorical column</li>
+  <li>FillMissing that replaces missing values with the median of that column
+    <ul>
+      <li>and creates a new Boolean column that is set to True for any row where the value was missing
+ <code class="highlighter-rouge">procs = [Categorify, FillMissing]</code></li>
+    </ul>
+  </li>
+</ul>
+
+<p>TabularPandas will also handle splitting the dataset into training and validation sets</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cond = (df.saleYear&lt;2011) | (df.saleMonth&lt;10)
+train_idx = np.where( cond)[0]
+valid_idx = np.where(~cond)[0]
+
+splits = (list(train_idx),list(valid_idx))
+</code></pre></div></div>
+<p>TabularPandas needs to be told which columns are continuous and which are categorical. We can handle that automatically using the helper function cont_cat_split:</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cont,cat = cont_cat_split(df, 1, dep_var=dep_var)
+to = TabularPandas(df, procs, cat, cont, y_names=dep_var, splits=splits)
+len(to.train),len(to.valid)
+to.show(3)
+
+to1 = TabularPandas(df, procs, ['state', 'ProductGroup', 'Drive_System', 'Enclosure'], [], y_names=dep_var, splits=splits)
+to1.show(3)
+## check the underline value 
+to.items.head(3)
+
+</code></pre></div></div>
+<p>the conversion process
+The conversion of categorical columns to numbers is done by simply replacing each unique level with a number
+The numbers associated with the levels are chosen consecutively as they are seen in a column, so there’s no particular meaning to the numbers in categorical columns after conversion.except if you first convert a column to a Pandas ordered category you must provide the ordering</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>to.classes['ProductSize']
+(path/'to.pkl').save(to) 
+# load back in
+to = (path/'to.pkl').load()
+xs,y = to.train.xs,to.train.y
+valid_xs,valid_y = to.valid.xs,to.valid.y
+m = DecisionTreeRegressor(max_leaf_nodes=4)
+# train
+m.fit(xs, y);
+draw_tree(m, xs, size=7, leaves_parallel=True, precision=2)
+
+</code></pre></div></div>
+
+<p>Categorical Variables
+The decision tree can handle these variable with ease since they are treat just another variables that may group into a node according the splitting criteria in which case may split down to the leaf node.</p>
+
+<h3 id="random-forests">Random Forests</h3>
+<p>A baggin technique where the data was divide into subset then</p>
+<ol>
+  <li>randomly pick a subset of the row of data</li>
+  <li>train a model on that subset</li>
+  <li>save the model then repeat from step 1 a few time</li>
+  <li>This process will result in number of trained models them</li>
+  <li>make prediction from these models then take the average of these prediction
+this is call bagging
+Random forest is baggin with randomly choose subset of column making split in each decision tree.
+In essence a random forest is a model that averages the predictions of a large number of decision trees, which are generated by randomly varying various parameters that specify what data is used to train the tree and other tree parameters.</li>
+</ol>
+
+<h3 id="create-a-random-forest">Create a Random forest</h3>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>def rf(xs, y, n_estimators=40, max_samples=200_000,
+       max_features=0.5, min_samples_leaf=5, **kwargs):
+    return RandomForestRegressor(n_jobs=-1, n_estimators=n_estimators,
+        max_samples=max_samples, max_features=max_features,
+        min_samples_leaf=min_samples_leaf, oob_score=True).fit(xs, y)
+# n_estimators defines the number of trees we want
+# max_samples defines how many rows to sample for training each tree
+# max_features defines how many columns to sample at each split point (where 0.5 means "take half the total number of columns")
+# min_samples_leaf specify when to stop splitting the tree nodes limiting the depth of the tree
+# n_jobs=-1 to tell sklearn to use all our CPU in parallel
+
+m = rf(xs, y);
+m_rmse(m, xs, y), m_rmse(m, valid_xs, valid_y)
+preds = np.stack([t.predict(valid_xs) for t in m.estimators_])
+r_mse(preds.mean(0), valid_y)
+plt.plot([r_mse(preds[:i+1].mean(0), valid_y) for i in range(40)]);
+r_mse(m.oob_prediction_, y)
+
+</code></pre></div></div>
+<h3 id="out-of-bag-error">Out-of-Bag Error</h3>
+
+<p>The OOB error is a way of measuring prediction error on the training set by only including in the calculation of a row’s error trees where that row was not included in training. 
+ allows us to see whether the model is overfitting, without needing a separate validation set.
+ it only use the error from the tree don’t use that subset of data for training effectively a validation set</p>
+
+<h3 id="model-interpretation">Model Interpretation</h3>
+
+<p>For tabular data, model interpretation is particularly important. For a given model, the things we are most likely to be interested in are:</p>
+
+<p>How confident are we in our predictions using a particular row of data?
+For predicting with a particular row of data, what were the most important factors, and how did they influence that prediction?
+Which columns are the strongest predictors, which can we ignore?
+Which columns are effectively redundant with each other, for purposes of prediction?
+How do predictions vary, as we vary these columns?</p>
+
+<h4 id="tree-variance-for-prediction-confidence">Tree Variance for Prediction Confidence</h4>
+
+<p>How confident of the model on the prediction. One simple way is to use the standard deviation of predictions across the trees, instead of just the mean. This tells us the relative confidence of predictions. In general, we would want to be more cautious of using the results for rows where trees give very different results (higher standard deviations), compared to cases where they are more consistent (lower standard deviations).</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code># get the prediction from all trees
+preds = np.stack([t.predict(valid_xs) for t in m.estimators_])
+preds.shape
+preds_std = preds.std(0)
+preds_std[:5]
+
+
+</code></pre></div></div>
+<h4 id="feature-importance">Feature Importance</h4>
+
+<p>want to know how it’s making predictions use the attribute feature_importances_</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>def rf_feat_importance(m, df):
+    return pd.DataFrame({'cols':df.columns, 'imp':m.feature_importances_}
+                       ).sort_values('imp', ascending=False)
+
+def plot_fi(fi):
+    return fi.plot('cols', 'imp', 'barh', figsize=(12,7), legend=False)
+
+plot_fi(fi[:30]);
+</code></pre></div></div>
+<p>The way these importances are calculated is quite simple yet elegant. The feature importance algorithm loops through each tree, and then recursively explores each branch. At each branch, it looks to see what feature was used for that split, and how much the model improves as a result of that split. The improvement (weighted by the number of rows in that group) is added to the importance score for that feature. This is summed across all branches of all trees, and finally the scores are normalized such that they add to 1.</p>
+
+<h4 id="removing-low-importance-variables">Removing Low-Importance Variables</h4>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>to_keep = fi[fi.imp&gt;0.005].cols
+len(to_keep)
+
+xs_imp = xs[to_keep]
+valid_xs_imp = valid_xs[to_keep]
+m = rf(xs_imp, y)
+m_rmse(m, xs_imp, y), m_rmse(m, valid_xs_imp, valid_y)
+len(xs.columns), len(xs_imp.columns)
+plot_fi(rf_feat_importance(m, xs_imp));
+</code></pre></div></div>
+
+<h4 id="removing-redundant-features">Removing Redundant Features</h4>
+
+<p>By focusing on the most important variables, and removing some redundant ones, we’ve greatly simplified our model.
+By merging columns that most similar to each other start from the leaf</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>def get_oob(df):
+    m = RandomForestRegressor(n_estimators=40, min_samples_leaf=15,
+        max_samples=50000, max_features=0.5, n_jobs=-1, oob_score=True)
+    m.fit(df, y)
+    return m.oob_score_
+get_oob(xs_imp)
+# try removing each of our potentially redundant variables, one at a time:
+{c:get_oob(xs_imp.drop(c, axis=1)) for c in (
+    'saleYear', 'saleElapsed', 'ProductGroupDesc','ProductGroup',
+    'fiModelDesc', 'fiBaseModel',
+    'Hydraulics_Flow','Grouser_Tracks', 'Coupler_System')}
+
+to_drop = ['saleYear', 'ProductGroupDesc', 'fiBaseModel', 'Grouser_Tracks']
+get_oob(xs_imp.drop(to_drop, axis=1))
+xs_final = xs_imp.drop(to_drop, axis=1)
+valid_xs_final = valid_xs_imp.drop(to_drop, axis=1)
+# save
+(path/'xs_final.pkl').save(xs_final)
+(path/'valid_xs_final.pkl').save(valid_xs_final)
+# load back
+xs_final = (path/'xs_final.pkl').load()
+valid_xs_final = (path/'valid_xs_final.pkl').load()
+m = rf(xs_final, y)
+m_rmse(m, xs_final, y), m_rmse(m, valid_xs_final, valid_y)
+</code></pre></div></div>
+<h4 id="partial-dependence">Partial Dependence</h4>
+
+<p>Try to understand the relationship of the most important predictors</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#count the #
+p = valid_xs_final['ProductSize'].value_counts(sort=False).plot.barh()
+c = to.classes['ProductSize']
+plt.yticks(range(len(c)), c);
+
+from sklearn.inspection import plot_partial_dependence
+fig,ax = plt.subplots(figsize=(12, 4))
+plot_partial_dependence(m, valid_xs_final, ['YearMade','ProductSize'],
+                        grid_resolution=20, ax=ax);
+</code></pre></div></div>
+<p>Data Leakage</p>
+
+<p>Data leakage is subtle and can take many forms. In particular, missing values often represent data leakage.</p>
+
+<p>Tree Interpreter</p>
+
+<p>```!pip install treeinterpreter
+!pip install waterfallcharts</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Use water fall to draw a chart
+to answer this question. For predicting with a particular row of data, what were the most important factors, and how did they influence that prediction?
+</code></pre></div></div>
+<p>import warnings
+warnings.simplefilter(‘ignore’, FutureWarning)</p>
+
+<p>from treeinterpreter import treeinterpreter
+from waterfall_chart import plot as waterfall</p>
+
+<p>row = valid_xs_final.iloc[:5]
+prediction,bias,contributions = treeinterpreter.predict(m, row.values)
+prediction[0], bias[0], contributions[0].sum()
+waterfall(valid_xs_final.columns, contributions[0], threshold=0.08, 
+          rotation_value=45,formatting=’’);</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+
+
+
+*Note*
+
+- Entity embedding not only reduces memory usage and speeds up neural networks compared with one-hot encoding, but more importantly by mapping similar values close to each other in the embedding space it reveals the intrinsic properties of the categorical variables... [It] is especially useful for datasets with lots of high cardinality features, where other methods tend to overfit... As entity embedding defines a distance measure for categorical variables it can be used for visualizing categorical data and for data clustering.
+- In practice try both methods to see which one better suite for the task
+- Deep learning generally work well with highly complex data type
+- the leaf node is the predicting result
+- non leaf node must be divide further until leaf node
+- the criteria for splitting should make sense for the data type 
+- check leaf node if there too many of them maybe the result of splitting on unsual condition
+- Randdom forest not very sensitive to the hyperparameter choices, such as max_features so the tree can be many as there time to train
+- the more tree the more accurate
+- set max_samples to default if data is less than 200000 otherwise set to 200000
+- use setting for max_features=0.5,min_sample_leaf=4 work well
+- generally the first step to improving a model is simplifying it
+- Determining Similarity: The most similar pairs are found by calculating the rank correlation, which means that all the values are replaced with their rank (i.e., first, second, third, etc. within the column), and then the correlation is calculated.
+
+
+
+key insign:
+1. an embedding layer is exactly equivalent to placing an ordinary linear layer after every one-hot-encoded input layer
+2. the embedding transforms the categorical variables into inputs that are both continuous and meaningful.
+
+
+### Jagons:
+- Continuous variables are numerical data, such as "age," that can be directly fed to the model, 
+- Categorical variables contain a number of discrete levels, such as "movie ID," for which addition and multiplication don't have meaning
+- bagging process of random take rows of data to train model and make prediction then average over all prediction
+
+
+
+
+
+
+
+
+Jekyll requires blog post files to be named according to the following format:
+
+`YEAR-MONTH-DAY-filename.md`
+
+Where `YEAR` is a four-digit number, `MONTH` and `DAY` are both two-digit numbers, and `filename` is whatever file name you choose, to remind yourself what this post is about. `.md` is the file extension for markdown files.
+
+The first line of the file should start with a single hash character, then a space, then your title. This is how you create a "*level 1 heading*" in markdown. Then you can create level 2, 3, etc headings as you wish but repeating the hash character, such as you see in the line `## File names` above.
+
+## Basic formatting
+
+You can use *italics*, **bold**, `code font text`, and create [links](https://www.markdownguide.org/cheat-sheet/). Here's a footnote [^1]. Here's a horizontal rule:
+
+---
+
+## Lists
+
+Here's a list:
+
+- item 1
+- item 2
+
+And a numbered list:
+
+1. item 1
+1. item 2
+
+## Boxes and stuff
+
+&gt; This is a quotation
+
+&lt;div class="Toast Toast--warning googoo"&gt;
+   &lt;span class="Toast-icon"&gt;&lt;svg class="octicon octicon-alert octicon octicon-alert octicon octicon-alert octicon octicon-alert octicon octicon-alert octicon octicon-alert octicon octicon-alert octicon octicon-alert octicon octicon-alert octicon octicon-alert" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"&gt;&lt;path fill-rule="evenodd" d="M8.893 1.5c-.183-.31-.52-.5-.887-.5s-.703.19-.886.5L.138 13.499a.98.98 0 000 1.001c.193.31.53.501.886.501h13.964c.367 0 .704-.19.877-.5a1.03 1.03 0 00.01-1.002L8.893 1.5zm.133 11.497H6.987v-2.003h2.039v2.003zm0-3.004H6.987V5.987h2.039v4.006z"&gt;&lt;/path&gt;&lt;/svg&gt;&lt;/span&gt;
+   &lt;span class="Toast-content"&gt;You can include alert boxes&lt;/span&gt;
+&lt;/div&gt;
+
+
+...and...
+
+&lt;div class="Toast"&gt;
+   &lt;span class="Toast-icon"&gt;&lt;svg class="octicon octicon-info octicon octicon-info octicon octicon-info octicon octicon-info octicon octicon-info octicon octicon-info octicon octicon-info octicon octicon-info octicon octicon-info octicon octicon-info" viewBox="0 0 14 16" version="1.1" width="14" height="16" aria-hidden="true"&gt;&lt;path fill-rule="evenodd" d="M6.3 5.69a.942.942 0 01-.28-.7c0-.28.09-.52.28-.7.19-.18.42-.28.7-.28.28 0 .52.09.7.28.18.19.28.42.28.7 0 .28-.09.52-.28.7a1 1 0 01-.7.3c-.28 0-.52-.11-.7-.3zM8 7.99c-.02-.25-.11-.48-.31-.69-.2-.19-.42-.3-.69-.31H6c-.27.02-.48.13-.69.31-.2.2-.3.44-.31.69h1v3c.02.27.11.5.31.69.2.2.42.31.69.31h1c.27 0 .48-.11.69-.31.2-.19.3-.42.31-.69H8V7.98v.01zM7 2.3c-3.14 0-5.7 2.54-5.7 5.68 0 3.14 2.56 5.7 5.7 5.7s5.7-2.55 5.7-5.7c0-3.15-2.56-5.69-5.7-5.69v.01zM7 .98c3.86 0 7 3.14 7 7s-3.14 7-7 7-7-3.12-7-7 3.14-7 7-7z"&gt;&lt;/path&gt;&lt;/svg&gt;&lt;/span&gt;
+   &lt;span class="Toast-content"&gt;You can include info boxes&lt;/span&gt;
+&lt;/div&gt;
+
+
+## Images
+
+![](/images/logo.png "fast.ai's logo")
+
+## Code
+
+You can format text and code per usual 
+
+General preformatted text:
+
+    # Do a thing
+    do_thing()
+
+Python code and output:
+
+```python
+# Prints '2'
+print(1+1)
 </code></pre></div></div>
 
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>2
@@ -310,13 +574,6 @@ wget https://example.com/cat_photo1.png
 
 <h2 id="footnotes">Footnotes</h2>
 
-<div class="footnotes" role="doc-endnotes">
-  <ol>
-    <li id="fn:1" role="doc-endnote">
-      <p>This is the footnote. <a href="#fnref:1" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
-    </li>
-  </ol>
-</div>
 
    
   </div><a class="u-url" href="/ml-section/ml/2020/09/18/ML-tabular.html" hidden></a>
