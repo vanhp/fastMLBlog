@@ -21,11 +21,26 @@ image: /images/lion2.jpg
 
 [Douglas Schmidt](http://www.dre.vanderbilt.edu/~schmidt/) is one of prolific professor of computer science. He has ton of contents about sofware and especially in C++ and Java, Android. This is where I come when I feel a little rusty on C++ and Java. His material are up up to date and top-notch.
 
+[Computational Linear Algebra for Coders](https://github.com/fastai/numerical-linear-algebra).
+https://amarsaini.github.io/Epoching-Blog/jupyter/2020/03/23/Self-Supervision-with-FastAI.html
+https://explained.ai/matrix-calculus/
+https://drscotthawley.github.io/blog/
+https://betterexplained.com/articles/linear-algebra-guide/
+https://arxiv.org/abs/2006.03511
+https://arxiv.org/pdf/2005.13754.pdf
+https://github.com/FluxML/FastAI.jl
+https://developer.android.com/ml
+https://course.fullstackdeeplearning.com/course-content/setting-up-machine-learning-projects
+https://codelabs.developers.google.com/codelabs/cloud-tensorflow-mnist/#4
+https://github.com/spaceflint7/bluebonnet
+
+
+
 ---
 Books
 
-Panda
-https://www.oreilly.com/library/view/python-for-data/9781449323592/
+Data science and Panda,Numpy
+[Python for Data Analysis](https://www.oreilly.com/library/view/python-for-data/9781449323592/)
 
 
 
