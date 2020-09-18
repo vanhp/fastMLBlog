@@ -145,7 +145,7 @@ window.onload = wrap_img;
 
 <h2 id="pandas-and-dataframes">Pandas and DataFrames</h2>
 
-<p>Pandas a Python library for database, it’s fast and flexible library but has non-intuative interface. It’s used to stored manage analize structure data type. It’s also useful in ML to handle tabular and timeseries data type.</p>
+<p>Pandas a Python library for database, it’s fast and flexible library but has non-intuitive interface. It’s used to stored manage analize structure data type. It’s also useful in ML to handle tabular and timeseries data type.</p>
 
 <p>Dataframe is the main class that represent data in table of row and columns. It can import data from CSV file, from directories, and many others sources. And Jupyter is happily work with it.</p>
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>import Pandas as pd
@@ -156,8 +156,8 @@ tmp_df = pd.DataFrame({'a':[1,2], 'b':[3,4]})
 
 <h3 id="datablock">DataBlock</h3>
 <p>A fastai versatile,flexible object that manage data.
-it has facility to handle Datasets
-which auto split data into train 80% validate 20%</p>
+it has facility to handle Datasets,dataframe. 
+It smart enough to understand data set that is working with. It’s also auto split data into train 80% validate 20%</p>
 
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code># empty datablock
 dblock = DataBlock()
@@ -176,7 +176,7 @@ dsets.train[0]
 </code></pre></div></div>
 
 <h3 id="binary-cross-entropy-loss">Binary cross entropy Loss</h3>
-<p>The loss function that suitable for case where there more than one label or no label present</p>
+<p>One of the problem with multiple label is finding appropiate loss function that can handle the possibility of multi-label and no label may present in data. The regular cross entropy loss is only able to deal with single label. Finding loss function that suitable for case where there more than one label or no label present is needed.</p>
 
 <h3 id="learner-object">Learner object</h3>
 
@@ -217,7 +217,7 @@ nll_loss limitation:</li>
 we need to return more than 1 label</li>
 </ul>
 
-<p>comparable PyTorch versions that work with one-hot encoding:</p>
+<h4 id="comparable-pytorch-versions-that-work-with-one-hot-encoding">Comparable PyTorch versions that work with one-hot encoding:</h4>
 <ul>
   <li>F.binary_cross_entropy (no sigmoid)</li>
   <li>nn.BCELoss  (nosigmoid)</li>
@@ -258,15 +258,17 @@ accs = [accuracy_multi(preds, targs, thresh=i, sigmoid=False) for i in xs]
 plt.plot(xs,accs)
 </code></pre></div></div>
 
-<p><em>Note</em>
-zip(b[0],b[1]) has short cut of zip(*b)
-python can’t save (serialization lambda) lambda use function instead
-it’s OK to use validation set to pick threshold it should not overfit</p>
+<p><em>Note</em></p>
+<ul>
+  <li>zip(b[0],b[1]) has short cut of zip(*b)</li>
+  <li>python can’t save (serialization lambda) lambda use function instead</li>
+  <li>it’s OK to use validation set to pick threshold it should not overfit</li>
+</ul>
 
 <h3 id="jagons">Jagons</h3>
-<p>x: is independent variable
-y: is dependent variable</p>
 <ul>
+  <li>x: is independent variable</li>
+  <li>y: is dependent variable</li>
   <li>Dataset: A collection that can be index into it and returns a tuple of your independent and dependent variable for a single item</li>
   <li>DataLoader: An iterator that provides a stream of mini-batches, where each mini-batch is a tuple of a batch of independent variables and a batch of dependent variables</li>
   <li>one-hot-encoder: a vector that has all 0 but one 1 to represent the interested item to pick-out from other item</li>

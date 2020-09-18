@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="twitter:card" content="summary" /><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Collaborative Filter deep dive | Supra_PolyglotCoder</title>
+<meta name="generator" content="Jekyll v4.0.0" />
+<meta property="og:title" content="Collaborative Filter deep dive" />
+<meta name="author" content="Vanh Phomsavanh" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Info about ML-deep learning" />
+<meta property="og:description" content="Info about ML-deep learning" />
+<link rel="canonical" href="https://www.vanhp.com/ml-section/ml/2020/09/17/ML-collaborative-filter.html" />
+<meta property="og:url" content="https://www.vanhp.com/ml-section/ml/2020/09/17/ML-collaborative-filter.html" />
+<meta property="og:site_name" content="Supra_PolyglotCoder" />
+<meta property="og:image" content="https://www.vanhp.com/ML-section/assets/images/ai-pic2.jpg" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2020-09-17T00:00:00-05:00" />
+<script type="application/ld+json">
+{"author":{"@type":"Person","name":"Vanh Phomsavanh"},"description":"Info about ML-deep learning","dateModified":"2020-09-17T00:00:00-05:00","datePublished":"2020-09-17T00:00:00-05:00","headline":"Collaborative Filter deep dive","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://www.vanhp.com/ml-section/ml/2020/09/17/ML-collaborative-filter.html"},"image":"https://www.vanhp.com/ML-section/assets/images/ai-pic2.jpg","url":"https://www.vanhp.com/ml-section/ml/2020/09/17/ML-collaborative-filter.html","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://www.vanhp.com/feed.xml" title="Supra_PolyglotCoder" /><link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Collaborative Filter deep dive | Supra_PolyglotCoder</title>
+<meta name="generator" content="Jekyll v4.0.0" />
+<meta property="og:title" content="Collaborative Filter deep dive" />
+<meta name="author" content="Vanh Phomsavanh" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Info about ML-deep learning" />
+<meta property="og:description" content="Info about ML-deep learning" />
+<link rel="canonical" href="https://www.vanhp.com/ml-section/ml/2020/09/17/ML-collaborative-filter.html" />
+<meta property="og:url" content="https://www.vanhp.com/ml-section/ml/2020/09/17/ML-collaborative-filter.html" />
+<meta property="og:site_name" content="Supra_PolyglotCoder" />
+<meta property="og:image" content="https://www.vanhp.com/ML-section/assets/images/ai-pic2.jpg" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2020-09-17T00:00:00-05:00" />
+<script type="application/ld+json">
+{"author":{"@type":"Person","name":"Vanh Phomsavanh"},"description":"Info about ML-deep learning","dateModified":"2020-09-17T00:00:00-05:00","datePublished":"2020-09-17T00:00:00-05:00","headline":"Collaborative Filter deep dive","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://www.vanhp.com/ml-section/ml/2020/09/17/ML-collaborative-filter.html"},"image":"https://www.vanhp.com/ML-section/assets/images/ai-pic2.jpg","url":"https://www.vanhp.com/ml-section/ml/2020/09/17/ML-collaborative-filter.html","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+<link href="https://unpkg.com/@primer/css/dist/primer.css" rel="stylesheet" />
+<link rel="stylesheet" href="//use.fontawesome.com/releases/v5.0.7/css/all.css"><link type="application/atom+xml" rel="alternate" href="https://www.vanhp.com/feed.xml" title="Supra_PolyglotCoder" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css" integrity="sha384-zB1R0rpPzHqg7Kpt0Aljp8JPLqbXI3bhnPWROx27a9N0Ll6ZP/+DiW/UqRcLbRjq" crossorigin="anonymous">
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"> </script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.js" integrity="sha384-y23I5Q6l+B6vatafAwxRu/0oK/79VlbSz7Q9aiSZUvyWYIYsd+qj+o24G5ZU2zJz" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/auto-render.min.js" integrity="sha384-kWPLUVMOks5AQFrykwIup5lo0m3iMkkHrD0uJ4H5cjeGihAutqP0yW0J6dpFiVkI" crossorigin="anonymous"></script>
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        renderMathInElement( document.body, {
+        delimiters: [
+            {left: "$$", right: "$$", display: true},
+            {left: "[%", right: "%]", display: true},
+            {left: "$", right: "$", display: false}
+        ]}
+        );
+    });
+    </script>
+
+
+<script>
+function wrap_img(fn) {
+    if (document.attachEvent ? document.readyState === "complete" : document.readyState !== "loading") {
+        var elements = document.querySelectorAll(".post img");
+        Array.prototype.forEach.call(elements, function(el, i) {
+            if (el.getAttribute("title") && (el.className != "emoji")) {
+                const caption = document.createElement('figcaption');
+                var node = document.createTextNode(el.getAttribute("title"));
+                caption.appendChild(node);
+                const wrapper = document.createElement('figure');
+                wrapper.className = 'image';
+                el.parentNode.insertBefore(wrapper, el);
+                el.parentNode.removeChild(el);
+                wrapper.appendChild(el);
+                wrapper.appendChild(caption);
+            }
+        });
+    } else { document.addEventListener('DOMContentLoaded', fn); }
+}
+window.onload = wrap_img;
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function(){
+    // add link icon to anchor tags
+    var elem = document.querySelectorAll(".anchor-link")
+    elem.forEach(e => (e.innerHTML = '<i class="fas fa-link fa-xs"></i>'));
+    });
+</script>
+</head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><!--
+      edit by vanh original code header.html
+    <a class="site-title" rel="author" href="/">Supra_PolyglotCoder</a>
+    replace with custom code below
+    -->
+    <a class="site-title" rel="author" href="/"><img src="/images/gradlogo1.jpg" alt="Supra_PolyglotCoder"></img></a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/about/">About Me</a><a class="page-link" href="/Resource-section/">Resources</a><a class="page-link" href="/ML-section/">ML</a><a class="page-link" href="/Coding-section/">Programming</a><a class="page-link" href="/search/">Search</a><a class="page-link" href="/categories/">Tags</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <!-- add feature image on top of post --><img src="/ML-section/assets/images/ai-pic2.jpg" alt="" class="featured-image-post" /><h1 class="post-title p-name" itemprop="name headline">Collaborative Filter deep dive</h1><p class="page-description">Info about ML-deep learning</p><p class="post-meta post-meta-title"><time class="dt-published" datetime="2020-09-17T00:00:00-05:00" itemprop="datePublished">
+        Sep 17, 2020
+      </time>
+       • <span class="read-time" title="Estimated read time">
+    
+    
+      6 min read
+    
+</span></p>
+
+    
+      <p class="category-tags"><i class="fas fa-tags category-tags-icon"></i></i> 
+      
+        <a class="category-tags-link" href="/categories/#ML-section">ML-section</a>
+        &nbsp;
+      
+        <a class="category-tags-link" href="/categories/#ML">ML</a>
+        
+      
+      </p>
+    
+
+    </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <!-- ![](/ML-section/assets/images/ai-pic2.jpg) -->
+
+<hr />
+<p>A general class of system known as Recommend system that recomend a product to a customer use in Amazon, a movie or video to viewer which is used in Netflix, what’s story to show in Facebook,Tweeter…
+Which is base the user own history, in some other users that may have similar preference. For example, Netflix recommend a movie to you base on other people who watch the same movie. Or Amazon recommend a product base on other who bought or view the same product.</p>
+
+<p>It’s base on the idea of latent factors the unwritten or unspecify context that underline the item.</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>!pip install -Uqq fastbook
+import fastbook
+fastbook.setup_book()
+from fastbook import *
+rom fastai.collab import *
+from fastai.tabular.all import *
+path = untar_data(URLs.ML_100k)
+ratings = pd.read_csv(path/'u.data', delimiter='\t', header=None,
+                      names=['user','movie','rating','timestamp'])
+ratings.head()
+
+last_skywalker = np.array([0.98,0.9,-0.9])
+user1 = np.array([0.9,0.8,-0.6])
+(user1*last_skywalker).sum()
+casablanca = np.array([-0.99,-0.3,0.8])
+(user1*casablanca).sum()
+</code></pre></div></div>
+<p>Learning the Latent Factors</p>
+
+<p>DataLoaders</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>movies = pd.read_csv(path/'u.item',  delimiter='|', encoding='latin-1',
+                     usecols=(0,1), names=('movie','title'), header=None)
+movies.head()
+ratings = ratings.merge(movies)
+ratings.head()
+
+#build dataloaders
+#By default, it takes the first column for the user, the second column for the item 
+dls = CollabDataLoaders.from_df(ratings, item_name='title', bs=64)
+dls.show_batch()
+dls.classes
+
+n_users  = len(dls.classes['user'])
+n_movies = len(dls.classes['title'])
+n_factors = 5
+
+user_factors = torch.randn(n_users, n_factors)
+movie_factors = torch.randn(n_movies, n_factors)
+</code></pre></div></div>
+
+<p>To calculate the result for a particular movie and user combination, we have to look up the index of the movie in our movie latent factor matrix and the index of the user in our user latent factor matrix; then we can do our dot product between the two latent factor vectors. 
+To do lookup in matrix form which model can calculate is to represent lookup with vector of one-hot encoding</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>one_hot_3 = one_hot(3, n_users).float()
+user_factors.t() @ one_hot_3
+user_factors[3]
+
+</code></pre></div></div>
+<h3 id="embedding">Embedding</h3>
+<p>A technique of look up item by using matrix multiplication with one-hot encode vector. PyTorch has a special layer that do this task in a fast and efficient way.</p>
+
+<h3 id="collaborative-by-hand-from-scratch">Collaborative by hand from scratch</h3>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">class</span> <span class="n">DotProduct</span><span class="p">(</span><span class="n">Module</span><span class="p">):</span>
+    <span class="p">#</span> <span class="n">constructor</span>
+    <span class="p">#</span> <span class="n">use</span> <span class="n">slightly</span> <span class="n">higher</span> <span class="k">range</span> <span class="n">since</span> <span class="n">sigmoid</span> <span class="k">max</span> <span class="k">of</span> <span class="m">5</span> <span class="k">to</span> <span class="n">get</span> <span class="m">5</span> <span class="n">need</span> <span class="k">to</span> <span class="n">over</span>
+    <span class="n">def</span> <span class="n">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">n_users</span><span class="p">,</span> <span class="n">n_movies</span><span class="p">,</span> <span class="n">n_factors</span><span class="p">,</span> <span class="n">y_range</span><span class="p">=(</span><span class="m">0</span><span class="p">,</span><span class="m">5.5</span><span class="p">)):</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">user_factors</span> <span class="p">=</span> <span class="n">Embedding</span><span class="p">(</span><span class="n">n_users</span><span class="p">,</span> <span class="n">n_factors</span><span class="p">)</span>
+        <span class="p">#</span> <span class="n">account</span> <span class="n">for</span> <span class="n">user</span> <span class="n">bias</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">user_bias</span> <span class="p">=</span> <span class="n">Embedding</span><span class="p">(</span><span class="n">n_users</span><span class="p">,</span> <span class="m">1</span><span class="p">)</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">movie_factors</span> <span class="p">=</span> <span class="n">Embedding</span><span class="p">(</span><span class="n">n_movies</span><span class="p">,</span> <span class="n">n_factors</span><span class="p">)</span>
+        <span class="p">#</span> <span class="n">account</span> <span class="n">for</span> <span class="n">bias</span> <span class="k">in</span> <span class="n">data</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">movie_bias</span> <span class="p">=</span> <span class="n">Embedding</span><span class="p">(</span><span class="n">n_movies</span><span class="p">,</span> <span class="m">1</span><span class="p">)</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">y_range</span> <span class="p">=</span> <span class="n">y_range</span>
+     
+    <span class="p">#</span> <span class="n">callback</span> <span class="k">from</span> <span class="n">Pytorch</span>   
+    <span class="n">def</span> <span class="k">forward</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="n">users</span> <span class="p">=</span> <span class="n">self</span><span class="p">.</span><span class="n">user_factors</span><span class="p">(</span><span class="n">x</span><span class="p">[:,</span><span class="m">0</span><span class="p">])</span>
+        <span class="n">movies</span> <span class="p">=</span> <span class="n">self</span><span class="p">.</span><span class="n">movie_factors</span><span class="p">(</span><span class="n">x</span><span class="p">[:,</span><span class="m">1</span><span class="p">])</span>
+        <span class="n">res</span> <span class="p">=</span> <span class="p">(</span><span class="n">users</span> <span class="p">+</span> <span class="n">movies</span><span class="p">).</span><span class="k">sum</span><span class="p">(</span><span class="n">dim</span><span class="p">=</span><span class="m">1</span><span class="p">,</span><span class="n">keepdim</span><span class="p">=</span><span class="nb">True</span><span class="p">)</span>
+        <span class="n">res</span> <span class="p">+=</span> <span class="n">self</span><span class="p">.</span><span class="n">user_bias</span><span class="p">(</span><span class="n">x</span><span class="p">[:,</span><span class="m">0</span><span class="p">])</span> <span class="p">+</span> <span class="n">self</span><span class="p">.</span><span class="n">movie_bias</span><span class="p">(</span><span class="n">x</span><span class="p">[:,</span><span class="m">1</span><span class="p">])</span>
+        <span class="p">#</span><span class="n">force</span> <span class="n">those</span> <span class="n">predictions</span> <span class="k">to</span> <span class="n">be</span> <span class="n">between</span> <span class="m">0</span> <span class="k">and</span> <span class="m">5</span> <span class="k">with</span> <span class="n">sigmoid_range</span>
+        <span class="n">return</span> <span class="n">sigmoid_range</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="p">*</span><span class="n">self</span><span class="p">.</span><span class="n">y_range</span><span class="p">)</span>
+
+<span class="k">model</span> <span class="p">=</span> <span class="n">DotProduct</span><span class="p">(</span><span class="n">n_users</span><span class="p">,</span> <span class="n">n_movies</span><span class="p">,</span> <span class="m">50</span><span class="p">)</span>
+<span class="n">learn</span> <span class="p">=</span> <span class="n">Learner</span><span class="p">(</span><span class="n">dls</span><span class="p">,</span> <span class="k">model</span><span class="p">,</span> <span class="n">loss_func</span><span class="p">=</span><span class="n">MSELossFlat</span><span class="p">())</span>
+<span class="n">learn</span><span class="p">.</span><span class="n">fit_one_cycle</span><span class="p">(</span><span class="m">5</span><span class="p">,</span> <span class="m">5e-3</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="overfitting">Overfitting</h3>
+
+<p>A phenomena that happen when the model start to recgonize the dataset and try to memorize them this make the result look very good for this particular dataset but fail when encounter different dataset. This is because the model fail to generalize the learning so that is applicable on different dataset. This usually happen when there not enough data or train too many times on the same dataset.</p>
+
+<h3 id="regularization">Regularization</h3>
+
+<p>A technique to reduce overfitting by add in a value that act as penalty when the model start overfit.</p>
+
+<h3 id="weight-decay-l2-regularization">Weight Decay (L2 regularization)</h3>
+
+<p>Add the sum of all weight squared to the loss function to affect the gradient calculation when add the weight
+ to reduce it value. Visually this is like make the canyon bigger in gradient curve space</p>
+
+<p><code class="highlighter-rouge">loss_with_wd = loss + wd * (parameters**2).sum()</code></p>
+
+<p>using derivative equivalence to</p>
+
+<p><code class="highlighter-rouge">parameters.grad += wd * 2 * parameters</code></p>
+
+<p>in practive just pick a value and double it</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">def</span> <span class="n">create_params</span><span class="p">(</span><span class="n">size</span><span class="p">):</span>
+    <span class="n">return</span> <span class="n">nn</span><span class="p">.</span><span class="n">Parameter</span><span class="p">(</span><span class="n">torch</span><span class="p">.</span><span class="n">zeros</span><span class="p">(*</span><span class="n">size</span><span class="p">).</span><span class="n">normal_</span><span class="p">(</span><span class="m">0</span><span class="p">,</span> <span class="m">0.01</span><span class="p">))</span>
+
+<span class="n">class</span> <span class="n">DotProductBias</span><span class="p">(</span><span class="n">Module</span><span class="p">):</span>
+    <span class="n">def</span> <span class="n">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">n_users</span><span class="p">,</span> <span class="n">n_movies</span><span class="p">,</span> <span class="n">n_factors</span><span class="p">,</span> <span class="n">y_range</span><span class="p">=(</span><span class="m">0</span><span class="p">,</span><span class="m">5.5</span><span class="p">)):</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">user_factors</span> <span class="p">=</span> <span class="n">create_params</span><span class="p">([</span><span class="n">n_users</span><span class="p">,</span> <span class="n">n_factors</span><span class="p">])</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">user_bias</span> <span class="p">=</span> <span class="n">create_params</span><span class="p">([</span><span class="n">n_users</span><span class="p">])</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">movie_factors</span> <span class="p">=</span> <span class="n">create_params</span><span class="p">([</span><span class="n">n_movies</span><span class="p">,</span> <span class="n">n_factors</span><span class="p">])</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">movie_bias</span> <span class="p">=</span> <span class="n">create_params</span><span class="p">([</span><span class="n">n_movies</span><span class="p">])</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">y_range</span> <span class="p">=</span> <span class="n">y_range</span>
+        
+    <span class="n">def</span> <span class="k">forward</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="n">users</span> <span class="p">=</span> <span class="n">self</span><span class="p">.</span><span class="n">user_factors</span><span class="p">[</span><span class="n">x</span><span class="p">[:,</span><span class="m">0</span><span class="p">]]</span>
+        <span class="n">movies</span> <span class="p">=</span> <span class="n">self</span><span class="p">.</span><span class="n">movie_factors</span><span class="p">[</span><span class="n">x</span><span class="p">[:,</span><span class="m">1</span><span class="p">]]</span>
+        <span class="n">res</span> <span class="p">=</span> <span class="p">(</span><span class="n">users</span><span class="p">*</span><span class="n">movies</span><span class="p">).</span><span class="k">sum</span><span class="p">(</span><span class="n">dim</span><span class="p">=</span><span class="m">1</span><span class="p">)</span>
+        <span class="n">res</span> <span class="p">+=</span> <span class="n">self</span><span class="p">.</span><span class="n">user_bias</span><span class="p">[</span><span class="n">x</span><span class="p">[:,</span><span class="m">0</span><span class="p">]]</span> <span class="p">+</span> <span class="n">self</span><span class="p">.</span><span class="n">movie_bias</span><span class="p">[</span><span class="n">x</span><span class="p">[:,</span><span class="m">1</span><span class="p">]]</span>
+        <span class="n">return</span> <span class="n">sigmoid_range</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="p">*</span><span class="n">self</span><span class="p">.</span><span class="n">y_range</span><span class="p">)</span>
+
+<span class="k">model</span> <span class="p">=</span> <span class="n">DotProductBias</span><span class="p">(</span><span class="n">n_users</span><span class="p">,</span> <span class="n">n_movies</span><span class="p">,</span> <span class="m">50</span><span class="p">)</span>
+<span class="n">learn</span> <span class="p">=</span> <span class="n">Learner</span><span class="p">(</span><span class="n">dls</span><span class="p">,</span> <span class="k">model</span><span class="p">,</span> <span class="n">loss_func</span><span class="p">=</span><span class="n">MSELossFlat</span><span class="p">())</span>
+<span class="n">learn</span><span class="p">.</span><span class="n">fit_one_cycle</span><span class="p">(</span><span class="m">5</span><span class="p">,</span> <span class="m">5e-3</span><span class="p">,</span> <span class="n">wd</span><span class="p">=</span><span class="m">0.1</span><span class="p">)</span>
+
+</code></pre></div></div>
+<p>Understanding the bias
+grap some lowest value in bias vector data for a user</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>movie_bias = learn.model.movie_bias.squeeze()
+idxs = movie_bias.argsort()[:5]
+[dls.classes['title'][i] for i in idxs]
+</code></pre></div></div>
+<p>analysis</p>
+
+<p>even when a user is very well matched to its latent factors(action,age of movie) they still generally don’t like it. Meaning even if it is their kind of movie, but they don’t like these movies</p>
+
+<p>grap some high bias value</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>idxs = movie_bias.argsort(descending=True)[:5]
+[dls.classes['title'][i] for i in idxs]
+</code></pre></div></div>
+<p>this show even persons don’t like the kind of movie they may still enjoy it.</p>
+
+<p>visualize latent factors with more data using PCA</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>g = ratings.groupby('title')['rating'].count()
+top_movies = g.sort_values(ascending=False).index.values[:1000]
+top_idxs = tensor([learn.dls.classes['title'].o2i[m] for m in top_movies])
+movie_w = learn.model.movie_factors[top_idxs].cpu().detach()
+movie_pca = movie_w.pca(3)
+fac0,fac1,fac2 = movie_pca.t()
+idxs = np.random.choice(len(top_movies), 50, replace=False)
+idxs = list(range(50))
+X = fac0[idxs]
+Y = fac2[idxs]
+plt.figure(figsize=(12,12))
+plt.scatter(X, Y)
+for i, x, y in zip(top_movies[idxs], X, Y):
+    plt.text(x,y,i, color=np.random.rand(3)*0.7, fontsize=11)
+plt.show()
+</code></pre></div></div>
+<h3 id="using-fastai-collab-feature">using fastai collab feature</h3>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>learn = collab_learner(dls, n_factors=50, y_range=(0, 5.5))
+learn.fit_one_cycle(5, 5e-3, wd=0.1)
+learn.model
+movie_bias = learn.model.i_bias.weight.squeeze()
+idxs = movie_bias.argsort(descending=True)[:5]
+[dls.classes['title'][i] for i in idxs]
+
+</code></pre></div></div>
+<p>Measuring Distance of embbeding value</p>
+
+<p>If there were two movies that were nearly identical, then their embedding vectors would also have to be nearly identical, and the viewer also would have the same likeness with same similarity vectors. Which mean the distance between the two movies are closer together.</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code># find the movie similar to silence of the lambs
+movie_factors = learn.model.i_weight.weight
+idx = dls.classes['title'].o2i['Silence of the Lambs, The (1991)']
+distances = nn.CosineSimilarity(dim=1)(movie_factors, movie_factors[idx][None])
+idx = distances.argsort(descending=True)[1]
+dls.classes['title'][idx]
+</code></pre></div></div>
+<p>The clean slate problem
+When starting out there no data relationship (latent factor) for the user, movie,product… 
+The solution is use common sense e.g. let user pick their movies from a list, assign a product base on environment, collect as much info about them as possible. Don’t let a few group of user,items,products have too much influent which skew the whole dataset.</p>
+
+<p>Deep Learning for Collaborative Filtering
+To create DL collaborative filter do:</p>
+<ol>
+  <li>concastenate activation value result from lookup together</li>
+  <li>these matrices don’t have be the same size (not doing dot-product)</li>
+  <li>use fastai function get_emb_sz to get the recommend sizeof embedding matrix for the dataset</li>
+</ol>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">embs</span> <span class="p">=</span> <span class="n">get_emb_sz</span><span class="p">(</span><span class="n">dls</span><span class="p">)</span>
+<span class="n">embs</span>
+
+<span class="n">class</span> <span class="n">CollabNN</span><span class="p">(</span><span class="n">Module</span><span class="p">):</span>
+    <span class="n">def</span> <span class="n">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">user_sz</span><span class="p">,</span> <span class="n">item_sz</span><span class="p">,</span> <span class="n">y_range</span><span class="p">=(</span><span class="m">0</span><span class="p">,</span><span class="m">5.5</span><span class="p">),</span> <span class="n">n_act</span><span class="p">=</span><span class="m">100</span><span class="p">):</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">user_factors</span> <span class="p">=</span> <span class="n">Embedding</span><span class="p">(*</span><span class="n">user_sz</span><span class="p">)</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">item_factors</span> <span class="p">=</span> <span class="n">Embedding</span><span class="p">(*</span><span class="n">item_sz</span><span class="p">)</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">layers</span> <span class="p">=</span> <span class="n">nn</span><span class="p">.</span><span class="n">Sequential</span><span class="p">(</span>
+            <span class="n">nn</span><span class="p">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">user_sz</span><span class="p">[</span><span class="m">1</span><span class="p">]+</span><span class="n">item_sz</span><span class="p">[</span><span class="m">1</span><span class="p">],</span> <span class="n">n_act</span><span class="p">),</span>
+            <span class="n">nn</span><span class="p">.</span><span class="n">ReLU</span><span class="p">(),</span>
+            <span class="n">nn</span><span class="p">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">n_act</span><span class="p">,</span> <span class="m">1</span><span class="p">))</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">y_range</span> <span class="p">=</span> <span class="n">y_range</span>
+        
+    <span class="n">def</span> <span class="k">forward</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="n">embs</span> <span class="p">=</span> <span class="n">self</span><span class="p">.</span><span class="n">user_factors</span><span class="p">(</span><span class="n">x</span><span class="p">[:,</span><span class="m">0</span><span class="p">]),</span><span class="n">self</span><span class="p">.</span><span class="n">item_factors</span><span class="p">(</span><span class="n">x</span><span class="p">[:,</span><span class="m">1</span><span class="p">])</span>
+        <span class="n">x</span> <span class="p">=</span> <span class="n">self</span><span class="p">.</span><span class="n">layers</span><span class="p">(</span><span class="n">torch</span><span class="p">.</span><span class="n">cat</span><span class="p">(</span><span class="n">embs</span><span class="p">,</span> <span class="n">dim</span><span class="p">=</span><span class="m">1</span><span class="p">))</span>
+        <span class="n">return</span> <span class="n">sigmoid_range</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="p">*</span><span class="n">self</span><span class="p">.</span><span class="n">y_range</span><span class="p">)</span>
+
+<span class="k">model</span> <span class="p">=</span> <span class="n">CollabNN</span><span class="p">(*</span><span class="n">embs</span><span class="p">)</span>
+<span class="n">learn</span> <span class="p">=</span> <span class="n">Learner</span><span class="p">(</span><span class="n">dls</span><span class="p">,</span> <span class="k">model</span><span class="p">,</span> <span class="n">loss_func</span><span class="p">=</span><span class="n">MSELossFlat</span><span class="p">())</span>
+<span class="n">learn</span><span class="p">.</span><span class="n">fit_one_cycle</span><span class="p">(</span><span class="m">5</span><span class="p">,</span> <span class="m">5e-3</span><span class="p">,</span> <span class="n">wd</span><span class="p">=</span><span class="m">0.01</span><span class="p">)</span>
+<span class="p">#</span> <span class="k">or</span> <span class="n">using</span> <span class="n">fastai</span> <span class="k">version</span> <span class="k">if</span> <span class="n">nn</span><span class="p">=</span><span class="nb">True</span> <span class="n">it</span> <span class="n">will</span> <span class="n">auto</span> <span class="n">call</span> <span class="n">get_emb_sz</span> 
+<span class="n">learn</span> <span class="p">=</span> <span class="n">collab_learner</span><span class="p">(</span><span class="n">dls</span><span class="p">,</span> <span class="n">use_nn</span><span class="p">=</span><span class="nb">True</span><span class="p">,</span> <span class="n">y_range</span><span class="p">=(</span><span class="m">0</span><span class="p">,</span> <span class="m">5.5</span><span class="p">),</span> <span class="n">layers</span><span class="p">=[</span><span class="m">100</span><span class="p">,</span><span class="m">50</span><span class="p">])</span>
+<span class="n">learn</span><span class="p">.</span><span class="n">fit_one_cycle</span><span class="p">(</span><span class="m">5</span><span class="p">,</span> <span class="m">5e-3</span><span class="p">,</span> <span class="n">wd</span><span class="p">=</span><span class="m">0.1</span><span class="p">)</span>
+
+<span class="p">#</span> <span class="n">a</span> <span class="n">look</span> <span class="n">inside</span> <span class="n">fastai</span> <span class="n">internal</span> <span class="n">code</span>
+<span class="p">@</span><span class="n">delegates</span><span class="p">(</span><span class="n">TabularModel</span><span class="p">)</span>
+<span class="n">class</span> <span class="n">EmbeddingNN</span><span class="p">(</span><span class="n">TabularModel</span><span class="p">):</span>
+    <span class="n">def</span> <span class="n">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">emb_szs</span><span class="p">,</span> <span class="n">layers</span><span class="p">,</span> <span class="p">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">super</span><span class="p">().</span><span class="n">__init__</span><span class="p">(</span><span class="n">emb_szs</span><span class="p">,</span> <span class="n">layers</span><span class="p">=</span><span class="n">layers</span><span class="p">,</span> <span class="n">n_cont</span><span class="p">=</span><span class="m">0</span><span class="p">,</span> <span class="n">out_sz</span><span class="p">=</span><span class="m">1</span><span class="p">,</span> <span class="p">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+
+</code></pre></div></div>
+
+<p><em>Note</em></p>
+<ul>
+  <li>In PyTorch: To read parameter value use nn.Parameter which also auto call requires_grad_</li>
+  <li>
+    <p>In Python:(variable length argument in C++) **kwargs in a parameter list means “put any additional keyword arguments into a dict called kwargs</p>
+
+    <ul>
+      <li>**kwargs in an argument list means “insert all key/value pairs in the kwargs dict as named arguments here”</li>
+      <li>this make argments obscure from the tool since they all pack into a dictionary</li>
+      <li>fastai use @delegates docorator to auto unpack it so the tool can see</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="jagons">Jagons</h3>
+<ul>
+  <li>item: refers to product,movie,story,a link, topic…</li>
+  <li>latent factor: and unspecify info that affect the item</li>
+  <li>Embedding: Multiplying by a one-hot-encoded matrix thaat is the same as lookup or index into array to get an item</li>
+  <li>weight decay (L2) wd in fastai control the sum of square value</li>
+  <li>PCA principle component analysis use to reduce the size of the matrix to smaller size</li>
+  <li>probabilistic matrix factorization (PMF)</li>
+</ul>
+
+   
+  </div><a class="u-url" href="/ml-section/ml/2020/09/17/ML-collaborative-filter.html" hidden></a>
+</article>
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Supra_PolyglotCoder</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Vanh Phomsavanh</li><li><a class="u-email" href="mailto:vanhphom@gmail.com">vanhphom@gmail.com</a></li>
+            <li>&copy; VSP LLC 2020 </li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://www.twitter.com/SupraCoder"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#twitter"></use></svg> <span class="username">SupraCoder</span></a></li><li><a href="https://github.com/vanhp"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg> <span class="username">vanhp</span></a></li><li><a href="https://www.facebook.com/vanh+phom"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#facebook"></use></svg> <span class="username">vanh phom</span></a></li><li><a href="https://www.linkedin.com/in/vanh-phomsavanh-1bba668"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#linkedin"></use></svg> <span class="username">vanh-phomsavanh-1bba668</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>A blog about my journey into Machine Learning and coding experience in general</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>
