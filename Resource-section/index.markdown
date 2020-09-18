@@ -21,6 +21,7 @@ image: /images/lion2.jpg
 
 [Douglas Schmidt](http://www.dre.vanderbilt.edu/~schmidt/) is one of prolific professor of computer science. He has ton of contents about sofware and especially in C++ and Java, Android. This is where I come when I feel a little rusty on C++ and Java. His material are up up to date and top-notch.
 
+[visualdtree](https://explained.ai/decision-tree-viz/) 
 [Computational Linear Algebra for Coders](https://github.com/fastai/numerical-linear-algebra).
 https://amarsaini.github.io/Epoching-Blog/jupyter/2020/03/23/Self-Supervision-with-FastAI.html
 https://explained.ai/matrix-calculus/
