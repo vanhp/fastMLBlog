@@ -118,7 +118,7 @@ window.onload = wrap_img;
        • <span class="read-time" title="Estimated read time">
     
     
-      14 min read
+      22 min read
     
 </span></p>
 
@@ -411,126 +411,318 @@ plot_partial_dependence(m, valid_xs_final, ['YearMade','ProductSize'],
 
 <p>Data leakage is subtle and can take many forms. In particular, missing values often represent data leakage.</p>
 
-<p>Tree Interpreter</p>
+<h4 id="tree-interpreter">Tree Interpreter</h4>
 
-<p>```!pip install treeinterpreter
-!pip install waterfallcharts</p>
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Use water fall to draw a chart
-to answer this question. For predicting with a particular row of data, what were the most important factors, and how did they influence that prediction?
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>!pip install treeinterpreter
+!pip install waterfallcharts
 </code></pre></div></div>
-<p>import warnings
-warnings.simplefilter(‘ignore’, FutureWarning)</p>
+<p>Use water fall to draw a chart
+to answer this question. For predicting with a particular row of data, what were the most important factors, and how did they influence that prediction?</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>import warnings
+warnings.simplefilter('ignore', FutureWarning)
 
-<p>from treeinterpreter import treeinterpreter
-from waterfall_chart import plot as waterfall</p>
+from treeinterpreter import treeinterpreter
+from waterfall_chart import plot as waterfall
 
-<p>row = valid_xs_final.iloc[:5]
+row = valid_xs_final.iloc[:5]
 prediction,bias,contributions = treeinterpreter.predict(m, row.values)
 prediction[0], bias[0], contributions[0].sum()
 waterfall(valid_xs_final.columns, contributions[0], threshold=0.08, 
-          rotation_value=45,formatting=’’);</p>
+          rotation_value=45,formatting='{:,.3f}');
+          
+</code></pre></div></div>
+<h3 id="extrapolation-and-neural-networks">Extrapolation and Neural Networks</h3>
+<p>The value in the dataset determine the min and maximum value that Random forest can be. It cannot extrapolate value that beyon this boundary</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<h3 id="finding-out-of-domain-data">Finding Out-of-Domain Data</h3>
+<p>The test dataset and train,validation dataset may not have the same distribution pattern. Especially,data that don’t fit the general norm of rest of dataset. If they are too much different this may skew the result.</p>
 
+<h4 id="using-random-forest-to-help-find-uneven-distribution">Using Random forest to help find uneven distribution</h4>
+<p>If the either the test,validation set have the same distribution with the train set there should be no predicting power another word, it should be 0.
+step</p>
+<ol>
+  <li>combine the train and validation</li>
+  <li>create a dependent variable to reprent the data from each row</li>
+  <li>build the RF</li>
+  <li>check the model feature importance</li>
+  <li>if the value differ significantly this indicate different distribution</li>
+  <li>try to remove this value to see if it affect the outcome</li>
+</ol>
 
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>df_dom = pd.concat([xs_final, valid_xs_final])
+is_valid = np.array([0]*len(xs_final) + [1]*len(valid_xs_final))
 
-*Note*
+m = rf(df_dom, is_valid)
+rf_feat_importance(m, df_dom)[:6]
 
-- Entity embedding not only reduces memory usage and speeds up neural networks compared with one-hot encoding, but more importantly by mapping similar values close to each other in the embedding space it reveals the intrinsic properties of the categorical variables... [It] is especially useful for datasets with lots of high cardinality features, where other methods tend to overfit... As entity embedding defines a distance measure for categorical variables it can be used for visualizing categorical data and for data clustering.
-- In practice try both methods to see which one better suite for the task
-- Deep learning generally work well with highly complex data type
-- the leaf node is the predicting result
-- non leaf node must be divide further until leaf node
-- the criteria for splitting should make sense for the data type 
-- check leaf node if there too many of them maybe the result of splitting on unsual condition
-- Randdom forest not very sensitive to the hyperparameter choices, such as max_features so the tree can be many as there time to train
-- the more tree the more accurate
-- set max_samples to default if data is less than 200000 otherwise set to 200000
-- use setting for max_features=0.5,min_sample_leaf=4 work well
-- generally the first step to improving a model is simplifying it
-- Determining Similarity: The most similar pairs are found by calculating the rank correlation, which means that all the values are replaced with their rank (i.e., first, second, third, etc. within the column), and then the correlation is calculated.
+# take the base line of original RMSE value for comparison
+m = rf(xs_final, y)
+print('orig', m_rmse(m, valid_xs_final, valid_y))
 
+for c in ('SalesID','saleElapsed','MachineID'):
+    m = rf(xs_final.drop(c,axis=1), y)
+    print(c, m_rmse(m, valid_xs_final.drop(c,axis=1), valid_y))
 
+# look like these 2 variables may be removable with little effect
+time_vars = ['SalesID','MachineID']
+xs_final_time = xs_final.drop(time_vars, axis=1)
+valid_xs_time = valid_xs_final.drop(time_vars, axis=1)
 
-key insign:
-1. an embedding layer is exactly equivalent to placing an ordinary linear layer after every one-hot-encoded input layer
-2. the embedding transforms the categorical variables into inputs that are both continuous and meaningful.
+m = rf(xs_final_time, y)
+m_rmse(m, valid_xs_time, valid_y)
+# tip remove some old data that are less relevance to whole data 
+xs['saleYear'].hist();
+# let retrain see if it improve!
+filt = xs['saleYear']&gt;2004
+xs_filt = xs_final_time[filt]
+y_filt = y[filt]
+m = rf(xs_filt, y_filt)
+m_rmse(m, xs_filt, y_filt), m_rmse(m, valid_xs_time, valid_y)
 
+</code></pre></div></div>
 
-### Jagons:
-- Continuous variables are numerical data, such as "age," that can be directly fed to the model, 
-- Categorical variables contain a number of discrete levels, such as "movie ID," for which addition and multiplication don't have meaning
-- bagging process of random take rows of data to train model and make prediction then average over all prediction
+<h3 id="tabular-with-neural-network">Tabular with Neural Network</h3>
 
+<p>In NN categorical data is require the use of embedding.
+Fastai can convert categorical variable columns to embedding but it must be specified.
+It does this by comparing the number of distinct levels in the variable to the value of the max_card == 9000 parameter.
+If it’s lower, fastai will treat the variable as categorical else treat as continous variable. It creates embeding very large size but &lt; 10000 is best</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>df_nn = pd.read_csv(path/'TrainAndValid.csv', low_memory=False)
+df_nn['ProductSize'] = df_nn['ProductSize'].astype('category')
+df_nn['ProductSize'].cat.set_categories(sizes, ordered=True, inplace=True)
+df_nn[dep_var] = np.log(df_nn[dep_var])
+df_nn = add_datepart(df_nn, 'saledate')
+df_nn_final = df_nn[list(xs_final_time.columns) + [dep_var]]
 
+# max_card &gt; 9000 treat as continous else treat as categorical
+cont_nn,cat_nn = cont_cat_split(df_nn_final, max_card=9000, dep_var=dep_var)
 
+# use this variable to predict future sale price
+# make it a continous variable
 
+#this col has &gt; 9000 but don't want in categorical, move to continous
+cont_nn.append('saleElapsed')
+# take out from categorical col
+cat_nn.remove('saleElapsed')
+# check its cardinallity of each variable
+df_nn_final[cat_nn].nunique()
+# hi # of card mean large # of row in embedding matrix
+# remove it but make sure it doesn't affect RF model
+xs_filt2 = xs_filt.drop('fiModelDescriptor', axis=1)
+valid_xs_time2 = valid_xs_time.drop('fiModelDescriptor', axis=1)
+m2 = rf(xs_filt2, y_filt)
+m_rmse(m, xs_filt2, y_filt), m_rmse(m2, valid_xs_time2, valid_y)
 
+#look ok, remove it
+cat_nn.remove('fiModelDescriptor')
 
+</code></pre></div></div>
+<p>Create Panda tabular with normalization (x - mean/std) for NN because care about the scale. However, RF only care about the order of values in the the variable</p>
 
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>procs_nn = [Categorify, FillMissing, Normalize]
+to_nn = TabularPandas(df_nn_final, procs_nn, cat_nn, cont_nn,
+                      splits=splits, y_names=dep_var)
 
-Jekyll requires blog post files to be named according to the following format:
+</code></pre></div></div>
+<p>Can use large batch size since Tabular use less GPU ram than NN.</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>dls = to_nn.dataloaders(1024)
+y = to_nn.train.y
+# set y_range for regression model
+y.min(),y.max()
+</code></pre></div></div>
+<p>create the learner, set the loss function to MSE
+By default, for tabular data fastai creates a neural network with two hidden layers, with 200 and 100 activations, respectively
+for larger dataset set them higher</p>
 
-`YEAR-MONTH-DAY-filename.md`
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>from fastai.tabular.all import *
+learn = tabular_learner(dls, y_range=(8,12), layers=[500,250],
+                        n_out=1, loss_func=F.mse_loss)
+learn.lr_find()
+learn.fit_one_cycle(5, 1e-2)
+preds,targs = learn.get_preds()
+r_mse(preds,targs)
+learn.save('nn')
+</code></pre></div></div>
 
-Where `YEAR` is a four-digit number, `MONTH` and `DAY` are both two-digit numbers, and `filename` is whatever file name you choose, to remind yourself what this post is about. `.md` is the file extension for markdown files.
+<h3 id="ensemble-of-nueral-net-and-random-forest-get-the-best-of-both-world">Ensemble of Nueral Net and Random Forest get the best of both world?</h3>
 
-The first line of the file should start with a single hash character, then a space, then your title. This is how you create a "*level 1 heading*" in markdown. Then you can create level 2, 3, etc headings as you wish but repeating the hash character, such as you see in the line `## File names` above.
+<p>Since Random Forest itself is comprise with group of Decision trees.</p>
+<h4 id="the-bagging-technique">The bagging technique.</h4>
+<p>It’s reasonable to expect that add Neural network into the bag then average the result would be possible. The question is will it improve the performance.</p>
 
-## Basic formatting
+<p>One problem is that PyTorch use different tensor format e.g. rank-2,scikitlearn/Numpy use rank-1. The squeeze function come in handy to remove the extra axis from PyTorch to Numpy</p>
 
-You can use *italics*, **bold**, `code font text`, and create [links](https://www.markdownguide.org/cheat-sheet/). Here's a footnote [^1]. Here's a horizontal rule:
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>rf_preds = m.predict(valid_xs_time)
+ens_preds = (to_np(preds.squeeze()) + rf_preds) /2
+r_mse(ens_preds,valid_y)
 
----
+</code></pre></div></div>
+<h4 id="the-boosting-technique">The Boosting technique</h4>
 
-## Lists
+<p>Instead of averaging the result of the model as in RF.
+the step in this approach do:</p>
+<ol>
+  <li>Train a small model that underfits your dataset.</li>
+  <li>Calculate the predictions in the training set for this model.</li>
+  <li>Subtract the predictions from the targets;
+    <ul>
+      <li>these are called the “residuals” and represent the error for each point in the training set.</li>
+    </ul>
+  </li>
+  <li>Go back to step 1, but instead of using the original targets, use the residuals as the targets for the training.</li>
+  <li>Continue doing this until you reach some stopping criterion, such as a maximum number of trees, or you observe your validation set error getting worse.</li>
+</ol>
 
-Here's a list:
+<ul>
+  <li>each new tree will be attempting to fit the error of all of the previous trees combined.</li>
+  <li>Because we are continually creating new residuals, by subtracting the predictions of each new tree from the residuals from the previous tree, the residuals will get smaller and smaller.</li>
+  <li>To make predictions with an ensemble of boosted trees, we calculate the predictions from each tree, and then add them all together.</li>
+</ul>
 
-- item 1
-- item 2
+<p>Some well-known models and libraries</p>
 
-And a numbered list:
+<ul>
+  <li>Gradient boosting machines (GBMs) and</li>
+  <li>gradient boosted decision trees (GBDTs)</li>
+  <li>XGBoost</li>
+</ul>
 
-1. item 1
-1. item 2
+<h3 id="combining-embeddings-with-other-methods">Combining Embeddings with Other Methods</h3>
+<p>Embedding (array lookup) may help improve the performance of Neural Network especially at inference time.</p>
 
-## Boxes and stuff
+<p><em>Note:</em></p>
 
-&gt; This is a quotation
+<ul>
+  <li>Entity embedding not only reduces memory usage and speeds up neural networks compared with one-hot encoding, but more importantly by mapping similar values close to each other in the embedding space it reveals the intrinsic properties of the categorical variables… [It] is especially useful for datasets with lots of high cardinality features, where other methods tend to overfit… As entity embedding defines a distance measure for categorical variables it can be used for visualizing categorical data and for data clustering.</li>
+  <li>In practice try both methods to see which one better suite for the task</li>
+  <li>Deep learning generally work well with highly complex data type</li>
+  <li>the leaf node is the predicting result</li>
+  <li>non leaf node must be divide further until leaf node</li>
+  <li>the criteria for splitting should make sense for the data type</li>
+  <li>check leaf node if there too many of them maybe the result of splitting on unsual condition</li>
+  <li>Randdom forest not very sensitive to the hyperparameter choices, such as max_features so the tree can be many as there time to train</li>
+  <li>the more tree the more accurate</li>
+  <li>set max_samples to default if data is less than 200000 otherwise set to 200000</li>
+  <li>use setting for max_features=0.5,min_sample_leaf=4 work well</li>
+  <li>generally the first step to improving a model is simplifying it</li>
+  <li>Determining Similarity: The most similar pairs are found by calculating the rank correlation, which means that all the values are replaced with their rank (i.e., first, second, third, etc. within the column), and then the correlation is calculated.</li>
+  <li>PyTorch unsqueeze() to add axis to data or using x[:,None] in Python the None mean add a axis, to do the same job</li>
+  <li>boosting can lead to overfitting with a boosted ensemble,
+    <ul>
+      <li>the more trees you have, the better the training error becomes, and</li>
+      <li>eventually you will see overfitting on the validation set.</li>
+    </ul>
+  </li>
+</ul>
 
-&lt;div class="Toast Toast--warning googoo"&gt;
-   &lt;span class="Toast-icon"&gt;&lt;svg class="octicon octicon-alert octicon octicon-alert octicon octicon-alert octicon octicon-alert octicon octicon-alert octicon octicon-alert octicon octicon-alert octicon octicon-alert octicon octicon-alert octicon octicon-alert" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"&gt;&lt;path fill-rule="evenodd" d="M8.893 1.5c-.183-.31-.52-.5-.887-.5s-.703.19-.886.5L.138 13.499a.98.98 0 000 1.001c.193.31.53.501.886.501h13.964c.367 0 .704-.19.877-.5a1.03 1.03 0 00.01-1.002L8.893 1.5zm.133 11.497H6.987v-2.003h2.039v2.003zm0-3.004H6.987V5.987h2.039v4.006z"&gt;&lt;/path&gt;&lt;/svg&gt;&lt;/span&gt;
-   &lt;span class="Toast-content"&gt;You can include alert boxes&lt;/span&gt;
-&lt;/div&gt;
+<p>key insign:</p>
+<ol>
+  <li>an embedding layer is exactly equivalent to placing an ordinary linear layer after every one-hot-encoded input layer</li>
+  <li>the embedding transforms the categorical variables into inputs that are both continuous and meaningful.</li>
+  <li>Boosting is in very active research subjects</li>
+  <li>gradient boosted trees are extremely sensitive to the choices of the hyperparameters
+    <ul>
+      <li>use a loop that tries a range of different hyperparameters to find the ones that work best.</li>
+    </ul>
+  </li>
+  <li>Random forests are the easiest to train, because they are extremely resilient to hyperparameter choices and require very little preprocessing. They are very fast to train, and should not overfit if you have enough trees. But they can be a little less accurate, especially if extrapolation is required, such as predicting future time periods.</li>
+</ol>
 
+<p>Gradient boosting machines in theory are just as fast to train as random forests, but in practice you will have to try lots of different hyperparameters. They can overfit, but they are often a little more accurate than random forests.</p>
 
-...and...
+<p>Neural networks take the longest time to train, and require extra preprocessing, such as normalization; this normalization needs to be used at inference time as well. They can provide great results and extrapolate well, but only if you are careful with your hyperparameters and take care to avoid overfitting.</p>
+<ol>
+  <li>starting your analysis with a random forest. This will give you a strong baseline you can be confident that it’s a reasonable starting point.
+    <ul>
+      <li>Then use that model for feature selection and partial dependence analysis, to get a better understanding of your data.</li>
+      <li>Then try neural nets and GBMs if they give significantly better results on your validation set in a reasonable amount of time, use them.</li>
+      <li>If decision tree ensembles are working well for you, try adding the embeddings for the categorical variables to the data, and see if that helps your decision trees learn better.</li>
+    </ul>
+  </li>
+</ol>
 
-&lt;div class="Toast"&gt;
-   &lt;span class="Toast-icon"&gt;&lt;svg class="octicon octicon-info octicon octicon-info octicon octicon-info octicon octicon-info octicon octicon-info octicon octicon-info octicon octicon-info octicon octicon-info octicon octicon-info octicon octicon-info" viewBox="0 0 14 16" version="1.1" width="14" height="16" aria-hidden="true"&gt;&lt;path fill-rule="evenodd" d="M6.3 5.69a.942.942 0 01-.28-.7c0-.28.09-.52.28-.7.19-.18.42-.28.7-.28.28 0 .52.09.7.28.18.19.28.42.28.7 0 .28-.09.52-.28.7a1 1 0 01-.7.3c-.28 0-.52-.11-.7-.3zM8 7.99c-.02-.25-.11-.48-.31-.69-.2-.19-.42-.3-.69-.31H6c-.27.02-.48.13-.69.31-.2.2-.3.44-.31.69h1v3c.02.27.11.5.31.69.2.2.42.31.69.31h1c.27 0 .48-.11.69-.31.2-.19.3-.42.31-.69H8V7.98v.01zM7 2.3c-3.14 0-5.7 2.54-5.7 5.68 0 3.14 2.56 5.7 5.7 5.7s5.7-2.55 5.7-5.7c0-3.15-2.56-5.69-5.7-5.69v.01zM7 .98c3.86 0 7 3.14 7 7s-3.14 7-7 7-7-3.12-7-7 3.14-7 7-7z"&gt;&lt;/path&gt;&lt;/svg&gt;&lt;/span&gt;
-   &lt;span class="Toast-content"&gt;You can include info boxes&lt;/span&gt;
-&lt;/div&gt;
+<h3 id="how-fastai-treat-tabular-data">How fastai treat Tabular Data</h3>
 
+<p>fastai’s Tabular Classes
+In fastai, a tabular model is simply a model that takes columns of continuous or categorical data, and predicts a category (a classification model) or a continuous value (a regression model). Categorical independent variables are passed through an embedding, and concatenated, as we saw in the neural net we used for collaborative filtering, and then continuous variables are concatenated as well.</p>
 
-## Images
+<p>The model created in tabular_learner is an object of class TabularModel. Take a look at the source for tabular_learner now (remember, that’s tabular_learner?? in Jupyter). You’ll see that like collab_learner, it first calls get_emb_sz to calculate appropriate embedding sizes (you can override these by using the emb_szs parameter, which is a dictionary containing any column names you want to set sizes for manually), and it sets a few other defaults. Other than that, it just creates the TabularModel, and passes that to TabularLearner (note that TabularLearner is identical to Learner, except for a customized predict method).</p>
 
-![](/images/logo.png "fast.ai's logo")
+<p>That means that really all the work is happening in TabularModel, so take a look at the source for that now. With the exception of the BatchNorm1d and Dropout layers (which we’ll be learning about shortly), you now have the knowledge required to understand this whole class. Take a look at the discussion of EmbeddingNN at the end of the last chapter. Recall that it passed n_cont=0 to TabularModel. We now can see why that was: because there are zero continuous variables (in fastai the n_ prefix means “number of,” and cont is an abbreviation for “continuous”).</p>
 
-## Code
+<h3 id="jagons">Jagons:</h3>
+<ul>
+  <li>Continuous variables are numerical data, such as “age,” that can be directly fed to the model,</li>
+  <li>Categorical variables contain a number of discrete levels, such as “movie ID,” for which addition and multiplication don’t have meaning</li>
+  <li>bagging process of random take rows of data to train model and make prediction then average over all prediction</li>
+</ul>
 
-You can format text and code per usual 
+<p>Jekyll requires blog post files to be named according to the following format:</p>
 
-General preformatted text:
+<p><code class="highlighter-rouge">YEAR-MONTH-DAY-filename.md</code></p>
 
-    # Do a thing
-    do_thing()
+<p>Where <code class="highlighter-rouge">YEAR</code> is a four-digit number, <code class="highlighter-rouge">MONTH</code> and <code class="highlighter-rouge">DAY</code> are both two-digit numbers, and <code class="highlighter-rouge">filename</code> is whatever file name you choose, to remind yourself what this post is about. <code class="highlighter-rouge">.md</code> is the file extension for markdown files.</p>
 
-Python code and output:
+<p>The first line of the file should start with a single hash character, then a space, then your title. This is how you create a “<em>level 1 heading</em>” in markdown. Then you can create level 2, 3, etc headings as you wish but repeating the hash character, such as you see in the line <code class="highlighter-rouge">## File names</code> above.</p>
 
-```python
-# Prints '2'
-print(1+1)
+<h2 id="basic-formatting">Basic formatting</h2>
+
+<p>You can use <em>italics</em>, <strong>bold</strong>, <code class="highlighter-rouge">code font text</code>, and create <a href="https://www.markdownguide.org/cheat-sheet/">links</a>. Here’s a footnote <sup id="fnref:1" role="doc-noteref"><a href="#fn:1" class="footnote">1</a></sup>. Here’s a horizontal rule:</p>
+
+<hr />
+
+<h2 id="lists">Lists</h2>
+
+<p>Here’s a list:</p>
+
+<ul>
+  <li>item 1</li>
+  <li>item 2</li>
+</ul>
+
+<p>And a numbered list:</p>
+
+<ol>
+  <li>item 1</li>
+  <li>item 2</li>
+</ol>
+
+<h2 id="boxes-and-stuff">Boxes and stuff</h2>
+
+<blockquote>
+  <p>This is a quotation</p>
+</blockquote>
+
+<div class="Toast Toast--warning googoo">
+   <span class="Toast-icon"><svg class="octicon octicon-alert octicon octicon-alert octicon octicon-alert octicon octicon-alert octicon octicon-alert octicon octicon-alert octicon octicon-alert octicon octicon-alert octicon octicon-alert" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M8.893 1.5c-.183-.31-.52-.5-.887-.5s-.703.19-.886.5L.138 13.499a.98.98 0 000 1.001c.193.31.53.501.886.501h13.964c.367 0 .704-.19.877-.5a1.03 1.03 0 00.01-1.002L8.893 1.5zm.133 11.497H6.987v-2.003h2.039v2.003zm0-3.004H6.987V5.987h2.039v4.006z"></path></svg></span>
+   <span class="Toast-content">You can include alert boxes</span>
+</div>
+
+<p>…and…</p>
+
+<div class="Toast">
+   <span class="Toast-icon"><svg class="octicon octicon-info octicon octicon-info octicon octicon-info octicon octicon-info octicon octicon-info octicon octicon-info octicon octicon-info octicon octicon-info octicon octicon-info" viewBox="0 0 14 16" version="1.1" width="14" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M6.3 5.69a.942.942 0 01-.28-.7c0-.28.09-.52.28-.7.19-.18.42-.28.7-.28.28 0 .52.09.7.28.18.19.28.42.28.7 0 .28-.09.52-.28.7a1 1 0 01-.7.3c-.28 0-.52-.11-.7-.3zM8 7.99c-.02-.25-.11-.48-.31-.69-.2-.19-.42-.3-.69-.31H6c-.27.02-.48.13-.69.31-.2.2-.3.44-.31.69h1v3c.02.27.11.5.31.69.2.2.42.31.69.31h1c.27 0 .48-.11.69-.31.2-.19.3-.42.31-.69H8V7.98v.01zM7 2.3c-3.14 0-5.7 2.54-5.7 5.68 0 3.14 2.56 5.7 5.7 5.7s5.7-2.55 5.7-5.7c0-3.15-2.56-5.69-5.7-5.69v.01zM7 .98c3.86 0 7 3.14 7 7s-3.14 7-7 7-7-3.12-7-7 3.14-7 7-7z"></path></svg></span>
+   <span class="Toast-content">You can include info boxes</span>
+</div>
+
+<h2 id="images">Images</h2>
+
+<p><img src="/images/logo.png" alt="" title="fast.ai's logo" /></p>
+
+<h2 id="code">Code</h2>
+
+<p>You can format text and code per usual</p>
+
+<p>General preformatted text:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code># Do a thing
+do_thing()
+</code></pre></div></div>
+
+<p>Python code and output:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Prints '2'
+</span><span class="k">print</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
 </code></pre></div></div>
 
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>2
@@ -574,6 +766,13 @@ wget https://example.com/cat_photo1.png
 
 <h2 id="footnotes">Footnotes</h2>
 
+<div class="footnotes" role="doc-endnotes">
+  <ol>
+    <li id="fn:1" role="doc-endnote">
+      <p>This is the footnote. <a href="#fnref:1" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+  </ol>
+</div>
 
    
   </div><a class="u-url" href="/ml-section/ml/2020/09/18/ML-tabular.html" hidden></a>
