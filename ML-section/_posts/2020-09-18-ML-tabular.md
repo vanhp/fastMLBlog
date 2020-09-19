@@ -271,9 +271,10 @@ Data Leakage
 
 Data leakage is subtle and can take many forms. In particular, missing values often represent data leakage.
 
-Tree Interpreter
+#### Tree Interpreter
 
-```!pip install treeinterpreter
+```
+!pip install treeinterpreter
 !pip install waterfallcharts
 ```
 Use water fall to draw a chart
@@ -292,11 +293,164 @@ waterfall(valid_xs_final.columns, contributions[0], threshold=0.08,
           rotation_value=45,formatting='{:,.3f}');
           
 ```
+### Extrapolation and Neural Networks
+The value in the dataset determine the min and maximum value that Random forest can be. It cannot extrapolate value that beyon this boundary
+
+### Finding Out-of-Domain Data
+The test dataset and train,validation dataset may not have the same distribution pattern. Especially,data that don't fit the general norm of rest of dataset. If they are too much different this may skew the result.
+
+#### Using Random forest to help find uneven distribution
+If the either the test,validation set have the same distribution with the train set there should be no predicting power another word, it should be 0.
+step 
+1. combine the train and validation 
+2. create a dependent variable to reprent the data from each row
+3. build the RF
+4. check the model feature importance
+5. if the value differ significantly this indicate different distribution
+6. try to remove this value to see if it affect the outcome
+
+```
+df_dom = pd.concat([xs_final, valid_xs_final])
+is_valid = np.array([0]*len(xs_final) + [1]*len(valid_xs_final))
+
+m = rf(df_dom, is_valid)
+rf_feat_importance(m, df_dom)[:6]
+
+# take the base line of original RMSE value for comparison
+m = rf(xs_final, y)
+print('orig', m_rmse(m, valid_xs_final, valid_y))
+
+for c in ('SalesID','saleElapsed','MachineID'):
+    m = rf(xs_final.drop(c,axis=1), y)
+    print(c, m_rmse(m, valid_xs_final.drop(c,axis=1), valid_y))
+
+# look like these 2 variables may be removable with little effect
+time_vars = ['SalesID','MachineID']
+xs_final_time = xs_final.drop(time_vars, axis=1)
+valid_xs_time = valid_xs_final.drop(time_vars, axis=1)
+
+m = rf(xs_final_time, y)
+m_rmse(m, valid_xs_time, valid_y)
+# tip remove some old data that are less relevance to whole data 
+xs['saleYear'].hist();
+# let retrain see if it improve!
+filt = xs['saleYear']>2004
+xs_filt = xs_final_time[filt]
+y_filt = y[filt]
+m = rf(xs_filt, y_filt)
+m_rmse(m, xs_filt, y_filt), m_rmse(m, valid_xs_time, valid_y)
+
+```
+
+### Tabular with Neural Network
+
+In NN categorical data is require the use of embedding.
+Fastai can convert categorical variable columns to embedding but it must be specified.
+It does this by comparing the number of distinct levels in the variable to the value of the max_card == 9000 parameter.
+If it's lower, fastai will treat the variable as categorical else treat as continous variable. It creates embeding very large size but < 10000 is best
+```
+df_nn = pd.read_csv(path/'TrainAndValid.csv', low_memory=False)
+df_nn['ProductSize'] = df_nn['ProductSize'].astype('category')
+df_nn['ProductSize'].cat.set_categories(sizes, ordered=True, inplace=True)
+df_nn[dep_var] = np.log(df_nn[dep_var])
+df_nn = add_datepart(df_nn, 'saledate')
+df_nn_final = df_nn[list(xs_final_time.columns) + [dep_var]]
+
+# max_card > 9000 treat as continous else treat as categorical
+cont_nn,cat_nn = cont_cat_split(df_nn_final, max_card=9000, dep_var=dep_var)
+
+# use this variable to predict future sale price
+# make it a continous variable
+
+#this col has > 9000 but don't want in categorical, move to continous
+cont_nn.append('saleElapsed')
+# take out from categorical col
+cat_nn.remove('saleElapsed')
+# check its cardinallity of each variable
+df_nn_final[cat_nn].nunique()
+# hi # of card mean large # of row in embedding matrix
+# remove it but make sure it doesn't affect RF model
+xs_filt2 = xs_filt.drop('fiModelDescriptor', axis=1)
+valid_xs_time2 = valid_xs_time.drop('fiModelDescriptor', axis=1)
+m2 = rf(xs_filt2, y_filt)
+m_rmse(m, xs_filt2, y_filt), m_rmse(m2, valid_xs_time2, valid_y)
+
+#look ok, remove it
+cat_nn.remove('fiModelDescriptor')
+
+```
+Create Panda tabular with normalization (x - mean/std) for NN because care about the scale. However, RF only care about the order of values in the the variable
+
+```
+procs_nn = [Categorify, FillMissing, Normalize]
+to_nn = TabularPandas(df_nn_final, procs_nn, cat_nn, cont_nn,
+                      splits=splits, y_names=dep_var)
+
+```
+Can use large batch size since Tabular use less GPU ram than NN.
+```
+dls = to_nn.dataloaders(1024)
+y = to_nn.train.y
+# set y_range for regression model
+y.min(),y.max()
+```
+create the learner, set the loss function to MSE
+By default, for tabular data fastai creates a neural network with two hidden layers, with 200 and 100 activations, respectively
+for larger dataset set them higher
+
+```
+from fastai.tabular.all import *
+learn = tabular_learner(dls, y_range=(8,12), layers=[500,250],
+                        n_out=1, loss_func=F.mse_loss)
+learn.lr_find()
+learn.fit_one_cycle(5, 1e-2)
+preds,targs = learn.get_preds()
+r_mse(preds,targs)
+learn.save('nn')
+```
+
+### Ensemble of Nueral Net and Random Forest get the best of both world?
+
+Since Random Forest itself is comprise with group of Decision trees. 
+#### The bagging technique.
+It's reasonable to expect that add Neural network into the bag then average the result would be possible. The question is will it improve the performance. 
+
+One problem is that PyTorch use different tensor format e.g. rank-2,scikitlearn/Numpy use rank-1. The squeeze function come in handy to remove the extra axis from PyTorch to Numpy
+
+```
+rf_preds = m.predict(valid_xs_time)
+ens_preds = (to_np(preds.squeeze()) + rf_preds) /2
+r_mse(ens_preds,valid_y)
+
+```
+#### The Boosting technique
+
+Instead of averaging the result of the model as in RF.
+the step in this approach do:
+1. Train a small model that underfits your dataset.
+2. Calculate the predictions in the training set for this model.
+3. Subtract the predictions from the targets; 
+    - these are called the "residuals" and represent the error for each point in the training set.
+4. Go back to step 1, but instead of using the original targets, use the residuals as the targets for the training.
+5. Continue doing this until you reach some stopping criterion, such as a maximum number of trees, or you observe your validation set error getting worse.
+
+- each new tree will be attempting to fit the error of all of the previous trees combined.
+- Because we are continually creating new residuals, by subtracting the predictions of each new tree from the residuals from the previous tree, the residuals will get smaller and smaller.
+- To make predictions with an ensemble of boosted trees, we calculate the predictions from each tree, and then add them all together. 
+
+
+Some well-known models and libraries
+
+- Gradient boosting machines (GBMs) and 
+- gradient boosted decision trees (GBDTs) 
+- XGBoost
+
+### Combining Embeddings with Other Methods
+Embedding (array lookup) may help improve the performance of Neural Network especially at inference time. 
 
 
 
-
-*Note*
+*Note:*
 
 - Entity embedding not only reduces memory usage and speeds up neural networks compared with one-hot encoding, but more importantly by mapping similar values close to each other in the embedding space it reveals the intrinsic properties of the categorical variables... [It] is especially useful for datasets with lots of high cardinality features, where other methods tend to overfit... As entity embedding defines a distance measure for categorical variables it can be used for visualizing categorical data and for data clustering.
 - In practice try both methods to see which one better suite for the task
@@ -311,12 +465,38 @@ waterfall(valid_xs_final.columns, contributions[0], threshold=0.08,
 - use setting for max_features=0.5,min_sample_leaf=4 work well
 - generally the first step to improving a model is simplifying it
 - Determining Similarity: The most similar pairs are found by calculating the rank correlation, which means that all the values are replaced with their rank (i.e., first, second, third, etc. within the column), and then the correlation is calculated.
-
+- PyTorch unsqueeze() to add axis to data or using x[:,None] in Python the None mean add a axis, to do the same job
+- boosting can lead to overfitting with a boosted ensemble, 
+    - the more trees you have, the better the training error becomes, and 
+    - eventually you will see overfitting on the validation set.
 
 
 key insign:
 1. an embedding layer is exactly equivalent to placing an ordinary linear layer after every one-hot-encoded input layer
 2. the embedding transforms the categorical variables into inputs that are both continuous and meaningful.
+3. Boosting is in very active research subjects
+4. gradient boosted trees are extremely sensitive to the choices of the hyperparameters
+    - use a loop that tries a range of different hyperparameters to find the ones that work best.
+
+5. Random forests are the easiest to train, because they are extremely resilient to hyperparameter choices and require very little preprocessing. They are very fast to train, and should not overfit if you have enough trees. But they can be a little less accurate, especially if extrapolation is required, such as predicting future time periods.
+
+Gradient boosting machines in theory are just as fast to train as random forests, but in practice you will have to try lots of different hyperparameters. They can overfit, but they are often a little more accurate than random forests.
+
+Neural networks take the longest time to train, and require extra preprocessing, such as normalization; this normalization needs to be used at inference time as well. They can provide great results and extrapolate well, but only if you are careful with your hyperparameters and take care to avoid overfitting.
+6. starting your analysis with a random forest. This will give you a strong baseline you can be confident that it's a reasonable starting point. 
+    - Then use that model for feature selection and partial dependence analysis, to get a better understanding of your data.
+    - Then try neural nets and GBMs if they give significantly better results on your validation set in a reasonable amount of time, use them. 
+    - If decision tree ensembles are working well for you, try adding the embeddings for the categorical variables to the data, and see if that helps your decision trees learn better.
+
+### How fastai treat Tabular Data
+
+fastai's Tabular Classes
+In fastai, a tabular model is simply a model that takes columns of continuous or categorical data, and predicts a category (a classification model) or a continuous value (a regression model). Categorical independent variables are passed through an embedding, and concatenated, as we saw in the neural net we used for collaborative filtering, and then continuous variables are concatenated as well.
+
+The model created in tabular_learner is an object of class TabularModel. Take a look at the source for tabular_learner now (remember, that's tabular_learner?? in Jupyter). You'll see that like collab_learner, it first calls get_emb_sz to calculate appropriate embedding sizes (you can override these by using the emb_szs parameter, which is a dictionary containing any column names you want to set sizes for manually), and it sets a few other defaults. Other than that, it just creates the TabularModel, and passes that to TabularLearner (note that TabularLearner is identical to Learner, except for a customized predict method).
+
+That means that really all the work is happening in TabularModel, so take a look at the source for that now. With the exception of the BatchNorm1d and Dropout layers (which we'll be learning about shortly), you now have the knowledge required to understand this whole class. Take a look at the discussion of EmbeddingNN at the end of the last chapter. Recall that it passed n_cont=0 to TabularModel. We now can see why that was: because there are zero continuous variables (in fastai the n_ prefix means "number of," and cont is an abbreviation for "continuous").
+
 
 
 ### Jagons:
