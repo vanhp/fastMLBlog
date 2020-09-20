@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="twitter:card" content="summary" /><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>RNN the Engine of NLP | Supra_PolyglotCoder</title>
+<meta name="generator" content="Jekyll v4.0.0" />
+<meta property="og:title" content="RNN the Engine of NLP" />
+<meta name="author" content="Vanh Phomsavanh" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Look under the hood of Recurrent Nueral Network" />
+<meta property="og:description" content="Look under the hood of Recurrent Nueral Network" />
+<link rel="canonical" href="https://www.vanhp.com/ml-section/ml/2020/09/19/ML-RNN.html" />
+<meta property="og:url" content="https://www.vanhp.com/ml-section/ml/2020/09/19/ML-RNN.html" />
+<meta property="og:site_name" content="Supra_PolyglotCoder" />
+<meta property="og:image" content="https://www.vanhp.com/ML-section/assets/images/neuralNet1.jpg" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2020-09-19T00:00:00-05:00" />
+<script type="application/ld+json">
+{"author":{"@type":"Person","name":"Vanh Phomsavanh"},"description":"Look under the hood of Recurrent Nueral Network","dateModified":"2020-09-19T00:00:00-05:00","datePublished":"2020-09-19T00:00:00-05:00","headline":"RNN the Engine of NLP","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://www.vanhp.com/ml-section/ml/2020/09/19/ML-RNN.html"},"image":"https://www.vanhp.com/ML-section/assets/images/neuralNet1.jpg","url":"https://www.vanhp.com/ml-section/ml/2020/09/19/ML-RNN.html","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://www.vanhp.com/feed.xml" title="Supra_PolyglotCoder" /><link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>RNN the Engine of NLP | Supra_PolyglotCoder</title>
+<meta name="generator" content="Jekyll v4.0.0" />
+<meta property="og:title" content="RNN the Engine of NLP" />
+<meta name="author" content="Vanh Phomsavanh" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Look under the hood of Recurrent Nueral Network" />
+<meta property="og:description" content="Look under the hood of Recurrent Nueral Network" />
+<link rel="canonical" href="https://www.vanhp.com/ml-section/ml/2020/09/19/ML-RNN.html" />
+<meta property="og:url" content="https://www.vanhp.com/ml-section/ml/2020/09/19/ML-RNN.html" />
+<meta property="og:site_name" content="Supra_PolyglotCoder" />
+<meta property="og:image" content="https://www.vanhp.com/ML-section/assets/images/neuralNet1.jpg" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2020-09-19T00:00:00-05:00" />
+<script type="application/ld+json">
+{"author":{"@type":"Person","name":"Vanh Phomsavanh"},"description":"Look under the hood of Recurrent Nueral Network","dateModified":"2020-09-19T00:00:00-05:00","datePublished":"2020-09-19T00:00:00-05:00","headline":"RNN the Engine of NLP","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://www.vanhp.com/ml-section/ml/2020/09/19/ML-RNN.html"},"image":"https://www.vanhp.com/ML-section/assets/images/neuralNet1.jpg","url":"https://www.vanhp.com/ml-section/ml/2020/09/19/ML-RNN.html","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+<link href="https://unpkg.com/@primer/css/dist/primer.css" rel="stylesheet" />
+<link rel="stylesheet" href="//use.fontawesome.com/releases/v5.0.7/css/all.css"><link type="application/atom+xml" rel="alternate" href="https://www.vanhp.com/feed.xml" title="Supra_PolyglotCoder" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css" integrity="sha384-zB1R0rpPzHqg7Kpt0Aljp8JPLqbXI3bhnPWROx27a9N0Ll6ZP/+DiW/UqRcLbRjq" crossorigin="anonymous">
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"> </script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.js" integrity="sha384-y23I5Q6l+B6vatafAwxRu/0oK/79VlbSz7Q9aiSZUvyWYIYsd+qj+o24G5ZU2zJz" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/auto-render.min.js" integrity="sha384-kWPLUVMOks5AQFrykwIup5lo0m3iMkkHrD0uJ4H5cjeGihAutqP0yW0J6dpFiVkI" crossorigin="anonymous"></script>
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        renderMathInElement( document.body, {
+        delimiters: [
+            {left: "$$", right: "$$", display: true},
+            {left: "[%", right: "%]", display: true},
+            {left: "$", right: "$", display: false}
+        ]}
+        );
+    });
+    </script>
+
+
+<script>
+function wrap_img(fn) {
+    if (document.attachEvent ? document.readyState === "complete" : document.readyState !== "loading") {
+        var elements = document.querySelectorAll(".post img");
+        Array.prototype.forEach.call(elements, function(el, i) {
+            if (el.getAttribute("title") && (el.className != "emoji")) {
+                const caption = document.createElement('figcaption');
+                var node = document.createTextNode(el.getAttribute("title"));
+                caption.appendChild(node);
+                const wrapper = document.createElement('figure');
+                wrapper.className = 'image';
+                el.parentNode.insertBefore(wrapper, el);
+                el.parentNode.removeChild(el);
+                wrapper.appendChild(el);
+                wrapper.appendChild(caption);
+            }
+        });
+    } else { document.addEventListener('DOMContentLoaded', fn); }
+}
+window.onload = wrap_img;
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function(){
+    // add link icon to anchor tags
+    var elem = document.querySelectorAll(".anchor-link")
+    elem.forEach(e => (e.innerHTML = '<i class="fas fa-link fa-xs"></i>'));
+    });
+</script>
+</head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><!--
+      edit by vanh original code header.html
+    <a class="site-title" rel="author" href="/">Supra_PolyglotCoder</a>
+    replace with custom code below
+    -->
+    <a class="site-title" rel="author" href="/"><img src="/images/gradlogo1.jpg" alt="Supra_PolyglotCoder"></img></a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/about/">About Me</a><a class="page-link" href="/Resource-section/">Resources</a><a class="page-link" href="/ML-section/">ML</a><a class="page-link" href="/Coding-section/">Programming</a><a class="page-link" href="/search/">Search</a><a class="page-link" href="/categories/">Tags</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <!-- add feature image on top of post --><img src="/ML-section/assets/images/neuralNet1.jpg" alt="" class="featured-image-post" /><h1 class="post-title p-name" itemprop="name headline">RNN the Engine of NLP</h1><p class="page-description">Look under the hood of Recurrent Nueral Network</p><p class="post-meta post-meta-title"><time class="dt-published" datetime="2020-09-19T00:00:00-05:00" itemprop="datePublished">
+        Sep 19, 2020
+      </time>
+       • <span class="read-time" title="Estimated read time">
+    
+    
+      5 min read
+    
+</span></p>
+
+    
+      <p class="category-tags"><i class="fas fa-tags category-tags-icon"></i></i> 
+      
+        <a class="category-tags-link" href="/categories/#ML-section">ML-section</a>
+        &nbsp;
+      
+        <a class="category-tags-link" href="/categories/#ML">ML</a>
+        
+      
+      </p>
+    
+
+    </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <!-- ![](/ML-section/assets/images/neuralNet1.jpg) -->
+
+<hr />
+<h2 id="a-language-model-from-scratch">A Language Model from Scratch</h2>
+
+<h3 id="create-test-data">Create test Data</h3>
+<p>simplest dataset we can that will allow us to try out methods quickly and easily, and interpret the results.</p>
+
+<p>The Human Number dataset</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>from fastai.text.all import *
+path = untar_data(URLs.HUMAN_NUMBERS)
+Path.BASE_PATH = path
+path.ls()
+lines = L()
+with open(path/'train.txt') as f: lines += L(*f.readlines())
+with open(path/'valid.txt') as f: lines += L(*f.readlines())
+lines
+text = ' . '.join([l.strip() for l in lines])
+text[:100]
+tokens = text.split(' ')
+tokens[:10]
+vocab = L(*tokens).unique()
+vocab
+word2idx = {w:i for i,w in enumerate(vocab)}
+nums = L(word2idx[i] for i in tokens)
+nums
+</code></pre></div></div>
+
+<h3 id="first-language-model-from-scratch">First Language Model from Scratch</h3>
+
+<p>Model to predict each word based on the previous three words
+create a list of every sequence of three words as our independent variables, and the next word after each sequence as the dependent variable</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>L((tokens[i:i+3], tokens[i+3]) for i in range(0,len(tokens)-4,3))
+# tensor of numericalized value for model
+seqs = L((tensor(nums[i:i+3]), nums[i+3]) for i in range(0,len(nums)-4,3))
+seqs
+bs = 64
+cut = int(len(seqs) * 0.8)
+# create batch
+dls = DataLoaders.from_dsets(seqs[:cut], seqs[cut:], bs=64, shuffle=False)
+</code></pre></div></div>
+
+<p>create a neural network architecture that takes three words as input, and returns a prediction of the probability of each possible next word in the vocab</p>
+
+<p>use three standard linear layers, but with two tweaks.</p>
+<ol>
+  <li>the first linear layer will use only the first word’s embedding as activations,
+    <ul>
+      <li>the second layer will use the second word’s embedding plus the first layer’s output activations, and</li>
+      <li>the third layer will use the third word’s embedding plus the second layer’s output activations.</li>
+      <li>The key effect of this is that every word is interpreted in the information context of any words preceding it.</li>
+    </ul>
+  </li>
+  <li>each of these three layers will use the same weight matrix
+    <ul>
+      <li>The way that one word impacts the activations from previous words should not change depending on the position of a word. eventhough,</li>
+      <li>activation values will change as data moves through the layers, but the layer weights themselves will not change from layer to layer.</li>
+      <li>So, a layer does not learn one sequence position; it must learn to handle all positions.</li>
+    </ul>
+  </li>
+</ol>
+
+<p>The Language model</p>
+
+<p><img src="/ML-section/assets/images/simpleLinear1.png" alt="simple linear LM" /></p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code># 3 layer model
+class LMModel1(Module):
+    def __init__(self, vocab_sz, n_hidden):
+        self.input2_hidden = nn.Embedding(vocab_sz, n_hidden)  
+        self.hidden2_hidden = nn.Linear(n_hidden, n_hidden)     
+        self.hidden2_output = nn.Linear(n_hidden,vocab_sz)
+  # input2_hidden is embedding layer
+  # hidden2_hidden is linear layer
+  # hidden2_output is linear layer   
+    def forward(self, x):
+        h = F.relu(self.hidden2_hidden(self.input2_hidden(x[:,0])))
+        h = h + self.input2_hidden(x[:,1])
+        h = F.relu(self.hidden2_hidden(h))
+        h = h + self.input2_hidden(x[:,2])
+        h = F.relu(self.hidden2_hidden(h))
+        return self.hidden2_output(h)
+
+learn = Learner(dls, LMModel1(len(vocab), 64), loss_func=F.cross_entropy, 
+                metrics=accuracy)
+learn.fit_one_cycle(4, 1e-3)   
+
+compare simplest model which always prdict the next word is 'thousand' to see how it performs
+c = Counter(tokens[cut:])
+mc = c.most_common(5)
+mc
+mc[0][1] / len(tokens[cut:])
+
+n,counts = 0,torch.zeros(len(vocab))
+for x,y in dls.valid:
+    n += y.shape[0]
+    for i in range_of(vocab): counts[i] += (y==i).long().sum()
+#index of the most common words ('thousand')
+idx = torch.argmax(counts)
+idx, vocab[idx.item()], counts[idx].item()/n
+
+</code></pre></div></div>
+<ol>
+  <li>The embedding layer (input2_hidden, for input to hidden)</li>
+  <li>The linear layer to create the activations for the next word (hidden2_hidden, for hidden to hidden)</li>
+  <li>A final linear layer to predict the fourth word (hidden2_output, for hidden to output)</li>
+</ol>
+
+<p>They all use the same embedding since they come from same data</p>
+
+<p>Refactor into RNN</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>class LMModel2(Module):
+    def __init__(self, vocab_sz, n_hidden):
+        self.input2_hidden = nn.Embedding(vocab_sz, n_hidden)  
+        self.hidden2_hidden = nn.Linear(n_hidden, n_hidden)     
+        self.hidden2_output = nn.Linear(n_hidden,vocab_sz)
+        
+    # refactor to use for loop the RNN!
+    def forward(self, x):
+        h = 0.               # using broascast
+        for i in range(3):
+            h = h + self.input2_hidden(x[:,i])
+            h = F.relu(self.hidden2_hidden(h))
+        return self.hidden2_output(h)
+
+learn = Learner(dls, LMModel2(len(vocab), 64), loss_func=F.cross_entropy, 
+                metrics=accuracy)
+learn.fit_one_cycle(4, 1e-3)
+
+</code></pre></div></div>
+<p><img src="/ML-section/assets/images/refac_rnn.png" alt="refactor2RNN" /></p>
+
+<p>Refactor to add memory to RNN</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>class LMModel3(Module):
+    def __init__(self, vocab_sz, n_hidden):
+        self.input2_hidden = nn.Embedding(vocab_sz, n_hidden)  
+        self.hidden2_hidden = nn.Linear(n_hidden, n_hidden)     
+        self.hidden2_output = nn.Linear(n_hidden,vocab_sz)
+        self.h = 0.  # using broascast
+        
+    # refactor to use for loop the RNN!
+    def forward(self, x):
+                   
+        for i in range(3):
+            self.h = self.h + self.input2_hidden(x[:,i])
+            self.h = F.relu(self.hidden2_hidden(h))
+            
+        out = self.hidden2_output(self.h)
+        self.h = self.h.detach() # don't do gradient calc
+        return out
+    def reset(self): self.h = 0.
+
+
+</code></pre></div></div>
+<p>This model now can remember previous activation and the gradient will be calculate on sequence length token of the past not the new one</p>
+
+<h3 id="jargons">Jargons:</h3>
+<ul>
+  <li>hidden state: The activations that are updated at each step of a recurrent neural network.</li>
+  <li>A neural network that is defined using a loop like this is called a recurrent neural network (RNN)</li>
+  <li>Back propagation through time (BPTT): Treating a neural net with effectively one layer per time step (usually refactored using a loop) as one big model, and calculating gradients on it in the usual way. To avoid running out of memory and time, we usually use truncated BPTT, which “detaches” the history of computation steps in the hidden state every few time steps.</li>
+</ul>
+
+<hr />
+<p>Jekyll requires blog post files to be named according to the following format:</p>
+
+<p><code class="highlighter-rouge">YEAR-MONTH-DAY-filename.md</code></p>
+
+<p>Where <code class="highlighter-rouge">YEAR</code> is a four-digit number, <code class="highlighter-rouge">MONTH</code> and <code class="highlighter-rouge">DAY</code> are both two-digit numbers, and <code class="highlighter-rouge">filename</code> is whatever file name you choose, to remind yourself what this post is about. <code class="highlighter-rouge">.md</code> is the file extension for markdown files.</p>
+
+<p>The first line of the file should start with a single hash character, then a space, then your title. This is how you create a “<em>level 1 heading</em>” in markdown. Then you can create level 2, 3, etc headings as you wish but repeating the hash character, such as you see in the line <code class="highlighter-rouge">## File names</code> above.</p>
+
+<h2 id="basic-formatting">Basic formatting</h2>
+
+<p>You can use <em>italics</em>, <strong>bold</strong>, <code class="highlighter-rouge">code font text</code>, and create <a href="https://www.markdownguide.org/cheat-sheet/">links</a>. Here’s a footnote <sup id="fnref:1" role="doc-noteref"><a href="#fn:1" class="footnote">1</a></sup>. Here’s a horizontal rule:</p>
+
+<hr />
+
+<h2 id="lists">Lists</h2>
+
+<p>Here’s a list:</p>
+
+<ul>
+  <li>item 1</li>
+  <li>item 2</li>
+</ul>
+
+<p>And a numbered list:</p>
+
+<ol>
+  <li>item 1</li>
+  <li>item 2</li>
+</ol>
+
+<h2 id="boxes-and-stuff">Boxes and stuff</h2>
+
+<blockquote>
+  <p>This is a quotation</p>
+</blockquote>
+
+<div class="Toast Toast--warning googoo">
+   <span class="Toast-icon"><svg class="octicon octicon-alert octicon octicon-alert octicon octicon-alert octicon octicon-alert octicon octicon-alert octicon octicon-alert octicon octicon-alert octicon octicon-alert octicon octicon-alert octicon octicon-alert octicon octicon-alert" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M8.893 1.5c-.183-.31-.52-.5-.887-.5s-.703.19-.886.5L.138 13.499a.98.98 0 000 1.001c.193.31.53.501.886.501h13.964c.367 0 .704-.19.877-.5a1.03 1.03 0 00.01-1.002L8.893 1.5zm.133 11.497H6.987v-2.003h2.039v2.003zm0-3.004H6.987V5.987h2.039v4.006z"></path></svg></span>
+   <span class="Toast-content">You can include alert boxes</span>
+</div>
+
+<p>…and…</p>
+
+<div class="Toast">
+   <span class="Toast-icon"><svg class="octicon octicon-info octicon octicon-info octicon octicon-info octicon octicon-info octicon octicon-info octicon octicon-info octicon octicon-info octicon octicon-info octicon octicon-info octicon octicon-info octicon octicon-info" viewBox="0 0 14 16" version="1.1" width="14" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M6.3 5.69a.942.942 0 01-.28-.7c0-.28.09-.52.28-.7.19-.18.42-.28.7-.28.28 0 .52.09.7.28.18.19.28.42.28.7 0 .28-.09.52-.28.7a1 1 0 01-.7.3c-.28 0-.52-.11-.7-.3zM8 7.99c-.02-.25-.11-.48-.31-.69-.2-.19-.42-.3-.69-.31H6c-.27.02-.48.13-.69.31-.2.2-.3.44-.31.69h1v3c.02.27.11.5.31.69.2.2.42.31.69.31h1c.27 0 .48-.11.69-.31.2-.19.3-.42.31-.69H8V7.98v.01zM7 2.3c-3.14 0-5.7 2.54-5.7 5.68 0 3.14 2.56 5.7 5.7 5.7s5.7-2.55 5.7-5.7c0-3.15-2.56-5.69-5.7-5.69v.01zM7 .98c3.86 0 7 3.14 7 7s-3.14 7-7 7-7-3.12-7-7 3.14-7 7-7z"></path></svg></span>
+   <span class="Toast-content">You can include info boxes</span>
+</div>
+
+<h2 id="images">Images</h2>
+
+<p><img src="/images/logo.png" alt="" title="fast.ai's logo" /></p>
+
+<h2 id="code">Code</h2>
+
+<p>You can format text and code per usual</p>
+
+<p>General preformatted text:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code># Do a thing
+do_thing()
+</code></pre></div></div>
+
+<p>Python code and output:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Prints '2'
+</span><span class="k">print</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>2
+</code></pre></div></div>
+
+<p>Formatting text as shell commands:</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">echo</span> <span class="s2">"hello world"</span>
+./some_script.sh <span class="nt">--option</span> <span class="s2">"value"</span>
+wget https://example.com/cat_photo1.png
+</code></pre></div></div>
+
+<p>Formatting text as YAML:</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">key</span><span class="pi">:</span> <span class="s">value</span>
+<span class="pi">-</span> <span class="na">another_key</span><span class="pi">:</span> <span class="s2">"</span><span class="s">another</span><span class="nv"> </span><span class="s">value"</span>
+</code></pre></div></div>
+
+<h2 id="tables">Tables</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Column 1</th>
+      <th>Column 2</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>A thing</td>
+      <td>Another thing</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="tweetcards">Tweetcards</h2>
+
+<div class="jekyll-twitter-plugin"><blockquote class="twitter-tweet"><p lang="en" dir="ltr">Altair 4.0 is released! <a href="https://t.co/PCyrIOTcvv">https://t.co/PCyrIOTcvv</a><br />Try it with:<br /><br />  pip install -U altair<br /><br />The full list of changes is at <a href="https://t.co/roXmzcsT58">https://t.co/roXmzcsT58</a> ...read on for some highlights. <a href="https://t.co/vWJ0ZveKbZ">pic.twitter.com/vWJ0ZveKbZ</a></p>&mdash; Jake VanderPlas (@jakevdp) <a href="https://twitter.com/jakevdp/status/1204765621767901185?ref_src=twsrc%5Etfw">December 11, 2019</a></blockquote>
+<script async="" src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+</div>
+
+<h2 id="footnotes">Footnotes</h2>
+
+<div class="footnotes" role="doc-endnotes">
+  <ol>
+    <li id="fn:1" role="doc-endnote">
+      <p>This is the footnote. <a href="#fnref:1" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+  </ol>
+</div>
+
+   
+  </div><a class="u-url" href="/ml-section/ml/2020/09/19/ML-RNN.html" hidden></a>
+</article>
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Supra_PolyglotCoder</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Vanh Phomsavanh</li><li><a class="u-email" href="mailto:vanhphom@gmail.com">vanhphom@gmail.com</a></li>
+            <li>&copy; VSP LLC 2020 </li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://www.twitter.com/SupraCoder"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#twitter"></use></svg> <span class="username">SupraCoder</span></a></li><li><a href="https://github.com/vanhp"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg> <span class="username">vanhp</span></a></li><li><a href="https://www.facebook.com/vanh+phom"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#facebook"></use></svg> <span class="username">vanh phom</span></a></li><li><a href="https://www.linkedin.com/in/vanh-phomsavanh-1bba668"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#linkedin"></use></svg> <span class="username">vanh-phomsavanh-1bba668</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>A blog about my journey into Machine Learning and coding experience in general</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>
