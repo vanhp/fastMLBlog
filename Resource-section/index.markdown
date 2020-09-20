@@ -17,24 +17,47 @@ image: /images/lion2.jpg
 
 [Yann Lecun](http://yann.lecun.com/) The Turing Award winner and some calls him the father of modern AI/ML. You can find his lecture of Youtube especially on current hot topic in self-supervise learning.
 
+
+[fastai github](https://github.com/fastai)
+
+[visualdtree](https://explained.ai/decision-tree-viz/) 
+
+[Computational Linear Algebra for Coders](https://github.com/fastai/numerical-linear-algebra).
+
+[selfsupervise](https://amarsaini.github.io/Epoching-Blog/jupyter/2020/03/23/Self-Supervision-with-FastAI.html)
+
+[matrix-explained](https://explained.ai/matrix-calculus/)
+
+[blog](https://drscotthawley.github.io/blog/)
+
+[linear algebra](https://betterexplained.com/articles/linear-algebra-guide/)
+
+[paper1](https://arxiv.org/abs/2006.03511)
+
+[paper2](https://arxiv.org/pdf/2005.13754.pdf)
+
+[fastai-julia](https://github.com/FluxML/FastAI.jl)
+
+[androiod-ML](https://developer.android.com/ml)
+
+[setupML-project](https://course.fullstackdeeplearning.com/course-content/setting-up-machine-learning-projects)
+
+[TF-mnist](https://codelabs.developers.google.com/codelabs/cloud-tensorflow-mnist/#4)
+
+[f#-ML](https://github.com/spaceflint7/bluebonnet)
+
+[data augment NLP](https://arxiv.org/abs/1904.12848)
+
+
+
+
+
+
+
+---
 #### <span style="color:orange"> Software development field </span>
 
 [Douglas Schmidt](http://www.dre.vanderbilt.edu/~schmidt/) is one of prolific professor of computer science. He has ton of contents about sofware and especially in C++ and Java, Android. This is where I come when I feel a little rusty on C++ and Java. His material are up up to date and top-notch.
-
-[visualdtree](https://explained.ai/decision-tree-viz/) 
-[Computational Linear Algebra for Coders](https://github.com/fastai/numerical-linear-algebra).
-https://amarsaini.github.io/Epoching-Blog/jupyter/2020/03/23/Self-Supervision-with-FastAI.html
-https://explained.ai/matrix-calculus/
-https://drscotthawley.github.io/blog/
-https://betterexplained.com/articles/linear-algebra-guide/
-https://arxiv.org/abs/2006.03511
-https://arxiv.org/pdf/2005.13754.pdf
-https://github.com/FluxML/FastAI.jl
-https://developer.android.com/ml
-https://course.fullstackdeeplearning.com/course-content/setting-up-machine-learning-projects
-https://codelabs.developers.google.com/codelabs/cloud-tensorflow-mnist/#4
-https://github.com/spaceflint7/bluebonnet
-
 
 
 ---
