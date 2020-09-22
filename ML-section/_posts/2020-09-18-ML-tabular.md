@@ -7,6 +7,8 @@ title: Working with Tabular Data
 image: /ML-section/assets/images/neuralNet1.jpg
 ---
 <!-- ![]({{page.image | relative_url}}) -->
+{% include alert.html text="Warning: This page is under heavy construction and constant changing" %}
+
 ---
 
 

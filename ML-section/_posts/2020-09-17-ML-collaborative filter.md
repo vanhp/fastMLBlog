@@ -1,18 +1,18 @@
 ---
 toc: false
 layout: post
-description: Info about ML-deep learning
+description: How Recommend System, Sentimental Analysis  work
 category: ML
-title: Collaborative Filter deep dive
+title: Collaborative Filtering Deep Dive
 image: /ML-section/assets/images/ai-pic2.jpg
 ---
 <!-- ![]({{page.image | relative_url}}) -->
-
+{% include alert.html text="Warning: This page is under heavy construction and constant changing" %}
 ---
-A general class of system known as Recommend system that recomend a product to a customer use in Amazon, a movie or video to viewer which is used in Netflix, what's story to show in Facebook,Tweeter...
-Which is base the user own history, in some other users that may have similar preference. For example, Netflix recommend a movie to you base on other people who watch the same movie. Or Amazon recommend a product base on other who bought or view the same product. 
+ Collaborative Filtering a general class of ML known as Recommend system that recommend a product to a customer use in Amazon, a movie or video to viewer which is used in Netflix, what's story to show in Facebook,Tweeter...
+Which is base the user own history, and some data collect from other users that may have similar preference. For example, Netflix recommend a movie to you base on other people who watch the same movie. Or Amazon recommend a product base on other who bought or view the same product. 
 
-It's base on the idea of latent factors the unwritten or unspecify context that underline the item.
+These methods it's base on the idea of latent factors the unwritten or unspecify context that underline the item (product).
 ```
 !pip install -Uqq fastbook
 import fastbook
@@ -67,7 +67,7 @@ user_factors[3]
 ### Embedding
 A technique of look up item by using matrix multiplication with one-hot encode vector. PyTorch has a special layer that do this task in a fast and efficient way.
 
-### Collaborative by hand from scratch
+### Create Collaborative by hand from scratch
 
 ```
 class DotProduct(Module):

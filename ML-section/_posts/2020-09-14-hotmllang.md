@@ -8,7 +8,7 @@ title: The hot ML Language
 image: /Coding-section/assets/images/coding-pic.jpg
 ---
 <!-- ![]({{page.image | relative_url}}) -->
-
+{% include alert.html text="Warning: This page is under heavy construction and constant changing" %}
 ---
 
 # The new kid in town

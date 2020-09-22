@@ -7,7 +7,7 @@ title: Regression
 image: /ML-section/assets/images/ai-pic2.jpg
 ---
 <!-- ![]({{page.image | relative_url}}) -->
-
+{% include alert.html text="Warning: This page is under heavy construction and constant changing" %}
 ---
 Dealing with value that are continuous instead of discrete which the realm of classification.
 Image regression is area of application that use image as independent variable (x) and floating object(continous value) on the image as dependent variable. Which can be treat as another CNN on top of data block API.

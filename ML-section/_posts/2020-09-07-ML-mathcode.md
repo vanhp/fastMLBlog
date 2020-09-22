@@ -8,6 +8,8 @@ title: The math and code don't mix?
 image: /ML-section/assets/images/ai-pic1.jpg
 ---
 <!-- ![]({{page.image | relative_url}}) -->
+
+{% include alert.html text="Warning: This page is under heavy construction and constant changing" %}
 ---
 
 
