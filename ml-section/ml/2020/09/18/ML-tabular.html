@@ -118,7 +118,7 @@ window.onload = wrap_img;
        • <span class="read-time" title="Estimated read time">
     
     
-      22 min read
+      21 min read
     
 </span></p>
 
@@ -147,15 +147,9 @@ window.onload = wrap_img;
 
 <p>Using ML to analyze and make prediction from Data that have structual type such as data that stored in database, CSV file,spreadsheet data, that have table with row and column. Some data also have time sequence such as day, month,holyday…</p>
 
-<p>There are a few approach available to tackle these tasks.
-Such as Decision tree, Random Forest, Neural Net.</p>
+<p>The objective is to predict the value in one column based on the values in the other columns.</p>
 
-<h2 id="tabular-data-modeling-deep-dive">Tabular data Modeling Deep Dive</h2>
-
-<p>The objective is to predict the value in one column based on the values in the other columns.
-There are other technique in ML field such as random forest that also provide good or better result as DL which suite certain type of problem.</p>
-
-<p>There are plethora of methods in ML many of them only applicable to certain situation. Most of the technique in machine learning can be boil-down to just two proven methods:</p>
+<p>The task is divide into two types:</p>
 
 <p>For structure data types:</p>
 <ol>
@@ -184,6 +178,13 @@ There are other technique in ML field such as random forest that also provide go
   </li>
 </ol>
 
+<h2 id="tabular-data-modeling-deep-dive">Tabular data Modeling Deep Dive</h2>
+
+<p>There are a few approach available to tackle structural data type.
+Such as Decision tree, Random Forest, Neural Net.</p>
+
+<p>Decision tree is one approach that also provide as good result as the same time use less reource than DL which make it suitable for tabular type problem.</p>
+
 <h3 id="ensemble-decision-trees">Ensemble Decision Trees</h3>
 <p>Decision tree don’t require matrix multiplication or derivative calculation. So PyTorch is of no help. Scikit-learn is better suit for this task.</p>
 
@@ -194,8 +195,7 @@ There are other technique in ML field such as random forest that also provide go
 Dataset:
 the Blue Book for Bulldozers Kaggle competition</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
-
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code># read data from csv file
 df = pd.read_csv(path/'TrainAndValid.csv', low_memory=False)
 df.columns
 # inspect data
@@ -208,13 +208,13 @@ df[dep_var] = np.log(df[dep_var])
 
 </code></pre></div></div>
 
-<p>The most important data column is the dependent variable</p>
+<p>The most important data column is the dependent variable since it will be used for prediction.</p>
 
-<p>selecting the metric is an important part of the project setup that use to gauge the performance of the model
-unless it’s already specify. this is set for root mean square error (RMSLE) between actual and predict value.</p>
+<p>Another important task is to select the metric. Selecting the appropriate metric is an important part of the project setup that use to gauge the performance of the model.
+unless it’s already specify the loss function is also must be decided. this is set for root mean square error (RMSLE) between actual and predict value by default.</p>
 
 <h3 id="decision-trees">Decision Trees</h3>
-<p>This work like  binary tree where parent node is the middle whith the left is &lt;= parent and right child node larger. Where the leaf node is the prediction</p>
+<p>Decision tree works like binary tree where parent node is the middle whith the left is &lt;= parent and right child node larger. Where the leaf node is the prediction</p>
 
 <p>The basic steps to train a decision tree can be written down very easily:</p>
 
@@ -228,9 +228,11 @@ unless it’s already specify. this is set for root mean square error (RMSLE) be
   <li>Continue this process recursively, until you have reached some stopping criterion for each group—for instance, stop splitting a group further when it has only 20 items in it.</li>
 </ol>
 
-<p>Handling Dates
-Since have some important in some context but may less important in different context, e.g. yesterday, tomorrow,lastweek, holiday, day of week, day of month
+<h3 id="handling-dates">Handling Dates</h3>
+
+<p>Since date type have some important in some context but less so in different context, e.g. yesterday, tomorrow,lastweek, holiday, day of week, day of month
 fastai provide function add_datepart to do this task</p>
+
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>df_test = pd.read_csv(path/'Test.csv', low_memory=False)
 df_test = add_datepart(df_test, 'saledate')
 ' '.join(o for o in df.columns if o.startswith('sale'))
@@ -238,29 +240,38 @@ df_test = add_datepart(df_test, 'saledate')
 </code></pre></div></div>
 <h4 id="handling-missing-data-and-string">Handling missing data and string</h4>
 
-<p>fastai provide TabularPandas, and TabularProc which has Categorify,and FillMissing functions.
-TabularProc:</p>
+<p>fastai provide <code class="highlighter-rouge">TabularPandas</code>, and <code class="highlighter-rouge">TabularProc</code> API which has Categorify, and FillMissing functions to help manage these problems.</p>
+
+<p>TabularProc:</p>
 
 <ul>
   <li>It returns the exact same object that’s passed to it, after modifying the object in place.</li>
   <li>It runs the transform once, when data is first passed in, rather than lazily as the data is accessed.</li>
-  <li>Categorify  replaces a column with a numeric categorical column</li>
-  <li>FillMissing that replaces missing values with the median of that column
+  <li>Categorify:  replaces a column with a numeric categorical column</li>
+  <li>FillMissing: replaces missing values with the median of that column
     <ul>
-      <li>and creates a new Boolean column that is set to True for any row where the value was missing
- <code class="highlighter-rouge">procs = [Categorify, FillMissing]</code></li>
+      <li>
+        <p>and creates a new Boolean column that is set to True for any row where the value was missing</p>
+
+        <p><code class="highlighter-rouge">procs = [Categorify, FillMissing]</code></p>
+      </li>
     </ul>
   </li>
 </ul>
 
-<p>TabularPandas will also handle splitting the dataset into training and validation sets</p>
+<p>TabularPandas:</p>
+
+<p>will handle splitting the dataset into training and validation sets</p>
+
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cond = (df.saleYear&lt;2011) | (df.saleMonth&lt;10)
 train_idx = np.where( cond)[0]
 valid_idx = np.where(~cond)[0]
 
 splits = (list(train_idx),list(valid_idx))
 </code></pre></div></div>
-<p>TabularPandas needs to be told which columns are continuous and which are categorical. We can handle that automatically using the helper function cont_cat_split:</p>
+
+<p>TabularPandas needs to be told which columns are continuous and which are categorical it can handle that automatically using the helper function <code class="highlighter-rouge">cont_cat_split</code></p>
+
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cont,cat = cont_cat_split(df, 1, dep_var=dep_var)
 to = TabularPandas(df, procs, cat, cont, y_names=dep_var, splits=splits)
 len(to.train),len(to.valid)
@@ -272,9 +283,11 @@ to1.show(3)
 to.items.head(3)
 
 </code></pre></div></div>
-<p>the conversion process
-The conversion of categorical columns to numbers is done by simply replacing each unique level with a number
-The numbers associated with the levels are chosen consecutively as they are seen in a column, so there’s no particular meaning to the numbers in categorical columns after conversion.except if you first convert a column to a Pandas ordered category you must provide the ordering</p>
+
+<h3 id="the-conversion-of-categorical-data-to-number">The conversion of categorical data to number</h3>
+
+<p>The conversion of categorical columns to numbers is done by simply replacing each unique level with a number
+The numbers associated with the levels are chosen consecutively as they are seen in a column, so there’s no particular meaning to the numbers in categorical columns after conversion, except the first time, the first convert a column to a Pandas ordered category ordering must be provided.</p>
 
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>to.classes['ProductSize']
 (path/'to.pkl').save(to) 
@@ -289,23 +302,27 @@ draw_tree(m, xs, size=7, leaves_parallel=True, precision=2)
 
 </code></pre></div></div>
 
-<p>Categorical Variables
-The decision tree can handle these variable with ease since they are treat just another variables that may group into a node according the splitting criteria in which case may split down to the leaf node.</p>
+<h3 id="categorical-variables">Categorical Variables</h3>
+
+<p>The decision tree can handle these variable with ease since they are treat just like another variables that may group into a node according the splitting criteria in which case it may split down to the leaf node.</p>
 
 <h3 id="random-forests">Random Forests</h3>
-<p>A baggin technique where the data was divide into subset then</p>
+
+<p>Random forest is a model that comprise with large number of decision trees. It then take the averages of predictions from these decision trees, which are generated by randomly varying various parameters that specify what data is used to train the tree and other tree parameters.</p>
+
+<p>Random forest uses baggin with randomly choose subset of column making split in each decision tree.
+A baggin technique where the data was divide into subset then</p>
+
 <ol>
   <li>randomly pick a subset of the row of data</li>
   <li>train a model on that subset</li>
   <li>save the model then repeat from step 1 a few time</li>
   <li>This process will result in number of trained models them</li>
-  <li>make prediction from these models then take the average of these prediction
-this is call bagging
-Random forest is baggin with randomly choose subset of column making split in each decision tree.
-In essence a random forest is a model that averages the predictions of a large number of decision trees, which are generated by randomly varying various parameters that specify what data is used to train the tree and other tree parameters.</li>
+  <li>make prediction from these models then take the average of these prediction</li>
 </ol>
 
 <h3 id="create-a-random-forest">Create a Random forest</h3>
+
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>def rf(xs, y, n_estimators=40, max_samples=200_000,
        max_features=0.5, min_samples_leaf=5, **kwargs):
     return RandomForestRegressor(n_jobs=-1, n_estimators=n_estimators,
@@ -344,17 +361,19 @@ How do predictions vary, as we vary these columns?</p>
 <h4 id="tree-variance-for-prediction-confidence">Tree Variance for Prediction Confidence</h4>
 
 <p>How confident of the model on the prediction. One simple way is to use the standard deviation of predictions across the trees, instead of just the mean. This tells us the relative confidence of predictions. In general, we would want to be more cautious of using the results for rows where trees give very different results (higher standard deviations), compared to cases where they are more consistent (lower standard deviations).</p>
+
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code># get the prediction from all trees
 preds = np.stack([t.predict(valid_xs) for t in m.estimators_])
 preds.shape
 preds_std = preds.std(0)
 preds_std[:5]
 
-
 </code></pre></div></div>
+
 <h4 id="feature-importance">Feature Importance</h4>
 
-<p>want to know how it’s making predictions use the attribute feature_importances_</p>
+<p>want to know how it’s making predictions use the attribute <code class="highlighter-rouge">feature_importances_</code></p>
+
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>def rf_feat_importance(m, df):
     return pd.DataFrame({'cols':df.columns, 'imp':m.feature_importances_}
                        ).sort_values('imp', ascending=False)
@@ -364,9 +383,13 @@ def plot_fi(fi):
 
 plot_fi(fi[:30]);
 </code></pre></div></div>
+
 <p>The way these importances are calculated is quite simple yet elegant. The feature importance algorithm loops through each tree, and then recursively explores each branch. At each branch, it looks to see what feature was used for that split, and how much the model improves as a result of that split. The improvement (weighted by the number of rows in that group) is added to the importance score for that feature. This is summed across all branches of all trees, and finally the scores are normalized such that they add to 1.</p>
 
 <h4 id="removing-low-importance-variables">Removing Low-Importance Variables</h4>
+
+<p>Since there many variable in the table. Some variable have contribute marginally to the overall prediction. To reduce the comptation and resource these values should be removed.</p>
+
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>to_keep = fi[fi.imp&gt;0.005].cols
 len(to_keep)
 
@@ -380,8 +403,9 @@ plot_fi(rf_feat_importance(m, xs_imp));
 
 <h4 id="removing-redundant-features">Removing Redundant Features</h4>
 
-<p>By focusing on the most important variables, and removing some redundant ones, we’ve greatly simplified our model.
-By merging columns that most similar to each other start from the leaf</p>
+<p>By focusing on the most important variables, and removing some redundant ones, greatly simplified our model.
+By merging columns that most similar to each other starting from the leaf</p>
+
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>def get_oob(df):
     m = RandomForestRegressor(n_estimators=40, min_samples_leaf=15,
         max_samples=50000, max_features=0.5, n_jobs=-1, oob_score=True)
@@ -407,10 +431,12 @@ valid_xs_final = (path/'valid_xs_final.pkl').load()
 m = rf(xs_final, y)
 m_rmse(m, xs_final, y), m_rmse(m, valid_xs_final, valid_y)
 </code></pre></div></div>
+
 <h4 id="partial-dependence">Partial Dependence</h4>
 
 <p>Try to understand the relationship of the most important predictors</p>
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#count the #
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
 p = valid_xs_final['ProductSize'].value_counts(sort=False).plot.barh()
 c = to.classes['ProductSize']
 plt.yticks(range(len(c)), c);
@@ -420,6 +446,7 @@ fig,ax = plt.subplots(figsize=(12, 4))
 plot_partial_dependence(m, valid_xs_final, ['YearMade','ProductSize'],
                         grid_resolution=20, ax=ax);
 </code></pre></div></div>
+
 <p>Data Leakage</p>
 
 <p>Data leakage is subtle and can take many forms. In particular, missing values often represent data leakage.</p>
@@ -428,9 +455,11 @@ plot_partial_dependence(m, valid_xs_final, ['YearMade','ProductSize'],
 
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>!pip install treeinterpreter
 !pip install waterfallcharts
+#Use water fall to draw a chart
 </code></pre></div></div>
-<p>Use water fall to draw a chart
-to answer this question. For predicting with a particular row of data, what were the most important factors, and how did they influence that prediction?</p>
+
+<p>to answer this question. For predicting with a particular row of data, what were the most important factors, and how did they influence that prediction?</p>
+
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>import warnings
 warnings.simplefilter('ignore', FutureWarning)
 
@@ -444,15 +473,19 @@ waterfall(valid_xs_final.columns, contributions[0], threshold=0.08,
           rotation_value=45,formatting='{:,.3f}');
           
 </code></pre></div></div>
+
 <h3 id="extrapolation-and-neural-networks">Extrapolation and Neural Networks</h3>
-<p>The value in the dataset determine the min and maximum value that Random forest can be. It cannot extrapolate value that beyon this boundary</p>
+
+<p>The value in the dataset determine the minimum and maximum value that Random forest can be. It cannot extrapolate value that beyon this boundary</p>
 
 <h3 id="finding-out-of-domain-data">Finding Out-of-Domain Data</h3>
-<p>The test dataset and train,validation dataset may not have the same distribution pattern. Especially,data that don’t fit the general norm of rest of dataset. If they are too much different this may skew the result.</p>
+
+<p>Sometime the test train, validation dataset may not have the same distribution pattern. Especially, data that don’t fit the general norm of rest of dataset. If they are too much different this may skew the result.</p>
 
 <h4 id="using-random-forest-to-help-find-uneven-distribution">Using Random forest to help find uneven distribution</h4>
-<p>If the either the test,validation set have the same distribution with the train set there should be no predicting power another word, it should be 0.
-step</p>
+
+<p>If the either the test,validation set have the same distribution with the train set there should be no predicting power another word, it should be 0. Here are step to find out:</p>
+
 <ol>
   <li>combine the train and validation</li>
   <li>create a dependent variable to reprent the data from each row</li>
@@ -670,122 +703,6 @@ In fastai, a tabular model is simply a model that takes columns of continuous or
   <li>bagging process of random take rows of data to train model and make prediction then average over all prediction</li>
 </ul>
 
-<p>Jekyll requires blog post files to be named according to the following format:</p>
-
-<p><code class="highlighter-rouge">YEAR-MONTH-DAY-filename.md</code></p>
-
-<p>Where <code class="highlighter-rouge">YEAR</code> is a four-digit number, <code class="highlighter-rouge">MONTH</code> and <code class="highlighter-rouge">DAY</code> are both two-digit numbers, and <code class="highlighter-rouge">filename</code> is whatever file name you choose, to remind yourself what this post is about. <code class="highlighter-rouge">.md</code> is the file extension for markdown files.</p>
-
-<p>The first line of the file should start with a single hash character, then a space, then your title. This is how you create a “<em>level 1 heading</em>” in markdown. Then you can create level 2, 3, etc headings as you wish but repeating the hash character, such as you see in the line <code class="highlighter-rouge">## File names</code> above.</p>
-
-<h2 id="basic-formatting">Basic formatting</h2>
-
-<p>You can use <em>italics</em>, <strong>bold</strong>, <code class="highlighter-rouge">code font text</code>, and create <a href="https://www.markdownguide.org/cheat-sheet/">links</a>. Here’s a footnote <sup id="fnref:1" role="doc-noteref"><a href="#fn:1" class="footnote">1</a></sup>. Here’s a horizontal rule:</p>
-
-<hr />
-
-<h2 id="lists">Lists</h2>
-
-<p>Here’s a list:</p>
-
-<ul>
-  <li>item 1</li>
-  <li>item 2</li>
-</ul>
-
-<p>And a numbered list:</p>
-
-<ol>
-  <li>item 1</li>
-  <li>item 2</li>
-</ol>
-
-<h2 id="boxes-and-stuff">Boxes and stuff</h2>
-
-<blockquote>
-  <p>This is a quotation</p>
-</blockquote>
-
-<div class="Toast Toast--warning googoo">
-   <span class="Toast-icon"><svg class="octicon octicon-alert octicon octicon-alert octicon octicon-alert octicon octicon-alert octicon octicon-alert octicon octicon-alert octicon octicon-alert octicon octicon-alert octicon octicon-alert octicon octicon-alert octicon octicon-alert octicon octicon-alert octicon octicon-alert octicon octicon-alert octicon octicon-alert octicon octicon-alert octicon octicon-alert octicon octicon-alert octicon octicon-alert" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M8.893 1.5c-.183-.31-.52-.5-.887-.5s-.703.19-.886.5L.138 13.499a.98.98 0 000 1.001c.193.31.53.501.886.501h13.964c.367 0 .704-.19.877-.5a1.03 1.03 0 00.01-1.002L8.893 1.5zm.133 11.497H6.987v-2.003h2.039v2.003zm0-3.004H6.987V5.987h2.039v4.006z"></path></svg></span>
-   <span class="Toast-content">You can include alert boxes</span>
-</div>
-
-<p>…and…</p>
-
-<div class="Toast">
-   <span class="Toast-icon"><svg class="octicon octicon-info octicon octicon-info octicon octicon-info octicon octicon-info octicon octicon-info octicon octicon-info octicon octicon-info octicon octicon-info octicon octicon-info octicon octicon-info" viewBox="0 0 14 16" version="1.1" width="14" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M6.3 5.69a.942.942 0 01-.28-.7c0-.28.09-.52.28-.7.19-.18.42-.28.7-.28.28 0 .52.09.7.28.18.19.28.42.28.7 0 .28-.09.52-.28.7a1 1 0 01-.7.3c-.28 0-.52-.11-.7-.3zM8 7.99c-.02-.25-.11-.48-.31-.69-.2-.19-.42-.3-.69-.31H6c-.27.02-.48.13-.69.31-.2.2-.3.44-.31.69h1v3c.02.27.11.5.31.69.2.2.42.31.69.31h1c.27 0 .48-.11.69-.31.2-.19.3-.42.31-.69H8V7.98v.01zM7 2.3c-3.14 0-5.7 2.54-5.7 5.68 0 3.14 2.56 5.7 5.7 5.7s5.7-2.55 5.7-5.7c0-3.15-2.56-5.69-5.7-5.69v.01zM7 .98c3.86 0 7 3.14 7 7s-3.14 7-7 7-7-3.12-7-7 3.14-7 7-7z"></path></svg></span>
-   <span class="Toast-content">You can include info boxes</span>
-</div>
-
-<h2 id="images">Images</h2>
-
-<p><img src="/images/logo.png" alt="" title="fast.ai's logo" /></p>
-
-<h2 id="code">Code</h2>
-
-<p>You can format text and code per usual</p>
-
-<p>General preformatted text:</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code># Do a thing
-do_thing()
-</code></pre></div></div>
-
-<p>Python code and output:</p>
-
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Prints '2'
-</span><span class="k">print</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
-</code></pre></div></div>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>2
-</code></pre></div></div>
-
-<p>Formatting text as shell commands:</p>
-
-<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">echo</span> <span class="s2">"hello world"</span>
-./some_script.sh <span class="nt">--option</span> <span class="s2">"value"</span>
-wget https://example.com/cat_photo1.png
-</code></pre></div></div>
-
-<p>Formatting text as YAML:</p>
-
-<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">key</span><span class="pi">:</span> <span class="s">value</span>
-<span class="pi">-</span> <span class="na">another_key</span><span class="pi">:</span> <span class="s2">"</span><span class="s">another</span><span class="nv"> </span><span class="s">value"</span>
-</code></pre></div></div>
-
-<h2 id="tables">Tables</h2>
-
-<table>
-  <thead>
-    <tr>
-      <th>Column 1</th>
-      <th>Column 2</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>A thing</td>
-      <td>Another thing</td>
-    </tr>
-  </tbody>
-</table>
-
-<h2 id="tweetcards">Tweetcards</h2>
-
-<div class="jekyll-twitter-plugin"><blockquote class="twitter-tweet"><p lang="en" dir="ltr">Altair 4.0 is released! <a href="https://t.co/PCyrIOTcvv">https://t.co/PCyrIOTcvv</a><br />Try it with:<br /><br />  pip install -U altair<br /><br />The full list of changes is at <a href="https://t.co/roXmzcsT58">https://t.co/roXmzcsT58</a> ...read on for some highlights. <a href="https://t.co/vWJ0ZveKbZ">pic.twitter.com/vWJ0ZveKbZ</a></p>&mdash; Jake VanderPlas (@jakevdp) <a href="https://twitter.com/jakevdp/status/1204765621767901185?ref_src=twsrc%5Etfw">December 11, 2019</a></blockquote>
-<script async="" src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-</div>
-
-<h2 id="footnotes">Footnotes</h2>
-
-<div class="footnotes" role="doc-endnotes">
-  <ol>
-    <li id="fn:1" role="doc-endnote">
-      <p>This is the footnote. <a href="#fnref:1" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
-    </li>
-  </ol>
-</div>
 
    
   </div><a class="u-url" href="/ml-section/ml/2020/09/18/ML-tabular.html" hidden></a>
