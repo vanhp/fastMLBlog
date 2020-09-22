@@ -193,7 +193,10 @@ There are other technique in ML field such as random forest that also provide go
 <p>Handling Different data types from tables
 Dataset:
 the Blue Book for Bulldozers Kaggle competition</p>
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>df = pd.read_csv(path/'TrainAndValid.csv', low_memory=False)
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+
+df = pd.read_csv(path/'TrainAndValid.csv', low_memory=False)
 df.columns
 # inspect data
 df['ProductSize'].unique()
