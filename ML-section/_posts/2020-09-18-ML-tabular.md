@@ -5,6 +5,8 @@ description: Understanding and handling of structural data
 category: ML
 title: Working with Tabular and Time-Series Data
 image: /ML-section/assets/images/neuralNet1.jpg
+hide: false
+
 ---
 <!-- ![]({{page.image | relative_url}}) -->
 {% include alert.html text="Warning: This page is under heavy construction and constant changing" %}
@@ -46,7 +48,10 @@ Data to use for Decision tree
 Handling Different data types from tables
 Dataset:
 the Blue Book for Bulldozers Kaggle competition
+
 ```
+
+
 df = pd.read_csv(path/'TrainAndValid.csv', low_memory=False)
 df.columns
 # inspect data
