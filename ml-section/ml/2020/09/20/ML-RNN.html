@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="twitter:card" content="summary" /><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>RNN The Engine Of NLP | Supra_PolyglotCoder</title>
+<meta name="generator" content="Jekyll v4.0.0" />
+<meta property="og:title" content="RNN The Engine Of NLP" />
+<meta name="author" content="Vanh Phomsavanh" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Look under the hood of Recurrent Nueral Network that drive NLP" />
+<meta property="og:description" content="Look under the hood of Recurrent Nueral Network that drive NLP" />
+<link rel="canonical" href="https://www.vanhp.com/ml-section/ml/2020/09/20/ML-RNN.html" />
+<meta property="og:url" content="https://www.vanhp.com/ml-section/ml/2020/09/20/ML-RNN.html" />
+<meta property="og:site_name" content="Supra_PolyglotCoder" />
+<meta property="og:image" content="https://www.vanhp.com/ML-section/assets/images/neuralNet1.jpg" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2020-09-20T00:00:00-05:00" />
+<script type="application/ld+json">
+{"author":{"@type":"Person","name":"Vanh Phomsavanh"},"description":"Look under the hood of Recurrent Nueral Network that drive NLP","dateModified":"2020-09-20T00:00:00-05:00","datePublished":"2020-09-20T00:00:00-05:00","headline":"RNN The Engine Of NLP","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://www.vanhp.com/ml-section/ml/2020/09/20/ML-RNN.html"},"image":"https://www.vanhp.com/ML-section/assets/images/neuralNet1.jpg","url":"https://www.vanhp.com/ml-section/ml/2020/09/20/ML-RNN.html","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://www.vanhp.com/feed.xml" title="Supra_PolyglotCoder" /><link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>RNN The Engine Of NLP | Supra_PolyglotCoder</title>
+<meta name="generator" content="Jekyll v4.0.0" />
+<meta property="og:title" content="RNN The Engine Of NLP" />
+<meta name="author" content="Vanh Phomsavanh" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Look under the hood of Recurrent Nueral Network that drive NLP" />
+<meta property="og:description" content="Look under the hood of Recurrent Nueral Network that drive NLP" />
+<link rel="canonical" href="https://www.vanhp.com/ml-section/ml/2020/09/20/ML-RNN.html" />
+<meta property="og:url" content="https://www.vanhp.com/ml-section/ml/2020/09/20/ML-RNN.html" />
+<meta property="og:site_name" content="Supra_PolyglotCoder" />
+<meta property="og:image" content="https://www.vanhp.com/ML-section/assets/images/neuralNet1.jpg" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2020-09-20T00:00:00-05:00" />
+<script type="application/ld+json">
+{"author":{"@type":"Person","name":"Vanh Phomsavanh"},"description":"Look under the hood of Recurrent Nueral Network that drive NLP","dateModified":"2020-09-20T00:00:00-05:00","datePublished":"2020-09-20T00:00:00-05:00","headline":"RNN The Engine Of NLP","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://www.vanhp.com/ml-section/ml/2020/09/20/ML-RNN.html"},"image":"https://www.vanhp.com/ML-section/assets/images/neuralNet1.jpg","url":"https://www.vanhp.com/ml-section/ml/2020/09/20/ML-RNN.html","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+<link href="https://unpkg.com/@primer/css/dist/primer.css" rel="stylesheet" />
+<link rel="stylesheet" href="//use.fontawesome.com/releases/v5.0.7/css/all.css"><link type="application/atom+xml" rel="alternate" href="https://www.vanhp.com/feed.xml" title="Supra_PolyglotCoder" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css" integrity="sha384-zB1R0rpPzHqg7Kpt0Aljp8JPLqbXI3bhnPWROx27a9N0Ll6ZP/+DiW/UqRcLbRjq" crossorigin="anonymous">
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"> </script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.js" integrity="sha384-y23I5Q6l+B6vatafAwxRu/0oK/79VlbSz7Q9aiSZUvyWYIYsd+qj+o24G5ZU2zJz" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/auto-render.min.js" integrity="sha384-kWPLUVMOks5AQFrykwIup5lo0m3iMkkHrD0uJ4H5cjeGihAutqP0yW0J6dpFiVkI" crossorigin="anonymous"></script>
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        renderMathInElement( document.body, {
+        delimiters: [
+            {left: "$$", right: "$$", display: true},
+            {left: "[%", right: "%]", display: true},
+            {left: "$", right: "$", display: false}
+        ]}
+        );
+    });
+    </script>
+
+
+<script>
+function wrap_img(fn) {
+    if (document.attachEvent ? document.readyState === "complete" : document.readyState !== "loading") {
+        var elements = document.querySelectorAll(".post img");
+        Array.prototype.forEach.call(elements, function(el, i) {
+            if (el.getAttribute("title") && (el.className != "emoji")) {
+                const caption = document.createElement('figcaption');
+                var node = document.createTextNode(el.getAttribute("title"));
+                caption.appendChild(node);
+                const wrapper = document.createElement('figure');
+                wrapper.className = 'image';
+                el.parentNode.insertBefore(wrapper, el);
+                el.parentNode.removeChild(el);
+                wrapper.appendChild(el);
+                wrapper.appendChild(caption);
+            }
+        });
+    } else { document.addEventListener('DOMContentLoaded', fn); }
+}
+window.onload = wrap_img;
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function(){
+    // add link icon to anchor tags
+    var elem = document.querySelectorAll(".anchor-link")
+    elem.forEach(e => (e.innerHTML = '<i class="fas fa-link fa-xs"></i>'));
+    });
+</script>
+</head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><!--
+      edit by vanh original code header.html
+    <a class="site-title" rel="author" href="/">Supra_PolyglotCoder</a>
+    replace with custom code below
+    -->
+    <a class="site-title" rel="author" href="/"><img src="/images/gradlogo1.jpg" alt="Supra_PolyglotCoder"></img></a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/about/">About Me</a><a class="page-link" href="/Resource-section/">Resources</a><a class="page-link" href="/ML-section/">ML</a><a class="page-link" href="/Coding-section/">Programming</a><a class="page-link" href="/search/">Search</a><a class="page-link" href="/categories/">Tags</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <!-- add feature image on top of post --><img src="/ML-section/assets/images/neuralNet1.jpg" alt="" class="featured-image-post" /><h1 class="post-title p-name" itemprop="name headline">RNN The Engine Of NLP</h1><p class="page-description">Look under the hood of Recurrent Nueral Network that drive NLP</p><p class="post-meta post-meta-title"><time class="dt-published" datetime="2020-09-20T00:00:00-05:00" itemprop="datePublished">
+        Sep 20, 2020
+      </time>
+       • <span class="read-time" title="Estimated read time">
+    
+    
+      15 min read
+    
+</span></p>
+
+    
+      <p class="category-tags"><i class="fas fa-tags category-tags-icon"></i></i> 
+      
+        <a class="category-tags-link" href="/categories/#ML-section">ML-section</a>
+        &nbsp;
+      
+        <a class="category-tags-link" href="/categories/#ML">ML</a>
+        
+      
+      </p>
+    
+
+    </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <!-- ![](/ML-section/assets/images/neuralNet1.jpg) -->
+<div class="Toast Toast--warning googoo">
+   <span class="Toast-icon"><svg class="octicon octicon-alert octicon octicon-alert octicon octicon-alert octicon octicon-alert octicon octicon-alert octicon octicon-alert octicon octicon-alert octicon octicon-alert octicon octicon-alert octicon octicon-alert octicon octicon-alert octicon octicon-alert octicon octicon-alert octicon octicon-alert octicon octicon-alert octicon octicon-alert octicon octicon-alert octicon octicon-alert octicon octicon-alert octicon octicon-alert octicon octicon-alert octicon octicon-alert" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M8.893 1.5c-.183-.31-.52-.5-.887-.5s-.703.19-.886.5L.138 13.499a.98.98 0 000 1.001c.193.31.53.501.886.501h13.964c.367 0 .704-.19.877-.5a1.03 1.03 0 00.01-1.002L8.893 1.5zm.133 11.497H6.987v-2.003h2.039v2.003zm0-3.004H6.987V5.987h2.039v4.006z"></path></svg></span>
+   <span class="Toast-content">Warning: This page is under heavy construction and constant changing</span>
+</div>
+
+<hr />
+<h2 id="create-a-language-model-from-scratch">Create a Language Model from Scratch</h2>
+
+<p>A language model is a model that predict the next word in the sentence.</p>
+
+<h3 id="first-language-model">First Language Model</h3>
+
+<p>Build a model to predict each word based on the previous three words
+by create a list of every sequence of three words as independent variables, and the next word after each sequence as the dependent variable
+The model takes three words as input, and returns a prediction of the probability of each possible next word in the vocab
+use three standard linear layers, but with two tweaks.</p>
+<ol>
+  <li>the first linear layer will use only the first word’s embedding as activations,
+    <ul>
+      <li>the second layer will use the second word’s embedding plus the first layer’s output activations, and</li>
+      <li>the third layer will use the third word’s embedding plus the second layer’s output activations.</li>
+      <li>The key effect of this is that every word is interpreted in the information context of any words preceding it.</li>
+    </ul>
+  </li>
+  <li>each of these three layers will use the same weight matrix
+    <ul>
+      <li>The way that one word impacts the activations from previous words should not change depending on the position of a word. eventhough,</li>
+      <li>activation values will change as data moves through the layers, but the layer weights themselves will not change from layer to layer.</li>
+      <li>So, a layer does not learn one sequence position; it must learn to handle all positions.</li>
+    </ul>
+  </li>
+</ol>
+
+<p>The architect of the first model
+<img src="/ML-section/assets/images/simpleLinear1.png" alt="simple linear LM" /></p>
+
+<h3 id="3-layers-model">3 layers model</h3>
+
+<p>The first cut of the code for 3 layers model use:</p>
+<ol>
+  <li>The embedding layer (input2_hidden, for input to hidden)</li>
+  <li>The linear layer to create the activations for the next word (hidden2_hidden, for hidden to hidden)</li>
+  <li>A final linear layer to predict the fourth word (hidden2_output, for hidden to output)</li>
+</ol>
+
+<p>They all use the same embedding since they come from same data</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>class LMModel1(Module):
+    def __init__(self, vocab_sz, n_hidden):
+        self.input2_hidden = nn.Embedding(vocab_sz, n_hidden)  
+        self.hidden2_hidden = nn.Linear(n_hidden, n_hidden)     
+        self.hidden2_output = nn.Linear(n_hidden,vocab_sz)
+  # input2_hidden is embedding layer
+  # hidden2_hidden is linear layer
+  # hidden2_output is linear layer   
+    def forward(self, x):
+        h = F.relu(self.hidden2_hidden(self.input2_hidden(x[:,0])))
+        h = h + self.input2_hidden(x[:,1])
+        h = F.relu(self.hidden2_hidden(h))
+        h = h + self.input2_hidden(x[:,2])
+        h = F.relu(self.hidden2_hidden(h))
+        return self.hidden2_output(h)
+
+L((tokens[i:i+3], tokens[i+3]) for i in range(0,len(tokens)-4,3))
+# tensor of numericalized value for model
+seqs = L((tensor(nums[i:i+3]), nums[i+3]) for i in range(0,len(nums)-4,3))
+seqs
+bs = 64
+cut = int(len(seqs) * 0.8)
+# create batch
+dls = DataLoaders.from_dsets(seqs[:cut], seqs[cut:], bs=64, shuffle=False)
+
+learn = Learner(dls, LMModel1(len(vocab), 64), loss_func=F.cross_entropy, 
+                metrics=accuracy)
+learn.fit_one_cycle(4, 1e-3)   
+</code></pre></div></div>
+<p>compare to the simplest model which always prdict the next word which is ‘thousand’ to see how it performs:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code># a simplest model that always predict 'thousand' on each input sentence
+c = Counter(tokens[cut:])
+mc = c.most_common(5)
+mc
+mc[0][1] / len(tokens[cut:])
+
+n,counts = 0,torch.zeros(len(vocab))
+for x,y in dls.valid:
+    n += y.shape[0]
+    for i in range_of(vocab): counts[i] += (y==i).long().sum()
+#index of the most common words ('thousand')
+idx = torch.argmax(counts)
+idx, vocab[idx.item()], counts[idx].item()/n
+
+</code></pre></div></div>
+
+<h4 id="refactor-to-use-loop-the-rnn">Refactor to use loop: the RNN</h4>
+<p><img src="/ML-section/assets/images/refac_rnn.png" alt="refactor2RNN" /></p>
+
+<p>Rewrite the code to use loop this is look closer to RNN</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>class LMModel2(Module):
+    def __init__(self, vocab_sz, n_hidden):
+        self.input2_hidden = nn.Embedding(vocab_sz, n_hidden)  
+        self.hidden2_hidden = nn.Linear(n_hidden, n_hidden)     
+        self.hidden2_output = nn.Linear(n_hidden,vocab_sz)
+        
+    # refactor to use for loop the RNN!
+    def forward(self, x):
+        h = 0.               # using broascast
+        for i in range(3):
+            h = h + self.input2_hidden(x[:,i])
+            h = F.relu(self.hidden2_hidden(h))
+        return self.hidden2_output(h)
+
+learn = Learner(dls, LMModel2(len(vocab), 64), loss_func=F.cross_entropy, 
+                metrics=accuracy)
+learn.fit_one_cycle(4, 1e-3)
+
+</code></pre></div></div>
+
+<h3 id="refactor-to-add-memory-to-rnn">Refactor to add memory to RNN</h3>
+
+<p>Add the ability to retain previous word instead of start up new every time
+<img src="/ML-section/assets/images/stacklayer_rnn.png" alt="stack-layer" /></p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>class LMModel3(Module):
+    def __init__(self, vocab_sz, n_hidden):
+        self.input2_hidden = nn.Embedding(vocab_sz, n_hidden)  
+        self.hidden2_hidden = nn.Linear(n_hidden, n_hidden)     
+        self.hidden2_output = nn.Linear(n_hidden,vocab_sz)
+        self.h = 0.  # using broascast
+        
+    # refactor to use for loop the RNN!
+    def forward(self, x):
+                   
+        for i in range(3):
+            self.h = self.h + self.input2_hidden(x[:,i])
+            self.h = F.relu(self.hidden2_hidden(h))
+            
+        out = self.hidden2_output(self.h)
+        self.h = self.h.detach() # do bptt
+        return out
+    def reset(self): self.h = 0.
+
+
+</code></pre></div></div>
+
+<h3 id="bptt-backpropagation-through-time">BPTT Backpropagation through time</h3>
+<p>This model hidden state now can remember previous activation from previous batch and the gradient will be calculate on sequence length token of the past not instead of recalculate with each new stream this is call BPTT</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code># rearrange data so model see in particular sequence
+m = len(seqs)//bs
+m,bs,len(seqs)
+
+# reindex model see as contiguous batch with each epoch
+def group_chunks(ds, bs):
+    m = len(ds) // bs
+    new_ds = L()
+    for i in range(m): new_ds += L(ds[i + m*j] for j in range(bs))
+    return new_ds
+
+cut = int(len(seqs) * 0.8)
+dls = DataLoaders.from_dsets(
+    group_chunks(seqs[:cut], bs), 
+    group_chunks(seqs[cut:], bs), 
+    bs=bs, drop_last=True, # drop last batch that have diff shape
+    shuffle=False) # maintain sequence
+
+learn = Learner(dls, LMModel3(len(vocab), 64), loss_func=F.cross_entropy,
+                metrics=accuracy, 
+                cbs=ModelResetter) # callback to reset each epoch
+learn.fit_one_cycle(10, 3e-3)
+</code></pre></div></div>
+
+<p>Add More signal: keep the output</p>
+
+<p>The model no longer throw away the output from previous run but add them as input to current run</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sl = 16
+seqs = L((tensor(nums[i:i+sl]), tensor(nums[i+1:i+sl+1]))
+         for i in range(0,len(nums)-sl-1,sl))
+cut = int(len(seqs) * 0.8)
+dls = DataLoaders.from_dsets(group_chunks(seqs[:cut], bs),
+                             group_chunks(seqs[cut:], bs),
+                             bs=bs, drop_last=True, shuffle=False)
+
+# check if it still offset by 1
+[L(vocab[o] for o in s) for s in seqs[0]]
+</code></pre></div></div>
+
+<p>Rewrite the model to now output every word instead of every 3 words in order to feed this into next run</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>class LMModel4(Module):
+    def __init__(self, vocab_sz, n_hidden):
+        self.i_h = nn.Embedding(vocab_sz, n_hidden)  
+        self.h_h = nn.Linear(n_hidden, n_hidden)     
+        self.h_o = nn.Linear(n_hidden,vocab_sz)
+        self.h = 0
+        
+    def forward(self, x):
+        outs = []
+        for i in range(sl):
+            self.h = self.h + self.i_h(x[:,i])
+            self.h = F.relu(self.h_h(self.h))
+            outs.append(self.h_o(self.h))
+        self.h = self.h.detach()
+        return torch.stack(outs, dim=1)
+    
+    def reset(self): self.h = 0
+
+    def loss_func(inp, targ):
+        return F.cross_entropy(inp.view(-1, len(vocab)), # flatten out to match bs x sl x vocab_sz from model
+        targ.view(-1)) # flatten out to match bs x sl x vocab_sz from model
+
+learn = Learner(dls, LMModel4(len(vocab), 64), loss_func=loss_func,
+                metrics=accuracy, cbs=ModelResetter)
+learn.fit_one_cycle(15, 3e-3)       
+</code></pre></div></div>
+
+<h3 id="recurrent-neural-network-rnn">Recurrent Neural Network: RNN</h3>
+<p><img src="/ML-section/assets/images/rnn-pic1.jpeg" alt="RNN" />
+RNN feed the output activation value back into hidden layer to help the hidden layers retain info about previous run therefore have some <em>memory</em> of the past.</p>
+
+<h3 id="multi-layer-rnn">Multi-Layer RNN</h3>
+<p>since the current model use the same weight matrix for each hidden layer which mean there no new info to be learn from. One way to 
+To improve the model further is to stack more layers by feed the output from one layer into the next layer so on.</p>
+
+<p>Look at it in unrolling way
+<img src="/ML-section/assets/images/stacklayer_rnn2.png" alt="stack-layer" /></p>
+
+<p>Refactoring to use PyTorch</p>
+
+<p>The model now has too deep layers this could lead to problem of <em>vanishing</em> or <em>exploding</em> gradient</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>class LMModel5(Module):
+    def __init__(self, vocab_sz, n_hidden, n_layers):
+        self.i_h = nn.Embedding(vocab_sz, n_hidden)
+        self.rnn = nn.RNN(n_hidden, n_hidden, n_layers, batch_first=True)
+        self.h_o = nn.Linear(n_hidden, vocab_sz)
+        self.h = torch.zeros(n_layers, bs, n_hidden)
+
+    def forward(self, x):
+        res,h = self.rnn(self.i_h(x), self.h)
+        self.h = h.detach()
+        return self.h_o(res)
+
+    def reset(self): self.h.zero_()
+
+learn = Learner(dls, LMModel5(len(vocab), 64, 2), 
+                loss_func=CrossEntropyLossFlat(), 
+                metrics=accuracy, cbs=ModelResetter)
+learn.fit_one_cycle(15, 3e-3)
+</code></pre></div></div>
+<h3 id="exploding-or-disappearing-activations">Exploding or Disappearing Activations</h3>
+
+<p>The problem stem from the gradient value calcutated from the output layer won’t propagated back to the earlier layer. This is because the network is too deep.</p>
+
+<p>Vanishing Gradient:</p>
+
+<p>As the gradient value travel backward the especially the small value is diminishing as the floating point value get computed and recomputed many time each time it get round off closer and closer to 0 and finally become 0.</p>
+
+<p>Exploding Gradient:</p>
+
+<p>This the opposite of vanishing gradient. This phenomena happen espcially when the large value get larger with each computation it get exponentially large until it get large closer to infinity and become useless.
+<img src="/ML-section/assets/images/vanish1.jpg" alt="vanish" /></p>
+
+<h3 id="the-floating-point-problem">The floating point problem</h3>
+<p>One problem with doing floating point math with computer is that computer has limit amount of storage and floating point number is imprecise e.g. 1.0000012 or 1.00000000000000000000000012 is these two numbers are the same value? The answer is it’s depend on what do you want to do with it. On some task the first one is good enough but on other the second is what require. To store the second number require more storage.</p>
+
+<p>The impreciseness is rather harder to understand. Float number get denser and denser when value get closer and closer to 0. In practice how do you represent this to the computer so it do some useful work. The IEEE organization come up with a standard which require how much storage should be devoted to certain type of floating point value e.g. 8-bit folating point,16-bit, 32-bit which mean the storage depend on the precision the user requirement not the actual value it may case the value get round-off read more from <a href="http://www.volkerschatz.com/science/float.html">here</a>. This mean do more calculation may lead less precision. This is what happen when doing lot and lot of gradient calculations the value may end up at 0 which is call vanishing  gradient or the value get larger and larger exponentially or explode to infinite.</p>
+
+<p>These problems are the main reason why RNN model is hard to train than CNN model,however research is very active to try new way to reduce or avoid these problems.</p>
+
+<h3 id="neural-network-that-have-memory">Neural Network that have Memory</h3>
+
+<p>In Machine Learning two approach to handle Explode and Vanishing gradient is to use Neural network that can retain previous activation and also can figure out what value should be retain and which should be removed. The two popular approch are LSTM and GRU. GRU is a simplify version of LSTM</p>
+
+<p><img src="/ML-section/assets/images/rnn_lstm_gru.png" alt="lstm-gru" /></p>
+
+<h3 id="comparison-lstm-and-gru">Comparison LSTM and GRU</h3>
+
+<p><img src="/ML-section/assets/images/lstm-gru1.png" alt="gru" /></p>
+
+<h3 id="lstm-architecture">LSTM architecture</h3>
+
+<p>Internally LSTM comprise with little neural net that decise how much gradient is needed and which one to update or delete.
+<img src="/ML-section/assets/images/lstm1.png" alt="lstm-gru" /></p>
+
+<p><em>sigmoid equation:</em></p>
+
+<p>$f(x) = \frac{1}{1 + e^{-x}} = \frac{e^x}{e^x + 1} = \frac12 + \frac12 \tanh\left(\frac{x}{2}\right)$</p>
+
+<p>Sigmoid only let positive value between 0 and 1 pass through</p>
+
+<p><em>tanh equation:</em></p>
+
+<p>$f(x) = \tanh x = \frac{e^x-e^{-x}}{e^x+e^{-x}}$</p>
+
+<p>Tanh only let value between -1 and 1 pass through</p>
+
+<h3 id="another-look-at-lstm-internal">Another look at LSTM internal:</h3>
+<p><img src="/ML-section/assets/images/lstm_eq.png" alt="lstm-gru" /></p>
+
+<p>The little NN is compose of gates call forget gate,input gate, cell gate, output gate. These gates work together to provide LSTM the capability to remember activation value that is important and forget the unneccessary activation value</p>
+
+<h4 id="the-forget-f_t-gate">The forget $f_{t}$ gate:</h4>
+
+<p>Take input $x$, hidden state $h_{t-1}$ then gated them via the sigmoid $\sigma$ activation to get only positive value then multiply them with previous cell state(memory) $C_{t-1}$. It decides should the value be kept or discarded. If result from $\sigma$ value closer to 1 the value is kept else the value is discarded.</p>
+
+<h4 id="the-input-i_tgate">The input $i_{t}$gate:</h4>
+
+<p>Together with cell gate to update the cell state this gate also decide should the value be kept or discard depend on the value of the sigmoid</p>
+
+<h4 id="the-cell-tildec_t-gate">The cell $\tilde{C_{t}}$ gate:</h4>
+<p>Decide what value to update from the range of -1 to 1 output from tanh function the value then add with previou cell state $C_{t-1}$ value to get $C_{t}$ the new value in memeory</p>
+
+<h4 id="the-output-o_t-gate">The Output $o_{t}$ gate:</h4>
+
+<p>Decide which value to output to be multiply with the cell state value that was filter with tanh before output as new hidden state for the next layer.</p>
+
+<p>The code for LSTM cell:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>class LSTMCell(Module):
+    def __init__(self, ni, nh):
+        self.forget_gate = nn.Linear(ni + nh, nh)
+        self.input_gate  = nn.Linear(ni + nh, nh)
+        self.cell_gate   = nn.Linear(ni + nh, nh)
+        self.output_gate = nn.Linear(ni + nh, nh)
+
+    def forward(self, input, state):
+        h,c = state
+        h = torch.stack([h, input], dim=1)
+        forget = torch.sigmoid(self.forget_gate(h))
+        c = c * forget
+        inp = torch.sigmoid(self.input_gate(h))
+        cell = torch.tanh(self.cell_gate(h))
+        c = c + inp * cell
+        out = torch.sigmoid(self.output_gate(h))
+        h = outgate * torch.tanh(c)
+        return h, (h,c)
+</code></pre></div></div>
+<p>Refactor to take advantage of the GPU by combine all small matrix into one big one to avoid moving too frequence data in and out of GPU and allow GPU to parallelize the task.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>class LSTMCell(Module):
+    def __init__(self, ni, nh):
+        self.ih = nn.Linear(ni,4*nh)
+        self.hh = nn.Linear(nh,4*nh)
+
+    def forward(self, input, state):
+        h,c = state
+        # One big multiplication for all the gates is better than 4 smaller ones
+        gates = (self.ih(input) + self.hh(h)).chunk(4, 1) #split tensor into 4 then combine with input
+        ingate,forgetgate,outgate = map(torch.sigmoid, gates[:3])
+        cellgate = gates[3].tanh()
+
+        c = (forgetgate*c) + (ingate*cellgate)
+        h = outgate * c.tanh()
+        return h, (h,c)
+
+</code></pre></div></div>
+
+<h3 id="train-the-lstm">Train the LSTM</h3>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>class LMModel6(Module):
+    def __init__(self, vocab_sz, n_hidden, n_layers):
+        self.i_h = nn.Embedding(vocab_sz, n_hidden)
+        self.rnn = nn.LSTM(n_hidden, n_hidden, n_layers, batch_first=True)
+        self.h_o = nn.Linear(n_hidden, vocab_sz)
+        self.h = [torch.zeros(n_layers, bs, n_hidden) for _ in range(2)]
+        
+    def forward(self, x):
+        res,h = self.rnn(self.i_h(x), self.h)
+        self.h = [h_.detach() for h_ in h]
+        return self.h_o(res)
+    
+    def reset(self): 
+        for h in self.h: h.zero_()
+
+learn = Learner(dls, LMModel6(len(vocab), 64, 2), 
+                loss_func=CrossEntropyLossFlat(), 
+                metrics=accuracy, cbs=ModelResetter)
+learn.fit_one_cycle(15, 1e-2)
+
+</code></pre></div></div>
+<h3 id="regularizing-an-lstm">Regularizing an LSTM</h3>
+<p>Although hard to train and prone to overfitting, there some trick such as using data augmentation by translate the same text into different language then retranslate back to generate more variance. And using various regularization method to alleviate the overfitting problem some of the techniques describe here:</p>
+
+<h3 id="dropout">Dropout</h3>
+
+<p><img src="/ML-section/assets/images/dropout2.png" alt="dropout" />
+Dropout is one of the regularization technique use to combat overfitting tendency of the model. The method usually apply at training time. This method is to randomly change some activations value to zero which temporary remove the neural nodes from the network.</p>
+
+<p>It makes the neural less relie on the input from the source that the neural regularly receive the input from since these sources may not be there. 
+It makes sure all neurons actively work toward the general concept rather than try to fit specify pattern in the current data.</p>
+
+<p>Dropout has different behavior in training and validation mode which is why the flag training must set to True when traing and False when evaluating.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>class Dropout(Module):
+    def __init__(self, p): self.p = p
+    def forward(self, x):
+        if not self.training: return x
+        mask = x.new(*x.shape).bernoulli_(1-p) # create probability of random value 
+        return x * mask.div_(1-p)
+</code></pre></div></div>
+<h3 id="activation-regularization-ar-and-temporal-activation-regularization-tar">Activation Regularization (AR) and Temporal Activation Regularization (TAR)</h3>
+
+<p>two regularization methods very similar to weight decay.</p>
+
+<h4 id="ar">AR</h4>
+
+<p>This approach is apply at the final activation from LSTM to reduce its size. AR is often applied on the dropped-out activations. 
+The code is</p>
+
+<p><code class="highlighter-rouge">loss += alpha * activations.pow(2).mean()</code></p>
+
+<h4 id="tar">TAR</h4>
+
+<p>This approach is to encourage the model to output sensible value by adding a penalty to the loss to make the difference between two consecutive activations as small as possible.
+TAR is applied on the non-dropped-out activations (because those zeros create big differences between two consecutive time steps)
+with activations tensor has a shape <code class="highlighter-rouge">bs x sl x n_hid</code> the code is:</p>
+
+<p><code class="highlighter-rouge">loss += beta * (activations[:,1:] - activations[:,:-1]).pow(2).mean()</code></p>
+
+<p>To use these is required:</p>
+
+<ol>
+  <li>the proper output,</li>
+  <li>the activations of the LSTM pre-dropout, and</li>
+  <li>the activations of the LSTM post-dropout</li>
+</ol>
+
+<p>In practive it’s often used a callback <code class="highlighter-rouge">RNNRegularizer</code> to apply the regularization.</p>
+
+<h3 id="training-awd-lstm-a-weight-tied-regularized-lstm">Training AWD-LSTM: a Weight-Tied Regularized LSTM</h3>
+<p>Apply regularization can be combined together dropout, AR, TAR
+This method uses:</p>
+<ul>
+  <li>Embedding dropout (just after the embedding layer)</li>
+  <li>Input dropout (after the embedding layer)</li>
+  <li>Weight dropout (applied to the weights of the LSTM at each training step)</li>
+  <li>Hidden dropout (applied to the hidden state between two layers)</li>
+</ul>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>class LMModel7(Module):
+    def __init__(self, vocab_sz, n_hidden, n_layers, p):
+        self.i_h = nn.Embedding(vocab_sz, n_hidden)
+        self.rnn = nn.LSTM(n_hidden, n_hidden, n_layers, batch_first=True)
+        self.drop = nn.Dropout(p)
+        self.h_o = nn.Linear(n_hidden, vocab_sz)
+        self.h_o.weight = self.i_h.weight
+        self.h = [torch.zeros(n_layers, bs, n_hidden) for _ in range(2)]
+        
+    def forward(self, x):
+        raw,h = self.rnn(self.i_h(x), self.h)
+        out = self.drop(raw)
+        self.h = [h_.detach() for h_ in h]
+        return self.h_o(out),raw,out
+    
+    def reset(self): 
+        for h in self.h: h.zero_()
+
+</code></pre></div></div>
+<p>Another trick is <em>weight-tying</em> <a href="https://arxiv.org/abs/1708.02182">the AWD LSTM paper</a> 
+by realize that input embedding is a mapping from English words to activation value. And output from hidden layer is a mapping from activations value to English words are the same thing. And assign the same weight matrix to these layers</p>
+
+<p><code class="highlighter-rouge">self.h_o.weight  self.i_h.weight</code></p>
+
+<p>The final code tweak become:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>class LMModel7(Module):
+    def __init__(self, vocab_sz, n_hidden, n_layers, p):
+        self.i_h = nn.Embedding(vocab_sz, n_hidden)
+        self.rnn = nn.LSTM(n_hidden, n_hidden, n_layers, batch_first=True)
+        self.drop = nn.Dropout(p)
+        self.h_o = nn.Linear(n_hidden, vocab_sz)
+        self.h_o.weight = self.i_h.weight
+        self.h = [torch.zeros(n_layers, bs, n_hidden) for _ in range(2)]
+        
+    def forward(self, x):
+        raw,h = self.rnn(self.i_h(x), self.h)
+        out = self.drop(raw)
+        self.h = [h_.detach() for h_ in h]
+        return self.h_o(out),raw,out
+    
+    def reset(self): 
+        for h in self.h: h.zero_()
+
+learn = Learner(dls, LMModel7(len(vocab), 64, 2, 0.5),
+                loss_func=CrossEntropyLossFlat(), metrics=accuracy,
+                cbs=[ModelResetter,  # add callback
+                RNNRegularizer(alpha=2, beta=1)]) # add callback to learner
+
+# or use the TextLearner that will call add the callback
+learn = TextLearner(dls, LMModel7(len(vocab), 64, 2, 0.4),
+                    loss_func=CrossEntropyLossFlat(), metrics=accuracy)                       
+
+learn.fit_one_cycle(15, 1e-2, wd=0.1)
+</code></pre></div></div>
+
+<h3 id="gru-gate-recurrent-units-architecture">GRU: Gate Recurrent Units architecture</h3>
+
+<p><img src="/ML-section/assets/images/gru1.jpg" alt="gru" /></p>
+
+<p>GRU is a simplify version of LSTM and work them same way.</p>
+
+<h3 id="jargons">Jargons:</h3>
+<ul>
+  <li>hidden state: The activations that are updated at each step of a recurrent neural network.</li>
+  <li>A neural network that is defined using a loop like this is called a recurrent neural network (RNN)</li>
+  <li>Back propagation through time (BPTT): Treating a neural net with effectively one layer per time step (usually refactored using a loop) as one big model, and calculating gradients on it in the usual way. To avoid running out of memory and time, we usually use truncated BPTT, which “detaches” the history of computation steps in the hidden state every few time steps. In essence calculate the gradient and propagate backward as usual but don’t store them.</li>
+  <li>The bernoulli_ method is creating a tensor of random zeros (with probability p) and ones (with probability 1-p)</li>
+  <li>alpha and beta are two hyperparameters to tune</li>
+</ul>
+
+
+   
+  </div><a class="u-url" href="/ml-section/ml/2020/09/20/ML-RNN.html" hidden></a>
+</article>
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Supra_PolyglotCoder</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Vanh Phomsavanh</li><li><a class="u-email" href="mailto:vanhphom@gmail.com">vanhphom@gmail.com</a></li>
+            <li>&copy; VSP LLC 2020 </li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://www.twitter.com/SupraCoder"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#twitter"></use></svg> <span class="username">SupraCoder</span></a></li><li><a href="https://github.com/vanhp"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg> <span class="username">vanhp</span></a></li><li><a href="https://www.facebook.com/vanh+phom"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#facebook"></use></svg> <span class="username">vanh phom</span></a></li><li><a href="https://www.linkedin.com/in/vanh-phomsavanh-1bba668"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#linkedin"></use></svg> <span class="username">vanh-phomsavanh-1bba668</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>A blog about my journey into Machine Learning and coding experience in general</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>
