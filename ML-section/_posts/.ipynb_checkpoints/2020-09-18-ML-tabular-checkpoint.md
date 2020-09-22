@@ -18,7 +18,7 @@ Using ML to analyze and make prediction from Data that have structual type such 
 There are a few approach available to tackle these tasks.
 Such as Decision tree, Random Forest, Neural Net.
 
-## Tabular data Modeling Deep Dive
+## Tabular Modeling Deep Dive
 
 
 The objective is to predict the value in one column based on the values in the other columns.
@@ -40,7 +40,7 @@ For unstructure data types:
     - There are some columns that contain data that would be best understood with a neural network, such as plain text data.
 
 ### Ensemble Decision Trees
-Decision tree don't require matrix multiplication or derivative calculation. So PyTorch is of no help. Scikit-learn is better suit for this task.
+Decision tree don't require matrix multiplication or derivative. So PyTorch is of no help. Scikit-learn is better suit for this task.
 
 Data to use for Decision tree
 [bluebookforbulldozers](https://www.kaggle.com/c/bluebook-for-bulldozers/data)
