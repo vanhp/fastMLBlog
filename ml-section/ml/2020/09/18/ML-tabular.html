@@ -4,13 +4,13 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="twitter:card" content="summary" /><!-- Begin Jekyll SEO tag v2.6.1 -->
-<title>Working with Tabular Data | Supra_PolyglotCoder</title>
+<title>Working with Tabular and Time-Series Data | Supra_PolyglotCoder</title>
 <meta name="generator" content="Jekyll v4.0.0" />
-<meta property="og:title" content="Working with Tabular Data" />
+<meta property="og:title" content="Working with Tabular and Time-Series Data" />
 <meta name="author" content="Vanh Phomsavanh" />
 <meta property="og:locale" content="en_US" />
-<meta name="description" content="Understanding and handling Tabular data" />
-<meta property="og:description" content="Understanding and handling Tabular data" />
+<meta name="description" content="Understanding and handling of structural data" />
+<meta property="og:description" content="Understanding and handling of structural data" />
 <link rel="canonical" href="https://www.vanhp.com/ml-section/ml/2020/09/18/ML-tabular.html" />
 <meta property="og:url" content="https://www.vanhp.com/ml-section/ml/2020/09/18/ML-tabular.html" />
 <meta property="og:site_name" content="Supra_PolyglotCoder" />
@@ -18,16 +18,16 @@
 <meta property="og:type" content="article" />
 <meta property="article:published_time" content="2020-09-18T00:00:00-05:00" />
 <script type="application/ld+json">
-{"author":{"@type":"Person","name":"Vanh Phomsavanh"},"description":"Understanding and handling Tabular data","dateModified":"2020-09-18T00:00:00-05:00","datePublished":"2020-09-18T00:00:00-05:00","headline":"Working with Tabular Data","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://www.vanhp.com/ml-section/ml/2020/09/18/ML-tabular.html"},"image":"https://www.vanhp.com/ML-section/assets/images/neuralNet1.jpg","url":"https://www.vanhp.com/ml-section/ml/2020/09/18/ML-tabular.html","@context":"https://schema.org"}</script>
+{"author":{"@type":"Person","name":"Vanh Phomsavanh"},"description":"Understanding and handling of structural data","dateModified":"2020-09-18T00:00:00-05:00","datePublished":"2020-09-18T00:00:00-05:00","headline":"Working with Tabular and Time-Series Data","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://www.vanhp.com/ml-section/ml/2020/09/18/ML-tabular.html"},"image":"https://www.vanhp.com/ML-section/assets/images/neuralNet1.jpg","url":"https://www.vanhp.com/ml-section/ml/2020/09/18/ML-tabular.html","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 <link rel="stylesheet" href="/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://www.vanhp.com/feed.xml" title="Supra_PolyglotCoder" /><link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico"><!-- Begin Jekyll SEO tag v2.6.1 -->
-<title>Working with Tabular Data | Supra_PolyglotCoder</title>
+<title>Working with Tabular and Time-Series Data | Supra_PolyglotCoder</title>
 <meta name="generator" content="Jekyll v4.0.0" />
-<meta property="og:title" content="Working with Tabular Data" />
+<meta property="og:title" content="Working with Tabular and Time-Series Data" />
 <meta name="author" content="Vanh Phomsavanh" />
 <meta property="og:locale" content="en_US" />
-<meta name="description" content="Understanding and handling Tabular data" />
-<meta property="og:description" content="Understanding and handling Tabular data" />
+<meta name="description" content="Understanding and handling of structural data" />
+<meta property="og:description" content="Understanding and handling of structural data" />
 <link rel="canonical" href="https://www.vanhp.com/ml-section/ml/2020/09/18/ML-tabular.html" />
 <meta property="og:url" content="https://www.vanhp.com/ml-section/ml/2020/09/18/ML-tabular.html" />
 <meta property="og:site_name" content="Supra_PolyglotCoder" />
@@ -35,7 +35,7 @@
 <meta property="og:type" content="article" />
 <meta property="article:published_time" content="2020-09-18T00:00:00-05:00" />
 <script type="application/ld+json">
-{"author":{"@type":"Person","name":"Vanh Phomsavanh"},"description":"Understanding and handling Tabular data","dateModified":"2020-09-18T00:00:00-05:00","datePublished":"2020-09-18T00:00:00-05:00","headline":"Working with Tabular Data","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://www.vanhp.com/ml-section/ml/2020/09/18/ML-tabular.html"},"image":"https://www.vanhp.com/ML-section/assets/images/neuralNet1.jpg","url":"https://www.vanhp.com/ml-section/ml/2020/09/18/ML-tabular.html","@context":"https://schema.org"}</script>
+{"author":{"@type":"Person","name":"Vanh Phomsavanh"},"description":"Understanding and handling of structural data","dateModified":"2020-09-18T00:00:00-05:00","datePublished":"2020-09-18T00:00:00-05:00","headline":"Working with Tabular and Time-Series Data","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://www.vanhp.com/ml-section/ml/2020/09/18/ML-tabular.html"},"image":"https://www.vanhp.com/ML-section/assets/images/neuralNet1.jpg","url":"https://www.vanhp.com/ml-section/ml/2020/09/18/ML-tabular.html","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
 <link href="https://unpkg.com/@primer/css/dist/primer.css" rel="stylesheet" />
@@ -112,7 +112,7 @@ window.onload = wrap_img;
         <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
-    <!-- add feature image on top of post --><img src="/ML-section/assets/images/neuralNet1.jpg" alt="" class="featured-image-post" /><h1 class="post-title p-name" itemprop="name headline">Working with Tabular Data</h1><p class="page-description">Understanding and handling Tabular data</p><p class="post-meta post-meta-title"><time class="dt-published" datetime="2020-09-18T00:00:00-05:00" itemprop="datePublished">
+    <!-- add feature image on top of post --><img src="/ML-section/assets/images/neuralNet1.jpg" alt="" class="featured-image-post" /><h1 class="post-title p-name" itemprop="name headline">Working with Tabular and Time-Series Data</h1><p class="page-description">Understanding and handling of structural data</p><p class="post-meta post-meta-title"><time class="dt-published" datetime="2020-09-18T00:00:00-05:00" itemprop="datePublished">
         Sep 18, 2020
       </time>
        • <span class="read-time" title="Estimated read time">
@@ -144,6 +144,11 @@ window.onload = wrap_img;
 </div>
 
 <hr />
+
+<p>Using ML to analyze and make prediction from Data that have structual type such as data that stored in database, CSV file,spreadsheet data, that have table with row and column. Some data also have time sequence such as day, month,holyday…</p>
+
+<p>There are a few approach available to tackle these tasks.
+Such as Decision tree, Random Forest, Neural Net.</p>
 
 <h2 id="tabular-modeling-deep-dive">Tabular Modeling Deep Dive</h2>
 

@@ -118,7 +118,7 @@ window.onload = wrap_img;
        • <span class="read-time" title="Estimated read time">
     
     
-      15 min read
+      14 min read
     
 </span></p>
 
@@ -143,21 +143,26 @@ window.onload = wrap_img;
 </div>
 
 <hr />
+<p>Human Language compose of texts in sequence. This sequence imply meaning word that come at $t-1$ of current word at $t$ may convey different meaning for example, when the same word come at $t+1$. To tackle this problem a model should some form of remembering the previous occurrance of the word. Let take a look at how a model can work with human language.</p>
 
 <h2 id="nlp-deep-dive-rnn">NLP Deep Dive: RNN</h2>
-<p>Language Model is model that train to predict the next in the sentence in the text would be. This type of model is called self-supervise model since it’s doesn’t require label to guide it’s prediction by compare the prediction against the actual label which is the ground truth. It simply learn from the dataset in this case is text and hugh amount of texts. It has it own highly complicate woy of extract the label from the data. It’s also has its own way to understand the context in the language that it works with.
+<p>Self-supervise learning</p>
+
+<p>Language Model is model that train to predict the next word in the sentence would be. This type of model is called self-supervise model since it’s doesn’t require label to guide it’s prediction as oppose to supervise-learning which require label that the model uses to compare its prediction against the actual label which is the ground truth. It simply learn from huge amount of texts.</p>
+
+<p>In a sense, it has it own highly complicate way of extract the label from the data. It’s also has its own way to understand the context of the language that it works with.
 Self-supervise is a highly active field in research community. Since is applicable in many domains other than text.</p>
 
 <h3 id="pretrained-nlp-model">Pretrained NLP Model</h3>
-<p>Using pretrained Language model is widely used instead of train them from scratch since it’s highly resource and time-consuming. A pretrained language model in one task maybe retrain on different task e.g. retrain a model that was trained in Wikipedia on movies reviews database such as IMDb. As with all pretrained model it’s helpful to get insign into the dataset and familar with the style of data e.g. techical,formal,casual type.</p>
+<p>Using pretrained Language model is widely prefer by researcher and practictioner alike. Instead of train them from scratch since it’s highly resource and time-consuming. A pretrained language model in one task maybe retrain on different task e.g. retrain a model that was trained in Wikipedia on movies reviews database such as IMDb. As with all pretrained model it’s helpful to get insign into the dataset and familarity with the style of data e.g. techical,formal,casual type.</p>
 
 <h3 id="the-ulmfit-approach">The ULMFit approach</h3>
 <p>Have a good understanding of the language model foundation is useful to adapt and fine-tuning the pretrained model for new task that may not easily relate to original task. This technique of adapting or refining the pretrained model with data relate to new task prior to training it for the new task (do classification) is call Universal Language Model Fine-tuning. The <a href="https://arxiv.org/abs/1801.06146">ULMFIt</a> paper indicate that this help improve the performance of the model remarkedbly.
 <img src="/images/ulmfit1.png" alt="ulmfit_step" /></p>
 
-<h2 id="text-preprocessing">Text preprocessing</h2>
+<h2 id="text-preprocessing-from-scatch">Text preprocessing from scatch</h2>
 
-<p>From knowledge of using categorical variables as an independent variable for NN.</p>
+<p>Start from knowledge of using categorical variables as an independent variable for NN.</p>
 
 <ul>
   <li>Make a list of all possible levels (words) of that categorical variable (we’ll call this list the vocab).</li>
@@ -166,7 +171,10 @@ Self-supervise is a highly active field in research community. Since is applicab
   <li>Use this embedding matrix as the first layer of a neural network. (A dedicated embedding matrix can take as inputs the raw vocab indexes created in step 2; this is equivalent to but faster and more efficient than a matrix that takes as input one-hot-encoded vectors representing the indexes.)</li>
 </ul>
 
-<p>These are the basic approach for dealing with text with the exception of text has sequence to deal with sequence in text</p>
+<p>These are the basic approach for dealing with text.</p>
+
+<h3 id="dealing-with-time-sequence-in-text">Dealing with time sequence in Text</h3>
+<p>However, to handle sequencing problem in text here are some solutions:</p>
 <ol>
   <li>concaternate all of the document in the dataset into one giant long string.</li>
   <li>split the string into list of words</li>
@@ -174,7 +182,16 @@ Self-supervise is a highly active field in research community. Since is applicab
   <li>assign the dependent variable as the sequence of words start from second word ending at last word this will create an offset by 1 of independent variable and dependent variable</li>
 </ol>
 
-<p>The vocab will contain both old words that were used to pretrain the model and new words that we’ve just created which the exception that new words won’t have any corresponding embedding matrix which will be filled with random value.
+<h3 id="text-tokenization">Text Tokenization</h3>
+
+<p>A process of converting text which is sequence of characters into group such as word (group of character) in order to assign numerical value. There are three approach:</p>
+<ol>
+  <li>word-based: Split a sentence on spaces, as well as applying language-specific rules to try to separate parts of meaning even when there are no spaces (such as turning “don’t” into “do n’t”). Generally, punctuation marks are also split into separate tokens.</li>
+  <li>Subword based: Split words into smaller parts, based on the most commonly occurring substrings. For instance, “occasion” might be tokenized as <em>“o c ca sion”</em>.</li>
+  <li>Character-based: Split a sentence into its individual characters.</li>
+</ol>
+
+<p>The vocab will contain both old words that were used to pretrain the model and new words that we’ve just created which the exception that new words won’t have any corresponding embedding matrix which will be filled with random value. Summary of
 the prodcess of create vocab:</p>
 <ol>
   <li>tokenize the text by convert them into words</li>
@@ -183,20 +200,18 @@ the prodcess of create vocab:</p>
   <li>create language model with RNN that can handle arbitrary size input list</li>
 </ol>
 
-<h3 id="text-tokenization">Text Tokenization</h3>
+<h3 id="tokenization-with-fastai">Tokenization with fastai</h3>
 
-<p>Process of converting text a sequence of characters into group such as word (group of character) in order to assign numerical value. There are three approach:</p>
-<ol>
-  <li>word-based: Split a sentence on spaces, as well as applying language-specific rules to try to separate parts of meaning even when there are no spaces (such as turning “don’t” into “do n’t”). Generally, punctuation marks are also split into separate tokens.</li>
-  <li>Subword based: Split words into smaller parts, based on the most commonly occurring substrings. For instance, “occasion” might be tokenized as “o c ca sion.”</li>
-  <li>Character-based:: Split a sentence into its individual characters.</li>
-</ol>
+<h3 id="word-tokenization">Word Tokenization</h3>
+<p>fastai does not provide its own tokenizer but instead provide interface API such as <em>WordTokenizer</em> for third party tokenizer which let user choose their own tokenizer if prefered. The default tokenizer currently is <em>spaCy</em> library. It’s one of more sophistacated and flexible to handle English words. It could split word like it’s int it and s and many subtle task.</p>
 
-<h3 id="word-tokenization-with-fastai">Word Tokenization with fastai</h3>
-<p>fastai does not provide its own tokenizer but instead provide interface API such as <em>WordTokenizer</em> for third party tokenizer which let user choose their own tokenizer if prefered. The default tokenizer currently is <em>spaCy</em> library. It’s one of more sophistacated and flexible to handle English words. It could split word like it’s int it and s and many subtle task. fastai extends this library by adding it’s own functionality.
-It’s add special token and ruld such as <em>xx</em> in front of an uncommon word e.g. xxbos signal the start of document this tell the model to clear its own memory for new task.
-There are rules such as replace 4 consecutive sequence of !!!! with 1 ! follow by repeat character token and number 4.
-So the model can encode in its embeding matrix the info about general concept about repeat punctuation instead of separate token for each ! if it run into the same sequence again it doesn’t need to do anything saving computation time and . There are also rule for capitalization the word will be replace with special capitalization token follow by lowercase of the word so there’s only 1 lowercase version in the embedding matrix.
+<p>fastai extends this library by adding it’s own functionality.
+It’s add special token and rule such as <em>xx</em> in front of an uncommon word e.g. <em>xxbos</em> signal the start of document this tell the model to clear its own memory for new task.</p>
+
+<p>There are rules such as replace 4 consecutive sequence of !!!! with 1 ! follow by repeat character token and number 4.
+So the model can encode in its embeding matrix the info about general concept about repeat punctuation instead of separate token for each ! if it run into the same sequence again it doesn’t need to do anything saving computation time and memory.</p>
+
+<p>There are also rule for capitalization. The capitalize word will be replace with special capitalization token follow by lowercase of the word so there’s only 1 lowercase version in the embedding matrix.
 example of special token:</p>
 <ul>
   <li>xxbos:: Indicates the beginning of a text (here, a review)</li>
@@ -204,12 +219,16 @@ example of special token:</p>
   <li>xxunk:: Indicates the next word is unknown</li>
   <li>fix_html:: Replaces special HTML characters with a readable version (IMDb reviews have quite a few of these)</li>
   <li>replace_rep:: Replaces any character repeated three times or more with a special token for repetition (xxrep), the number of times it’s repeated, then the character
-replace_wrep:: Replaces any word repeated three times or more with a special token for word repetition (xxwrep), the number of times it’s repeated, then the word
-spec_add_spaces:: Adds spaces around / and #
-rm_useless_spaces:: Removes all repetitions of the space character
-replace_all_caps:: Lowercases a word written in all caps and adds a special token for all caps (xxcap) in front of it
-replace_maj:: Lowercases a capitalized word and adds a special token for capitalized (xxmaj) in front of it
+replace_wrep::
+    <ul>
+      <li>Replaces any word repeated three times or more with a special token for word repetition (xxwrep), the number of times it’s repeated, then the word</li>
+      <li>spec_add_spaces:: Adds spaces around / and #</li>
+      <li>rm_useless_spaces:: Removes all repetitions of the space character</li>
+      <li>replace_all_caps:: Lowercases a word written in all caps and adds a special token for all caps (xxcap) in front of it</li>
+      <li>replace_maj:: Lowercases a capitalized word and adds a special token for capitalized (xxmaj) in front of it
 lowercase:: Lowercases all text and adds a special token at the beginning (xxbos) and/or the end (xxeos)</li>
+    </ul>
+  </li>
 </ul>
 
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>from fastai.text.all import *
@@ -230,7 +249,7 @@ coll_repr(tkn('&amp;copy;   Fast.ai www.fast.ai/INDEX'), 31)
 </code></pre></div></div>
 
 <h3 id="subword-tokenization">Subword Tokenization</h3>
-<p>Word tokenization work well for English and language that relie on space as a word separator. But for language that don’t relie on space such as Thai, chinese, Japanese and many Asian languages subword tokenizer work better.
+<p>Word tokenization work well for English and language that relie on space as a word separator. But for languages that don’t relie on space such as Thai, Chinese, Japanese and many Asian languages subword tokenizer work better.
 It uses a two step process:</p>
 <ol>
   <li>Analyze a corpus of documents to find the most commonly occurring groups of letters. These become the vocab.</li>
@@ -286,8 +305,8 @@ nums = num(toks)[:20]; nums
 </code></pre></div></div>
 
 <h3 id="batching-texts">Batching texts</h3>
-<p>Since the text needs to be in sequential order so the model can predict the next word in sequence which means the new batch must begin right after the last one get cut-off. The whole array of text string after tokenization will be 
-divided int sequence of the same equal length according to the number of batch and sequence length specify.</p>
+<p>Since text needs to be in sequential order so the model can predict the next word in sequence which means the new batch must begin right after the last one get cut-off. The whole array of text string after tokenization will be 
+divided into sequence of the same equal length according to the number of batch and sequence length specify.</p>
 
 <p>Here the code to process a sample of small text using 6 batch with each sequence length of 15</p>
 
@@ -318,7 +337,7 @@ df = pd.DataFrame(d_tokens)
 display(HTML(df.to_html(index=False,header=None)))
 </code></pre></div></div>
 <p>Each batch is considered a mini-stream. These mini-batch must be in sequence so it retain the meaning which the model can learn by reading them in in sequence.
-These process is automatically done by LMDataLoader as shown in sample code here:</p>
+These process is automatically done by <code class="highlighter-rouge">LMDataLoader</code> as shown in sample code here:</p>
 
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>nums200 = toks200.map(num)
 dl = LMDataLoader(nums200)
@@ -458,123 +477,6 @@ _ each epoch these ducument should be shuffle</li>
   <li>Wikipedia103 contain large amount of English text will cover almost all vocabular, slangs, idioms use currently. It’s a good starting point for model to learn from</li>
 </ul>
 
-<hr />
-<p>Jekyll requires blog post files to be named according to the following format:</p>
-
-<p><code class="highlighter-rouge">YEAR-MONTH-DAY-filename.md</code></p>
-
-<p>Where <code class="highlighter-rouge">YEAR</code> is a four-digit number, <code class="highlighter-rouge">MONTH</code> and <code class="highlighter-rouge">DAY</code> are both two-digit numbers, and <code class="highlighter-rouge">filename</code> is whatever file name you choose, to remind yourself what this post is about. <code class="highlighter-rouge">.md</code> is the file extension for markdown files.</p>
-
-<p>The first line of the file should start with a single hash character, then a space, then your title. This is how you create a “<em>level 1 heading</em>” in markdown. Then you can create level 2, 3, etc headings as you wish but repeating the hash character, such as you see in the line <code class="highlighter-rouge">## File names</code> above.</p>
-
-<h2 id="basic-formatting">Basic formatting</h2>
-
-<p>You can use <em>italics</em>, <strong>bold</strong>, <code class="highlighter-rouge">code font text</code>, and create <a href="https://www.markdownguide.org/cheat-sheet/">links</a>. Here’s a footnote <sup id="fnref:1" role="doc-noteref"><a href="#fn:1" class="footnote">1</a></sup>. Here’s a horizontal rule:</p>
-
-<hr />
-
-<h2 id="lists">Lists</h2>
-
-<p>Here’s a list:</p>
-
-<ul>
-  <li>item 1</li>
-  <li>item 2</li>
-</ul>
-
-<p>And a numbered list:</p>
-
-<ol>
-  <li>item 1</li>
-  <li>item 2</li>
-</ol>
-
-<h2 id="boxes-and-stuff">Boxes and stuff</h2>
-
-<blockquote>
-  <p>This is a quotation</p>
-</blockquote>
-
-<div class="Toast Toast--warning googoo">
-   <span class="Toast-icon"><svg class="octicon octicon-alert octicon octicon-alert octicon octicon-alert octicon octicon-alert octicon octicon-alert octicon octicon-alert octicon octicon-alert octicon octicon-alert octicon octicon-alert octicon octicon-alert octicon octicon-alert octicon octicon-alert octicon octicon-alert octicon octicon-alert octicon octicon-alert octicon octicon-alert octicon octicon-alert octicon octicon-alert octicon octicon-alert octicon octicon-alert octicon octicon-alert" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M8.893 1.5c-.183-.31-.52-.5-.887-.5s-.703.19-.886.5L.138 13.499a.98.98 0 000 1.001c.193.31.53.501.886.501h13.964c.367 0 .704-.19.877-.5a1.03 1.03 0 00.01-1.002L8.893 1.5zm.133 11.497H6.987v-2.003h2.039v2.003zm0-3.004H6.987V5.987h2.039v4.006z"></path></svg></span>
-   <span class="Toast-content">You can include alert boxes</span>
-</div>
-
-<p>…and…</p>
-
-<div class="Toast">
-   <span class="Toast-icon"><svg class="octicon octicon-info octicon octicon-info octicon octicon-info octicon octicon-info octicon octicon-info octicon octicon-info octicon octicon-info octicon octicon-info octicon octicon-info octicon octicon-info octicon octicon-info" viewBox="0 0 14 16" version="1.1" width="14" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M6.3 5.69a.942.942 0 01-.28-.7c0-.28.09-.52.28-.7.19-.18.42-.28.7-.28.28 0 .52.09.7.28.18.19.28.42.28.7 0 .28-.09.52-.28.7a1 1 0 01-.7.3c-.28 0-.52-.11-.7-.3zM8 7.99c-.02-.25-.11-.48-.31-.69-.2-.19-.42-.3-.69-.31H6c-.27.02-.48.13-.69.31-.2.2-.3.44-.31.69h1v3c.02.27.11.5.31.69.2.2.42.31.69.31h1c.27 0 .48-.11.69-.31.2-.19.3-.42.31-.69H8V7.98v.01zM7 2.3c-3.14 0-5.7 2.54-5.7 5.68 0 3.14 2.56 5.7 5.7 5.7s5.7-2.55 5.7-5.7c0-3.15-2.56-5.69-5.7-5.69v.01zM7 .98c3.86 0 7 3.14 7 7s-3.14 7-7 7-7-3.12-7-7 3.14-7 7-7z"></path></svg></span>
-   <span class="Toast-content">You can include info boxes</span>
-</div>
-
-<h2 id="images">Images</h2>
-
-<p><img src="/images/logo.png" alt="" title="fast.ai's logo" /></p>
-
-<h2 id="code">Code</h2>
-
-<p>You can format text and code per usual</p>
-
-<p>General preformatted text:</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code># Do a thing
-do_thing()
-</code></pre></div></div>
-
-<p>Python code and output:</p>
-
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Prints '2'
-</span><span class="k">print</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
-</code></pre></div></div>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>2
-</code></pre></div></div>
-
-<p>Formatting text as shell commands:</p>
-
-<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">echo</span> <span class="s2">"hello world"</span>
-./some_script.sh <span class="nt">--option</span> <span class="s2">"value"</span>
-wget https://example.com/cat_photo1.png
-</code></pre></div></div>
-
-<p>Formatting text as YAML:</p>
-
-<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">key</span><span class="pi">:</span> <span class="s">value</span>
-<span class="pi">-</span> <span class="na">another_key</span><span class="pi">:</span> <span class="s2">"</span><span class="s">another</span><span class="nv"> </span><span class="s">value"</span>
-</code></pre></div></div>
-
-<h2 id="tables">Tables</h2>
-
-<table>
-  <thead>
-    <tr>
-      <th>Column 1</th>
-      <th>Column 2</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>A thing</td>
-      <td>Another thing</td>
-    </tr>
-  </tbody>
-</table>
-
-<h2 id="tweetcards">Tweetcards</h2>
-
-<div class="jekyll-twitter-plugin"><blockquote class="twitter-tweet"><p lang="en" dir="ltr">Altair 4.0 is released! <a href="https://t.co/PCyrIOTcvv">https://t.co/PCyrIOTcvv</a><br />Try it with:<br /><br />  pip install -U altair<br /><br />The full list of changes is at <a href="https://t.co/roXmzcsT58">https://t.co/roXmzcsT58</a> ...read on for some highlights. <a href="https://t.co/vWJ0ZveKbZ">pic.twitter.com/vWJ0ZveKbZ</a></p>&mdash; Jake VanderPlas (@jakevdp) <a href="https://twitter.com/jakevdp/status/1204765621767901185?ref_src=twsrc%5Etfw">December 11, 2019</a></blockquote>
-<script async="" src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-</div>
-
-<h2 id="footnotes">Footnotes</h2>
-
-<div class="footnotes" role="doc-endnotes">
-  <ol>
-    <li id="fn:1" role="doc-endnote">
-      <p>This is the footnote. <a href="#fnref:1" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
-    </li>
-  </ol>
-</div>
 
    
   </div><a class="u-url" href="/ml-section/ml/2020/09/19/ML-NLP.html" hidden></a>
