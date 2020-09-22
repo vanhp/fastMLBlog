@@ -1,9 +1,9 @@
 ---
 toc: false
 layout: post
-description: Understanding and handling Tabular data
+description: Understanding and handling of structural data
 category: ML
-title: Working with Tabular Data
+title: Working with Tabular and Time-Series Data
 image: /ML-section/assets/images/neuralNet1.jpg
 ---
 <!-- ![]({{page.image | relative_url}}) -->
@@ -11,7 +11,10 @@ image: /ML-section/assets/images/neuralNet1.jpg
 
 ---
 
+Using ML to analyze and make prediction from Data that have structual type such as data that stored in database, CSV file,spreadsheet data, that have table with row and column. Some data also have time sequence such as day, month,holyday...
 
+There are a few approach available to tackle these tasks.
+Such as Decision tree, Random Forest, Neural Net.
 
 ## Tabular Modeling Deep Dive
 
